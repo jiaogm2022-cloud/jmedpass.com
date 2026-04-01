@@ -14,7 +14,7 @@ const fs    = require('fs');
 const path  = require('path');
 
 /* ── Stripe test secret key (local dev only) ── */
-const STRIPE_SECRET_KEY = 'sk_test_51THJkZ2fkzY2cuSW8eMjy30j51H45uA7qUXwMiOKAVH6CqAJccTc4C5erDfWhTjgOr3Eg3B7FSpl2W42qF3ZQGLZ00QXZ84gS4';
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const CNY_TO_USD = 0.138; // 1 CNY ≈ 0.138 USD
 
 let stripe;
