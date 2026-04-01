@@ -1,0 +1,8 @@
+{
+  "name": "sakura-medical",
+  "version": "1.0.0",
+  "description": "Sakura Medical Group",
+  "dependencies": {
+    "stripe": "^14.21.0"
+  }
+}

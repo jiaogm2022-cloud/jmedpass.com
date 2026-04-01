@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>页面未找到 | 樱医集团</title>
+  <meta name="description" content="您访问的页面不存在，请返回首页或联系樱医集团客服。" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://jmedpass.com/404.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #f5f5f7; min-height: 100vh; display: flex; flex-direction: column; }
+    .wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 80px 20px;
+    }
+    .card {
+      background: #fff; border-radius: 28px; padding: 64px 48px;
+      max-width: 520px; width: 100%; text-align: center;
+      box-shadow: 0 8px 48px rgba(0,0,0,.08);
+    }
+    .num {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 6rem; font-weight: 700;
+      background: linear-gradient(135deg, #9b2335, #e8637a, #c9974a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      line-height: 1; margin-bottom: 16px;
+    }
+    h1 { font-family: 'Noto Serif SC', serif; font-size: 1.6rem; color: #1a1018; margin-bottom: 12px; }
+    p { color: #8a7080; font-size: .95rem; line-height: 1.7; margin-bottom: 36px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #9b2335, #e8637a, #c9974a);
+      color: #fff; border: none; border-radius: 100px;
+      padding: 14px 32px; font-size: .95rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      font-family: 'Noto Sans SC', sans-serif;
+      box-shadow: 0 4px 16px rgba(155,35,53,.35);
+      transition: all .25s;
+    }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+<header class="navbar scrolled" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">⚕</span>
+      <span class="logo-text" style="color:var(--dark)">樱医集团<em>SAKURA MEDICAL GROUP</em></span>
+    </a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <div class="num">404</div>
+    <h1>页面不存在</h1>
+    <p>您访问的页面已移动或不存在。<br />请返回首页，继续探索樱医集团的日本医疗服务。</p>
+    <a href="index.html" class="btn">返回首页 →</a>
+  </div>
+</div>
+
+<script src="i18n.js"></script>
+<script>document.getElementById('navbar').classList.add('scrolled');</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Disallow Netlify function endpoints from indexing
+Disallow: /.netlify/
+
+Sitemap: https://jmedpass.com/sitemap.xml
