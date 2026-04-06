@@ -67,7 +67,7 @@
       <a href="mianyi.html" data-i18n="nav.mianyi">免疫疗法</a>
       <a href="zaixian.html" data-i18n="nav.zaixian">线上问诊</a>
       <a href="shenghuo.html" style="color:var(--primary);font-weight:700" data-i18n="nav.shenghuo">生活方式</a>
-      <a href="partner.html" style="color:var(--primary);font-weight:600;">合伙人</a>
+      <a href="partner.html" style="color:var(--primary);font-weight:600;" data-i18n="nav.partner">合伙人</a>
       <a href="index.html#contact" class="nav-cta" data-i18n="nav.consult">立即咨询</a>
     </nav>
     <div class="lang-switcher">
@@ -193,19 +193,25 @@
       <span class="cart-total-amount" id="cartTotalAmount">¥0</span>
     </div>
     <div class="cart-savings" id="cartSavings"></div>
+    <!-- Shipping info -->
+    <div id="cartShippingInfo" style="font-size:.78rem;color:#6b5a63;padding:6px 0;border-top:1px solid #f0e6ea;line-height:1.6">
+      <span data-i18n="sh.cart.shipping">📦 日本EMS国际快递</span>
+      <span id="shippingStatus" style="float:right;font-weight:600;color:#c2185b"></span>
+      <div id="shippingHint" style="font-size:.7rem;color:#a0909a;margin-top:2px"></div>
+    </div>
     <!-- Payment method icons -->
     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:10px 0;border-top:1px solid #f0e6ea;border-bottom:1px solid #f0e6ea;margin:4px 0">
       <span style="font-size:.72rem;color:#8a7080;margin-right:4px" data-i18n="sh.cart.pay">支持支付：</span>
       <span style="background:#1a1f71;color:#fff;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:4px">VISA</span>
       <span style="background:#eb001b;color:#fff;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:4px">MC</span>
-      <span style="background:#00a0e9;color:#fff;font-size:.68rem;font-weight:700;padding:3px 7px;border-radius:4px">支付宝</span>
-      <span style="background:#7bb32e;color:#fff;font-size:.68rem;font-weight:700;padding:3px 7px;border-radius:4px">微信</span>
+      <span style="background:#00a0e9;color:#fff;font-size:.62rem;font-weight:700;padding:3px 7px;border-radius:4px;opacity:0.5" title="审核中，即将上线">支付宝 (即将上线)</span>
+      <span style="background:#7bb32e;color:#fff;font-size:.62rem;font-weight:700;padding:3px 7px;border-radius:4px;opacity:0.5" title="审核中，即将上线">微信 (即将上线)</span>
       <span style="background:#003087;color:#fff;font-size:.68rem;font-weight:700;padding:3px 7px;border-radius:4px">PayPal</span>
     </div>
     <button class="btn-checkout" id="btnCheckout">
       <span data-i18n="sh.btn.checkout">去支付</span> <span style="font-size:1.1em">→</span>
     </button>
-    <p class="cart-note" data-i18n="sh.cart.note">🔒 通过 Stripe 安全加密支付 · 支持信用卡、支付宝、微信支付</p>
+    <p class="cart-note" data-i18n="sh.cart.note">🔒 通过 Stripe 安全加密支付 · 支持信用卡、GrabPay（支付宝、微信即将上线）</p>
   </div>
 </div>
 
@@ -242,7 +248,7 @@
   <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<script src="i18n.js"></script>
+<script src="i18n.js?v=4"></script>
 <script src="script.js"></script>
 <script>
 document.getElementById('navbar').classList.add('scrolled');
@@ -557,11 +563,31 @@ function renderCartItems() {
     '</div>';
   }).join('');
 
-  document.getElementById('cartTotalAmount').textContent = '¥' + cartTotal().toLocaleString();
+  var total = cartTotal();
+  document.getElementById('cartTotalAmount').textContent = '¥' + total.toLocaleString();
 
   var saved = cartSaved();
   var savingsEl = document.getElementById('cartSavings');
   savingsEl.textContent = saved > 0 ? t('sh.cart.savings') + saved.toLocaleString() : '';
+
+  /* ===== Shipping info display ===== */
+  var FREE_THRESHOLD = 2000;
+  var STANDARD_FEE = 128;
+  var statusEl = document.getElementById('shippingStatus');
+  var hintEl = document.getElementById('shippingHint');
+  if (total >= FREE_THRESHOLD) {
+    statusEl.textContent = t('sh.ship.free', '🎉 包邮');
+    statusEl.style.color = '#2e7d32';
+    hintEl.textContent = t('sh.ship.freeNote', 'EMS标准配送免运费，加急另计');
+  } else if (total > 0) {
+    statusEl.textContent = '¥' + STANDARD_FEE;
+    statusEl.style.color = '#c2185b';
+    var remain = FREE_THRESHOLD - total;
+    hintEl.textContent = t('sh.ship.moreHint', '再加¥{n}享包邮').replace('{n}', Math.ceil(remain));
+  } else {
+    statusEl.textContent = '';
+    hintEl.textContent = '';
+  }
 }
 
 function openCart() {

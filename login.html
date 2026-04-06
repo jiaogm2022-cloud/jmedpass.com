@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-page="login">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,9 +19,17 @@
     <div class="login-logo">
       <a href="index.html" style="text-decoration:none;">
         <span class="logo-icon" style="font-size:2rem;">⚕</span>
-        <span class="login-logo-name">樱医集团</span>
-        <span class="login-logo-sub">SAKURA MEDICAL GROUP · 合伙人平台</span>
+        <span class="login-logo-name" data-i18n="login.brand">樱医集团</span>
+        <span class="login-logo-sub" data-i18n="login.brandSub">SAKURA MEDICAL GROUP · 合伙人平台</span>
       </a>
+    </div>
+
+    <div class="lang-switcher" style="justify-content:center;margin-bottom:16px;background:rgba(0,0,0,.06);">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ja">JP</button>
+      <button class="lang-btn" data-lang="vi">VI</button>
+      <button class="lang-btn" data-lang="ko">KR</button>
     </div>
 
     <!-- 推荐人提示 -->
@@ -29,51 +37,51 @@
 
     <!-- Tabs -->
     <div class="auth-tabs">
-      <div class="auth-tab" id="tabLogin" onclick="switchTab('login')">登录</div>
-      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">注册成为合伙人</div>
+      <div class="auth-tab" id="tabLogin" onclick="switchTab('login')" data-i18n="login.tabLogin">登录</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')" data-i18n="login.tabRegister">注册成为合伙人</div>
     </div>
 
     <!-- 登录表单 -->
     <form class="auth-form" id="loginForm">
       <div class="auth-field">
-        <label>手机号 / 邮箱</label>
-        <input type="text" id="loginPhone" placeholder="输入注册时使用的手机号或邮箱" autocomplete="username" />
+        <label data-i18n="login.phoneLabel">手机号 / 邮箱</label>
+        <input type="text" id="loginPhone" data-i18n-ph="login.phonePh" placeholder="输入注册时使用的手机号或邮箱" autocomplete="username" />
       </div>
       <div class="auth-field">
-        <label>密码</label>
-        <input type="password" id="loginPassword" placeholder="输入密码" autocomplete="current-password" />
+        <label data-i18n="login.pwdLabel">密码</label>
+        <input type="password" id="loginPassword" data-i18n-ph="login.pwdPh" placeholder="输入密码" autocomplete="current-password" />
       </div>
       <div class="auth-error" id="loginError"></div>
-      <button type="submit" class="auth-submit">登录</button>
+      <button type="submit" class="auth-submit" data-i18n="login.submitLogin">登录</button>
     </form>
 
     <!-- 注册表单 -->
     <form class="auth-form" id="registerForm">
       <div class="auth-field">
-        <label>昵称</label>
-        <input type="text" id="regNickname" placeholder="您的昵称（显示给客户）" maxlength="30" />
+        <label data-i18n="login.nickLabel">昵称</label>
+        <input type="text" id="regNickname" data-i18n-ph="login.nickPh" placeholder="您的昵称（显示给客户）" maxlength="30" />
       </div>
       <div class="auth-field">
-        <label>手机号 / WhatsApp</label>
-        <input type="tel" id="regPhone" placeholder="如 +65 8888 8888" />
+        <label data-i18n="login.regPhoneLabel">手机号 / WhatsApp</label>
+        <input type="tel" id="regPhone" data-i18n-ph="login.regPhonePh" placeholder="如 +65 8888 8888" />
       </div>
       <div class="auth-field">
-        <label>邮箱（选填）</label>
-        <input type="email" id="regEmail" placeholder="your@email.com" />
+        <label data-i18n="login.emailLabel">邮箱（选填）</label>
+        <input type="email" id="regEmail" data-i18n-ph="login.emailPh" placeholder="your@email.com" />
       </div>
       <div class="auth-field">
-        <label>设置密码</label>
-        <input type="password" id="regPassword" placeholder="至少6位" autocomplete="new-password" />
+        <label data-i18n="login.pwdLabel">设置密码</label>
+        <input type="password" id="regPassword" data-i18n-ph="login.pwdPh" placeholder="至少6位" autocomplete="new-password" />
       </div>
       <div class="auth-error" id="registerError"></div>
-      <button type="submit" class="auth-submit">注册，立即成为合伙人</button>
-      <p style="font-size:.8rem;color:var(--muted);margin-top:12px;text-align:center;">
+      <button type="submit" class="auth-submit" data-i18n="login.submitRegister">注册，立即成为合伙人</button>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:12px;text-align:center;" data-i18n="login.agreement">
         注册即代表您同意本平台合伙人协议，佣金仅为单级推荐，非多层次直销。
       </p>
     </form>
 
     <div class="auth-back">
-      <a href="partner.html">← 返回合伙人介绍页</a>
+      <a href="partner.html" data-i18n="login.back">← 返回合伙人介绍页</a>
     </div>
 
   </div>
@@ -81,8 +89,17 @@
 
 <div class="partner-toast" id="toast"></div>
 
+<script src="i18n.js?v=4"></script>
 <script src="partner.js"></script>
 <script>
+// ===== Translation helper =====
+function t(key, fallback) {
+  if (typeof I18N !== 'undefined' && typeof _currentLang !== 'undefined' && I18N[_currentLang] && I18N[_currentLang][key]) {
+    return I18N[_currentLang][key];
+  }
+  return fallback;
+}
+
 // ===== Read URL params =====
 const params = new URLSearchParams(location.search);
 const refCode = params.get('ref');
@@ -94,7 +111,8 @@ if (refCode) {
   const referrer = users.find(u => u.referralCode === refCode);
   if (referrer) {
     const notice = document.getElementById('refNotice');
-    notice.textContent = `您的朋友 ${referrer.nickname} 邀请您体验日本顶级医疗服务`;
+    const msg = t('login.msg.invited', '您的朋友 {name} 邀请您体验日本顶级医疗服务').replace('{name}', referrer.nickname);
+    notice.textContent = msg;
     notice.classList.add('show');
   }
 }
@@ -120,17 +138,17 @@ async function doLogin(e) {
   const password = document.getElementById('loginPassword').value;
   const errEl = document.getElementById('loginError');
 
-  if (!phone || !password) { showAuthError(errEl, '请填写所有必填项'); return; }
+  if (!phone || !password) { showAuthError(errEl, t('login.err.required', '请填写所有必填项')); return; }
 
   const hashed = await hashPassword(password);
   const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
   const user = users.find(u => (u.phone === phone || u.email === phone) && u.password === hashed);
 
-  if (!user) { showAuthError(errEl, '账号或密码错误，请检查后重试'); return; }
-  if (user.status === 'frozen') { showAuthError(errEl, '该账号已被冻结，请联系客服'); return; }
+  if (!user) { showAuthError(errEl, t('login.err.wrongPwd', '账号或密码错误，请检查后重试')); return; }
+  if (user.status === 'frozen') { showAuthError(errEl, t('login.err.frozen', '该账号已被冻结，请联系客服')); return; }
 
   localStorage.setItem('sm_current_user', user.id);
-  showToastMsg('登录成功，正在跳转…', 'success');
+  showToastMsg(t('login.msg.loginOk', '登录成功，正在跳转…'), 'success');
   setTimeout(() => { window.location.href = 'my.html'; }, 800);
 }
 
@@ -142,13 +160,13 @@ async function doRegister(e) {
   const password = document.getElementById('regPassword').value;
   const errEl = document.getElementById('registerError');
 
-  if (!nickname) { showAuthError(errEl, '请填写昵称'); return; }
-  if (!phone) { showAuthError(errEl, '请填写手机号'); return; }
-  if (password.length < 6) { showAuthError(errEl, '密码至少需要6位'); return; }
+  if (!nickname) { showAuthError(errEl, t('login.err.nickRequired', '请填写昵称')); return; }
+  if (!phone) { showAuthError(errEl, t('login.err.phoneRequired', '请填写手机号')); return; }
+  if (password.length < 6) { showAuthError(errEl, t('login.err.pwdShort', '密码至少需要6位')); return; }
 
   const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
-  if (users.find(u => u.phone === phone)) { showAuthError(errEl, '该手机号已注册，请直接登录'); return; }
-  if (email && users.find(u => u.email === email)) { showAuthError(errEl, '该邮箱已注册，请直接登录'); return; }
+  if (users.find(u => u.phone === phone)) { showAuthError(errEl, t('login.err.phoneTaken', '该手机号已注册，请直接登录')); return; }
+  if (email && users.find(u => u.email === email)) { showAuthError(errEl, t('login.err.emailTaken', '该邮箱已注册，请直接登录')); return; }
 
   const hashed = await hashPassword(password);
 
@@ -185,7 +203,7 @@ async function doRegister(e) {
   localStorage.setItem('sm_current_user', newUser.id);
   localStorage.removeItem('sm_pending_ref');
 
-  showToastMsg('注册成功！欢迎成为樱医合伙人', 'success');
+  showToastMsg(t('login.msg.registerOk', '注册成功！欢迎成为樱医合伙人'), 'success');
   setTimeout(() => { window.location.href = 'my.html?new=1'; }, 1000);
 }
 

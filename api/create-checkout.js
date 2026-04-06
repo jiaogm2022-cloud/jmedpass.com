@@ -1,7 +1,7 @@
-/* ===== Sakura Medical · Stripe Checkout Session Creator =====
-   Environment variable required in Netlify dashboard:
+/* ===== Sakura Medical · Stripe Checkout Session Creator (Vercel) =====
+   Environment variable required in Vercel dashboard:
    STRIPE_SECRET_KEY = sk_test_... (or sk_live_... for production)
-   ============================================================ */
+   ===================================================================== */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -9,7 +9,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 // Stripe account default currency is SGD (Singapore Dollar)
 const CNY_TO_SGD = 0.1838;
 
-// Allowed redirect origins — never trust client-supplied origin
+// Allowed redirect origins
 const ALLOWED_ORIGINS = new Set([
   'https://jmedpass.com',
   'https://www.jmedpass.com',
@@ -18,7 +18,7 @@ const ALLOWED_ORIGINS = new Set([
 // Input limits
 const MAX_ITEMS = 20;
 const MAX_NAME_LEN = 200;
-const MAX_PRICE_CNY = 100000; // ¥100,000 per item
+const MAX_PRICE_CNY = 100000;
 const MAX_QTY = 99;
 
 /* ===== Shipping rate configuration =====
@@ -27,37 +27,41 @@ const MAX_QTY = 99;
    Zone 2 (VN/TH/SG):  ~500g ¥2,200 JPY  ~1kg ¥3,000 JPY
    Blended average for health supplements (~0.5–1kg): ~¥130 CNY
    ======================================= */
-const FREE_SHIPPING_THRESHOLD_CNY = 2000; // 满¥2000包邮
-const STANDARD_SHIPPING_CNY = 128;        // 标准EMS ≈ ¥128 CNY
-const EXPRESS_SHIPPING_CNY  = 258;        // 加急EMS ≈ ¥258 CNY
+const FREE_SHIPPING_THRESHOLD_CNY = 2000;
+const STANDARD_SHIPPING_CNY = 128;
+const EXPRESS_SHIPPING_CNY  = 258;
 
-exports.handler = async (event) => {
+module.exports = async function handler(req, res) {
+  // CORS headers
+  const origin = req.headers.origin || '';
+  const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : 'https://jmedpass.com';
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Content-Type', 'application/json');
+
   // Handle CORS preflight
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers: corsHeaders(event),
-      body: '',
-    };
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   try {
-    const body = JSON.parse(event.body);
-    const { items } = body;
+    const { items } = req.body;
 
     if (!items || items.length === 0) {
-      return respond(400, { error: '购物车为空' }, event);
+      return res.status(400).json({ error: '购物车为空' });
     }
     if (items.length > MAX_ITEMS) {
-      return respond(400, { error: '商品数量超出限制' }, event);
+      return res.status(400).json({ error: '商品数量超出限制' });
     }
 
     // Calculate subtotal in CNY for shipping threshold logic
-    let subtotalCNY = 0;
+    var subtotalCNY = 0;
 
     // Build Stripe line items (convert CNY → USD → cents)
     const lineItems = items.map(function (item) {
@@ -68,7 +72,7 @@ exports.handler = async (event) => {
       const name = String(item.name || '').slice(0, MAX_NAME_LEN);
       const brand = String(item.brand || '').slice(0, 100);
       const spec  = String(item.spec  || '').slice(0, 100);
-      const sgdPrice = Math.round(price * CNY_TO_SGD * 100); // cents
+      const sgdPrice = Math.round(price * CNY_TO_SGD * 100);
 
       subtotalCNY += price * qty;
 
@@ -94,7 +98,6 @@ exports.handler = async (event) => {
     var shippingOptions = [];
 
     if (isFreeShipping) {
-      // 满额包邮: free standard + discounted express
       shippingOptions = [
         {
           shipping_rate_data: {
@@ -120,7 +123,6 @@ exports.handler = async (event) => {
         },
       ];
     } else {
-      // 未达包邮门槛: standard + express both paid
       var remainForFree = FREE_SHIPPING_THRESHOLD_CNY - subtotalCNY;
       shippingOptions = [
         {
@@ -148,8 +150,9 @@ exports.handler = async (event) => {
       ];
     }
 
-    // Use server-side origin only — never trust client-supplied value
-    const baseUrl = process.env.URL || 'https://jmedpass.com';
+    const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL
+      : 'https://jmedpass.com';
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -157,15 +160,14 @@ exports.handler = async (event) => {
       line_items: lineItems,
       locale: 'zh',
 
-      // Collect shipping address
       shipping_address_collection: {
         allowed_countries: [
-          'CN', 'HK', 'TW',       // 大中华区
-          'JP',                     // 日本本土
-          'KR',                     // 韩国
-          'VN',                     // 越南
-          'SG', 'MY', 'TH', 'PH',  // 东南亚
-          'AU', 'US', 'GB', 'CA',   // 欧美澳
+          'CN', 'HK', 'TW',
+          'JP',
+          'KR',
+          'VN',
+          'SG', 'MY', 'TH', 'PH',
+          'AU', 'US', 'GB', 'CA',
         ],
       },
       shipping_options: shippingOptions,
@@ -173,14 +175,12 @@ exports.handler = async (event) => {
       phone_number_collection: { enabled: true },
       billing_address_collection: 'required',
 
-      // Custom UI text shown at Stripe checkout
       custom_text: {
         submit: {
           message: '樱医集团承诺正品直采，日本GMP认证工厂，EMS国际快递安全配送',
         },
       },
 
-      // Pass cart summary as metadata for order reference
       metadata: {
         items_count: String(items.length),
         subtotal_cny: String(subtotalCNY),
@@ -192,7 +192,7 @@ exports.handler = async (event) => {
       cancel_url:  baseUrl + '/shenghuo.html?cancelled=1',
     });
 
-    return respond(200, {
+    return res.status(200).json({
       url: session.url,
       session_id: session.id,
       shipping_info: {
@@ -200,30 +200,10 @@ exports.handler = async (event) => {
         free_shipping: isFreeShipping,
         threshold: FREE_SHIPPING_THRESHOLD_CNY,
       },
-    }, event);
+    });
 
   } catch (err) {
     console.error('Stripe error:', err.message);
-    return respond(500, { error: err.message }, event);
+    return res.status(500).json({ error: err.message });
   }
 };
-
-function respond(status, body, event) {
-  return {
-    statusCode: status,
-    headers: corsHeaders(event),
-    body: JSON.stringify(body),
-  };
-}
-
-function corsHeaders(event) {
-  const reqOrigin = (event && event.headers && event.headers.origin) || '';
-  const allowedOrigin = ALLOWED_ORIGINS.has(reqOrigin) ? reqOrigin : 'https://jmedpass.com';
-  return {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Vary': 'Origin',
-  };
-}
