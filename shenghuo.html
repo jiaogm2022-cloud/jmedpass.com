@@ -626,6 +626,7 @@ function checkout() {
     body: JSON.stringify({
       items: items,
       origin: window.location.origin,
+      lang: typeof getLang === 'function' ? getLang() : 'zh',
     }),
   })
   .then(function(res) {

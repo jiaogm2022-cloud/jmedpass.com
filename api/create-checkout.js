@@ -51,7 +51,11 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { items } = req.body;
+    const { items, lang } = req.body;
+
+    // Map site language to Stripe locale
+    const LOCALE_MAP = { zh: 'zh', en: 'en', ja: 'ja', vi: 'vi', ko: 'ko' };
+    const stripeLocale = LOCALE_MAP[lang] || 'auto';
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: '购物车为空' });
@@ -161,7 +165,7 @@ module.exports = async function handler(req, res) {
         wechat_pay: { client: 'web' },
       },
       line_items: lineItems,
-      locale: 'zh',
+      locale: stripeLocale,
 
       shipping_address_collection: {
         allowed_countries: [

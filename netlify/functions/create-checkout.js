@@ -47,7 +47,11 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { items } = body;
+    const { items, lang } = body;
+
+    // Map site language to Stripe locale
+    const LOCALE_MAP = { zh: 'zh', en: 'en', ja: 'ja', vi: 'vi', ko: 'ko' };
+    const stripeLocale = LOCALE_MAP[lang] || 'auto';
 
     if (!items || items.length === 0) {
       return respond(400, { error: '購物車為空' }, event);
@@ -156,7 +160,7 @@ exports.handler = async (event) => {
         wechat_pay: { client: 'web' },
       },
       line_items: lineItems,
-      locale: 'zh',
+      locale: stripeLocale,
 
       // Collect shipping address
       shipping_address_collection: {
