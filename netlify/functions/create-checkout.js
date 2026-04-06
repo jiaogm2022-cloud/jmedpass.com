@@ -205,7 +205,7 @@ exports.handler = async (event) => {
       // Collect shipping address
       shipping_address_collection: {
         allowed_countries: [
-          /* 东亚 */ 'CN', 'HK', 'TW', 'MO', 'JP', 'KR', 'MN',
+          /* 东亚 */ 'CN', 'HK', 'MO', 'JP', 'KR', 'MN',
           /* 东南亚 */ 'VN', 'SG', 'MY', 'TH', 'PH', 'ID', 'MM', 'KH', 'LA', 'BN', 'TL',
           /* 南亚 */ 'IN', 'BD', 'LK', 'NP', 'PK',
           /* 中西亚 */ 'KZ', 'UZ', 'AE', 'SA', 'QA', 'BH', 'KW', 'OM', 'JO', 'IL', 'TR',
