@@ -5,6 +5,16 @@ if (localStorage.getItem('sm_admin_auth') !== 'yes') {
   window.location.href = 'index.html';
 }
 
+/* ===== XSS ESCAPE HELPER ===== */
+function escHtml(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /* ===== STORAGE HELPERS ===== */
 const DB_KEY = 'sm_inquiries';
 
@@ -67,13 +77,21 @@ function showPage(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const navEl = document.querySelector(`.nav-item[data-page="${name}"]`);
   if (navEl) navEl.classList.add('active');
-  const titles = { overview:'数据总览', inquiries:'询盘管理', products:'商品管理', consultations:'线上问诊' };
+  const titles = {
+    overview:'数据总览', inquiries:'询盘管理', products:'商品管理', consultations:'线上问诊',
+    'partner-users':'合伙人用户', 'partner-commissions':'佣金管理',
+    'partner-withdrawals':'提现审核', 'partner-rules':'佣金规则'
+  };
   document.getElementById('pageTitle').textContent = titles[name] || '';
   currentPage = name;
   if (name === 'overview') renderOverview();
   if (name === 'inquiries') renderInquiries();
   if (name === 'products') renderProducts();
   if (name === 'consultations') renderConsultations();
+  if (name === 'partner-users') renderAdminPartnerUsers();
+  if (name === 'partner-commissions') renderAdminCommissions();
+  if (name === 'partner-withdrawals') renderAdminWithdrawals();
+  if (name === 'partner-rules') renderAdminRules();
 }
 
 document.querySelectorAll('[data-page]').forEach(el => {
@@ -135,6 +153,23 @@ function renderOverview() {
   });
   if (!regEntries.length) rbEl.innerHTML = '<div class="no-data">暂无数据</div>';
 
+  // Partner stats
+  const allUsers = JSON.parse(localStorage.getItem('sm_users') || '[]');
+  const allWds = JSON.parse(localStorage.getItem('sm_withdrawals') || '[]');
+  const allComms = JSON.parse(localStorage.getItem('sm_commissions') || '[]');
+  const activePartners = allUsers.filter(u => u.status !== 'frozen').length;
+  const pendingWd = allWds.filter(w => w.status === 'pending').length;
+  const pendingComm = allComms.filter(c => c.status === 'pending').length;
+  const settledComm = allComms.filter(c => c.status === 'settled').reduce((s,c) => s + (c.commissionAmt || 0), 0);
+  const spEl = document.getElementById('statPartners');
+  const pwEl = document.getElementById('statPendingWd');
+  const pcEl = document.getElementById('statPendingComm');
+  const scEl = document.getElementById('statSettledComm');
+  if (spEl) spEl.textContent = activePartners;
+  if (pwEl) pwEl.textContent = pendingWd;
+  if (pcEl) pcEl.textContent = pendingComm;
+  if (scEl) scEl.textContent = '$' + settledComm.toFixed(2);
+
   // Recent 5
   const recent5 = [...all].sort((a,b)=>b.time-a.time).slice(0,5);
   const rlEl = document.getElementById('recentList');
@@ -143,11 +178,11 @@ function renderOverview() {
     return;
   }
   rlEl.innerHTML = recent5.map(i => `
-    <div class="recent-row" data-id="${i.id}">
-      <div class="rr-avatar">${i.name.slice(0,1)}</div>
+    <div class="recent-row" data-id="${escHtml(i.id)}">
+      <div class="rr-avatar">${escHtml(i.name.slice(0,1))}</div>
       <div class="rr-info">
-        <div class="rr-name">${i.name} <span class="status-badge status-${i.status}">${statusLabel(i.status)}</span></div>
-        <div class="rr-meta">${i.region} · ${(i.services||[]).join('、')}${i.message ? ' · '+i.message : ''}</div>
+        <div class="rr-name">${escHtml(i.name)} <span class="status-badge status-${escHtml(i.status)}">${statusLabel(i.status)}</span></div>
+        <div class="rr-meta">${escHtml(i.region)} · ${escHtml((i.services||[]).join('、'))}${i.message ? ' · '+escHtml(i.message) : ''}</div>
       </div>
       <div class="rr-time">${timeAgo(i.time)}</div>
     </div>
@@ -189,15 +224,15 @@ function renderInquiries() {
   } else {
     tbody.innerHTML = slice.map(i => `
       <tr>
-        <td><input type="checkbox" class="row-check" data-id="${i.id}" /></td>
-        <td class="td-name">${i.name}</td>
-        <td>${i.phone || '—'}</td>
-        <td>${i.region || '—'}</td>
-        <td><div class="td-services">${(i.services||[]).map(s=>`<span class="td-service-tag">${s}</span>`).join('')}</div></td>
-        <td><div class="td-msg" title="${i.message||''}">${i.message || '—'}</div></td>
+        <td><input type="checkbox" class="row-check" data-id="${escHtml(i.id)}" /></td>
+        <td class="td-name">${escHtml(i.name)}</td>
+        <td>${escHtml(i.phone) || '—'}</td>
+        <td>${escHtml(i.region) || '—'}</td>
+        <td><div class="td-services">${(i.services||[]).map(s=>`<span class="td-service-tag">${escHtml(s)}</span>`).join('')}</div></td>
+        <td><div class="td-msg" title="${escHtml(i.message||'')}">${escHtml(i.message) || '—'}</div></td>
         <td style="white-space:nowrap;font-size:.78rem;color:var(--mid)">${formatTime(i.time)}</td>
-        <td><span class="status-badge status-${i.status}">${statusLabel(i.status)}</span></td>
-        <td><button class="btn-detail" data-id="${i.id}">查看</button></td>
+        <td><span class="status-badge status-${escHtml(i.status)}">${statusLabel(i.status)}</span></td>
+        <td><button class="btn-detail" data-id="${escHtml(i.id)}">查看</button></td>
       </tr>
     `).join('');
     tbody.querySelectorAll('.btn-detail').forEach(btn => {
@@ -270,11 +305,11 @@ function openModal(id) {
   currentInqId = id;
 
   document.getElementById('modalBody').innerHTML = `
-    <div class="modal-field"><label>姓名</label><div class="field-val">${inq.name}</div></div>
-    <div class="modal-field"><label>联系电话 / WhatsApp / 微信</label><div class="field-val">${inq.phone||'未填写'}</div></div>
-    <div class="modal-field"><label>所在地区</label><div class="field-val">${inq.region||'未填写'}</div></div>
-    <div class="modal-field"><label>感兴趣服务</label><div class="field-val">${(inq.services||[]).join('、')||'未选择'}</div></div>
-    <div class="modal-field"><label>留言</label><div class="field-val">${inq.message||'（无留言）'}</div></div>
+    <div class="modal-field"><label>姓名</label><div class="field-val">${escHtml(inq.name)}</div></div>
+    <div class="modal-field"><label>联系电话 / WhatsApp / 微信</label><div class="field-val">${escHtml(inq.phone||'未填写')}</div></div>
+    <div class="modal-field"><label>所在地区</label><div class="field-val">${escHtml(inq.region||'未填写')}</div></div>
+    <div class="modal-field"><label>感兴趣服务</label><div class="field-val">${escHtml((inq.services||[]).join('、')||'未选择')}</div></div>
+    <div class="modal-field"><label>留言</label><div class="field-val">${escHtml(inq.message||'（无留言）')}</div></div>
     <div class="modal-field"><label>提交时间</label><div class="field-val">${formatTime(inq.time)}</div></div>
   `;
   document.getElementById('modalStatus').value = inq.status || 'new';
@@ -670,15 +705,15 @@ function renderConsultations() {
   } else {
     tbody.innerHTML = slice.map(c => `
       <tr>
-        <td class="td-name">${c.name}</td>
-        <td>${c.phone || '—'}</td>
-        <td>${c.region || '—'}</td>
-        <td><span class="td-service-tag">${c.dept || '—'}</span></td>
-        <td>${c.preferred || '—'}</td>
-        <td><div class="td-msg" title="${c.symptoms||''}">${c.symptoms || '—'}</div></td>
+        <td class="td-name">${escHtml(c.name)}</td>
+        <td>${escHtml(c.phone) || '—'}</td>
+        <td>${escHtml(c.region) || '—'}</td>
+        <td><span class="td-service-tag">${escHtml(c.dept) || '—'}</span></td>
+        <td>${escHtml(c.preferred) || '—'}</td>
+        <td><div class="td-msg" title="${escHtml(c.symptoms||'')}">${escHtml(c.symptoms) || '—'}</div></td>
         <td style="white-space:nowrap;font-size:.78rem;color:var(--mid)">${formatTime(c.time)}</td>
-        <td><span class="status-badge status-${c.status}">${statusLabel(c.status)}</span></td>
-        <td><button class="btn-detail" data-cid="${c.id}">查看</button></td>
+        <td><span class="status-badge status-${escHtml(c.status)}">${statusLabel(c.status)}</span></td>
+        <td><button class="btn-detail" data-cid="${escHtml(c.id)}">查看</button></td>
       </tr>
     `).join('');
     tbody.querySelectorAll('[data-cid]').forEach(btn => {
@@ -729,12 +764,12 @@ function openConModal(id) {
   if (!c) return;
   currentConId = id;
   document.getElementById('conModalBody').innerHTML = `
-    <div class="modal-field"><label>姓名</label><div class="field-val">${c.name}</div></div>
-    <div class="modal-field"><label>联系方式</label><div class="field-val">${c.phone || '未填写'}</div></div>
-    <div class="modal-field"><label>所在地区</label><div class="field-val">${c.region || '未填写'}</div></div>
-    <div class="modal-field"><label>问诊科室</label><div class="field-val">${c.dept || '未选择'}</div></div>
-    <div class="modal-field"><label>希望问诊时间</label><div class="field-val">${c.preferred || '不限'}</div></div>
-    <div class="modal-field"><label>症状描述</label><div class="field-val">${c.symptoms || '（无描述）'}</div></div>
+    <div class="modal-field"><label>姓名</label><div class="field-val">${escHtml(c.name)}</div></div>
+    <div class="modal-field"><label>联系方式</label><div class="field-val">${escHtml(c.phone || '未填写')}</div></div>
+    <div class="modal-field"><label>所在地区</label><div class="field-val">${escHtml(c.region || '未填写')}</div></div>
+    <div class="modal-field"><label>问诊科室</label><div class="field-val">${escHtml(c.dept || '未选择')}</div></div>
+    <div class="modal-field"><label>希望问诊时间</label><div class="field-val">${escHtml(c.preferred || '不限')}</div></div>
+    <div class="modal-field"><label>症状描述</label><div class="field-val">${escHtml(c.symptoms || '（无描述）')}</div></div>
     <div class="modal-field"><label>提交时间</label><div class="field-val">${formatTime(c.time)}</div></div>
   `;
   document.getElementById('conModalStatus').value = c.status || 'new';
@@ -779,4 +814,330 @@ document.getElementById('deleteConBtn').addEventListener('click', () => {
   const newCons = cons.filter(c => c.status === 'new').length;
   const badge = document.getElementById('consultBadge');
   if (badge) badge.textContent = newCons;
+})();
+
+/* ===== PARTNER SYSTEM ADMIN ===== */
+
+function getPartnerUsers() {
+  try { return JSON.parse(localStorage.getItem('sm_users') || '[]'); } catch { return []; }
+}
+function getPartnerCommissions() {
+  try { return JSON.parse(localStorage.getItem('sm_commissions') || '[]'); } catch { return []; }
+}
+function getPartnerWithdrawals() {
+  try { return JSON.parse(localStorage.getItem('sm_withdrawals') || '[]'); } catch { return []; }
+}
+function getPartnerRules() {
+  try { return JSON.parse(localStorage.getItem('sm_commission_rules') || '[]'); } catch { return []; }
+}
+function savePartnerRules(rules) {
+  localStorage.setItem('sm_commission_rules', JSON.stringify(rules));
+}
+function savePartnerWithdrawals(list) {
+  localStorage.setItem('sm_withdrawals', JSON.stringify(list));
+}
+function savePartnerCommissions(list) {
+  localStorage.setItem('sm_commissions', JSON.stringify(list));
+}
+function savePartnerUsers(list) {
+  localStorage.setItem('sm_users', JSON.stringify(list));
+}
+
+function fmtPartnerDate(iso) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleDateString('zh-CN', { year:'numeric', month:'2-digit', day:'2-digit' });
+}
+function fmtPartnerAmt(n) {
+  return '$' + parseFloat(n || 0).toFixed(2);
+}
+
+function partnerStatusBadge(s) {
+  const map = {
+    settled:'已到账', pending:'待结算', cancelled:'已取消',
+    processing:'处理中', completed:'已完成', rejected:'已驳回',
+    active:'正常', frozen:'已冻结'
+  };
+  const colors = {
+    settled:'#dcfce7;color:#166534', pending:'#fef9c3;color:#854d0e',
+    cancelled:'#fee2e2;color:#991b1b', processing:'#dbeafe;color:#1e40af',
+    completed:'#dcfce7;color:#166534', rejected:'#fee2e2;color:#991b1b',
+    active:'#dcfce7;color:#166534', frozen:'#fee2e2;color:#991b1b'
+  };
+  const style = colors[s] ? `background:${colors[s]}` : '';
+  return `<span style="padding:3px 10px;border-radius:100px;font-size:.78rem;font-weight:500;${style}">${map[s]||s}</span>`;
+}
+
+/* --- Partner Users --- */
+let _partnerUsersAll = [];
+function renderAdminPartnerUsers() {
+  _partnerUsersAll = getPartnerUsers();
+  const comms = getPartnerCommissions();
+  const badge = document.getElementById('partnerUsersBadge');
+  if (badge) { badge.textContent = _partnerUsersAll.length; badge.style.display = _partnerUsersAll.length ? 'inline-flex' : 'none'; }
+  document.getElementById('partnerUsersCount').textContent = `共 ${_partnerUsersAll.length} 位合伙人`;
+  displayPartnerUsers(_partnerUsersAll, comms);
+}
+
+function displayPartnerUsers(users, comms) {
+  const allUsers = getPartnerUsers();
+  if (!comms) comms = getPartnerCommissions();
+  const tbody = document.getElementById('partnerUsersBody');
+  if (!tbody) return;
+  if (users.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#94a3b8;">暂无合伙人注册</td></tr>';
+    return;
+  }
+  tbody.innerHTML = users.map(u => {
+    const referrer = u.referredBy ? allUsers.find(r => r.id === u.referredBy) : null;
+    const myCustomers = allUsers.filter(c => c.referredBy === u.id).length;
+    const myComms = comms.filter(c => c.beneficiaryId === u.id && c.status === 'settled').reduce((s,c) => s + c.commissionAmt, 0);
+    return `<tr>
+      <td><strong>${escHtml(u.nickname || '-')}</strong></td>
+      <td style="font-size:.82rem;color:#64748b;">${escHtml(u.phone || '-')}</td>
+      <td><code style="background:#f1f5f9;padding:2px 8px;border-radius:4px;font-size:.8rem;">${escHtml(u.referralCode)}</code></td>
+      <td style="font-size:.85rem;">${referrer ? escHtml(referrer.nickname) : '—'}</td>
+      <td style="text-align:center;">${myCustomers}</td>
+      <td style="font-weight:600;color:#9b2335;">${fmtPartnerAmt(myComms)}</td>
+      <td style="font-size:.82rem;color:#64748b;">${fmtPartnerDate(u.createdAt)}</td>
+      <td>${partnerStatusBadge(u.status || 'active')}</td>
+      <td>
+        <button class="btn-outline-sm" onclick="toggleUserStatus('${escHtml(u.id)}')" style="font-size:.78rem;padding:4px 10px;">
+          ${u.status === 'frozen' ? '解冻' : '冻结'}
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterPartnerUsers() {
+  const q = document.getElementById('partnerUsersSearch').value.trim().toLowerCase();
+  if (!q) { displayPartnerUsers(_partnerUsersAll); return; }
+  const filtered = _partnerUsersAll.filter(u =>
+    (u.nickname||'').toLowerCase().includes(q) ||
+    (u.phone||'').includes(q) ||
+    (u.referralCode||'').toLowerCase().includes(q)
+  );
+  displayPartnerUsers(filtered);
+}
+
+function toggleUserStatus(userId) {
+  const users = getPartnerUsers();
+  const user = users.find(u => u.id === userId);
+  if (!user) return;
+  user.status = user.status === 'frozen' ? 'active' : 'frozen';
+  savePartnerUsers(users);
+  showToast(user.status === 'frozen' ? '用户已冻结' : '用户已解冻');
+  renderAdminPartnerUsers();
+}
+
+/* --- Commissions --- */
+function renderAdminCommissions() {
+  const filter = document.getElementById('commFilterStatus') ? document.getElementById('commFilterStatus').value : '';
+  const allComms = getPartnerCommissions();
+  const allUsers = getPartnerUsers();
+  const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
+  const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'线上问诊' };
+
+  const filtered = filter ? allComms.filter(c => c.status === filter) : allComms;
+  filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  const countEl = document.getElementById('commCount');
+  if (countEl) countEl.textContent = `共 ${filtered.length} 条`;
+
+  const badge = document.getElementById('commBadge');
+  const pendingCount = allComms.filter(c => c.status === 'pending').length;
+  if (badge) { badge.textContent = pendingCount; badge.style.display = pendingCount ? 'inline-flex' : 'none'; }
+
+  const tbody = document.getElementById('adminCommBody');
+  if (!tbody) return;
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:#94a3b8;">暂无佣金记录</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(c => {
+    const beneficiary = allUsers.find(u => u.id === c.beneficiaryId) || {};
+    const customer = allUsers.find(u => u.id === c.customerId) || {};
+    const order = orders.find(o => o.id === c.orderId) || {};
+    return `<tr>
+      <td style="font-size:.82rem;color:#64748b;">${fmtPartnerDate(c.createdAt)}</td>
+      <td>${escHtml(beneficiary.nickname || '-')}</td>
+      <td style="font-size:.85rem;color:#64748b;">${escHtml((customer.nickname||'-').charAt(0))}**</td>
+      <td style="font-size:.85rem;">${escHtml(categoryMap[order.category] || order.category || '-')}</td>
+      <td style="font-weight:600;">${fmtPartnerAmt(c.orderAmount)}</td>
+      <td style="font-weight:600;color:#9b2335;">${fmtPartnerAmt(c.commissionAmt)}</td>
+      <td style="font-size:.82rem;color:#64748b;">${(c.commissionRate * 100).toFixed(0)}%</td>
+      <td style="font-size:.82rem;color:#64748b;">${fmtPartnerDate(c.settledAt || c.settleAt)}</td>
+      <td>${partnerStatusBadge(c.status)}</td>
+      <td>
+        ${c.status === 'pending' ? `<button class="btn-primary-sm" onclick="settleCommission('${escHtml(c.id)}')" style="font-size:.78rem;padding:4px 10px;">手动结算</button>` : ''}
+        ${c.status === 'pending' ? `<button class="btn-danger-sm" onclick="cancelCommission('${escHtml(c.id)}')" style="font-size:.78rem;padding:4px 10px;margin-left:4px;">取消</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function settleCommission(commId) {
+  const comms = getPartnerCommissions();
+  const c = comms.find(x => x.id === commId);
+  if (!c) return;
+  c.status = 'settled';
+  c.settledAt = new Date().toISOString();
+  savePartnerCommissions(comms);
+  showToast('佣金已手动结算');
+  renderAdminCommissions();
+}
+
+function cancelCommission(commId) {
+  if (!confirm('确定要取消这笔佣金吗？')) return;
+  const comms = getPartnerCommissions();
+  const c = comms.find(x => x.id === commId);
+  if (!c) return;
+  c.status = 'cancelled';
+  savePartnerCommissions(comms);
+  showToast('佣金已取消');
+  renderAdminCommissions();
+}
+
+/* --- Withdrawals --- */
+function renderAdminWithdrawals() {
+  const filter = document.getElementById('wdFilterStatus') ? document.getElementById('wdFilterStatus').value : 'pending';
+  const allWds = getPartnerWithdrawals();
+  const allUsers = getPartnerUsers();
+  const methodMap = { bank_transfer:'银行转账', paynow:'PayNow', alipay:'支付宝', wechat_pay:'微信支付' };
+
+  const filtered = filter ? allWds.filter(w => w.status === filter) : allWds;
+  filtered.sort((a,b) => new Date(b.requestedAt) - new Date(a.requestedAt));
+
+  const pendingCount = allWds.filter(w => w.status === 'pending').length;
+  const badge = document.getElementById('withdrawBadge');
+  if (badge) badge.textContent = pendingCount;
+
+  const countEl = document.getElementById('wdCount');
+  if (countEl) countEl.textContent = `共 ${filtered.length} 条`;
+
+  const tbody = document.getElementById('adminWdBody');
+  if (!tbody) return;
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#94a3b8;">暂无提现申请</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(w => {
+    const user = allUsers.find(u => u.id === w.userId) || {};
+    return `<tr>
+      <td style="font-size:.82rem;color:#64748b;">${fmtPartnerDate(w.requestedAt)}</td>
+      <td>${escHtml(user.nickname || '-')}<br /><span style="font-size:.78rem;color:#94a3b8;">${escHtml(user.phone||'')}</span></td>
+      <td style="font-weight:700;color:#9b2335;">${fmtPartnerAmt(w.amount)}</td>
+      <td style="font-size:.85rem;">${escHtml(methodMap[w.method] || w.method)}</td>
+      <td style="font-size:.82rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;">${escHtml(w.accountInfo || '-')}</td>
+      <td>${partnerStatusBadge(w.status)}</td>
+      <td style="font-size:.82rem;color:#64748b;max-width:120px;">${escHtml(w.adminNote || '—')}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap;">
+        ${w.status === 'pending' ? `<button class="btn-primary-sm" onclick="updateWithdrawal('${escHtml(w.id)}','processing')" style="font-size:.78rem;padding:4px 10px;">通过</button>` : ''}
+        ${w.status === 'processing' ? `<button class="btn-primary-sm" onclick="updateWithdrawal('${escHtml(w.id)}','completed')" style="font-size:.78rem;padding:4px 10px;">已打款</button>` : ''}
+        ${(w.status === 'pending' || w.status === 'processing') ? `<button class="btn-danger-sm" onclick="rejectWithdrawal('${escHtml(w.id)}')" style="font-size:.78rem;padding:4px 10px;">驳回</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function updateWithdrawal(wdId, newStatus) {
+  const wds = getPartnerWithdrawals();
+  const w = wds.find(x => x.id === wdId);
+  if (!w) return;
+  w.status = newStatus;
+  w.processedAt = new Date().toISOString();
+  savePartnerWithdrawals(wds);
+  const msg = newStatus === 'processing' ? '提现已审核通过' : '提现已标记为完成';
+  showToast(msg);
+  renderAdminWithdrawals();
+}
+
+let _rejectingWdId = null;
+function rejectWithdrawal(wdId) {
+  _rejectingWdId = wdId;
+  document.getElementById('rejectWdReason').value = '';
+  document.getElementById('rejectWdModal').style.display = 'flex';
+}
+document.getElementById('confirmRejectWdBtn').addEventListener('click', () => {
+  if (!_rejectingWdId) return;
+  const reason = document.getElementById('rejectWdReason').value.trim();
+  const wds = getPartnerWithdrawals();
+  const w = wds.find(x => x.id === _rejectingWdId);
+  if (!w) return;
+  w.status = 'rejected';
+  w.adminNote = reason || '未填写原因';
+  w.processedAt = new Date().toISOString();
+  savePartnerWithdrawals(wds);
+  document.getElementById('rejectWdModal').style.display = 'none';
+  _rejectingWdId = null;
+  showToast('提现已驳回');
+  renderAdminWithdrawals();
+});
+document.getElementById('rejectWdModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('rejectWdModal')) {
+    document.getElementById('rejectWdModal').style.display = 'none';
+  }
+});
+
+/* --- Commission Rules --- */
+function renderAdminRules() {
+  const rules = getPartnerRules();
+  const tbody = document.getElementById('adminRulesBody');
+  if (!tbody) return;
+  if (rules.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:#94a3b8;">暂无规则</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rules.map(r => `<tr>
+    <td><strong>${r.name}</strong></td>
+    <td style="font-weight:600;color:#9b2335;">${(r.commissionRate * 100).toFixed(1)}%</td>
+    <td style="color:#64748b;">${r.cashbackRate > 0 ? (r.cashbackRate * 100).toFixed(1) + '%' : '—'}</td>
+    <td>${r.isActive ?
+      '<span style="padding:3px 10px;border-radius:100px;font-size:.78rem;font-weight:500;background:#dcfce7;color:#166534;">启用</span>' :
+      '<span style="padding:3px 10px;border-radius:100px;font-size:.78rem;font-weight:500;background:#fee2e2;color:#991b1b;">停用</span>'}</td>
+    <td><button class="btn-outline-sm" onclick="openRuleEdit('${r.id}')" style="font-size:.78rem;padding:4px 10px;">修改</button></td>
+  </tr>`).join('');
+}
+
+function openRuleEdit(ruleId) {
+  const rules = getPartnerRules();
+  const r = rules.find(x => x.id === ruleId);
+  if (!r) return;
+  document.getElementById('ruleEditId').value = r.id;
+  document.getElementById('ruleEditName').value = r.name;
+  document.getElementById('ruleEditRate').value = (r.commissionRate * 100).toFixed(1);
+  document.getElementById('ruleEditCashback').value = (r.cashbackRate * 100).toFixed(1);
+  document.getElementById('ruleEditActive').value = r.isActive ? '1' : '0';
+  document.getElementById('ruleModal').style.display = 'flex';
+}
+
+function saveRule() {
+  const id = document.getElementById('ruleEditId').value;
+  const rate = parseFloat(document.getElementById('ruleEditRate').value);
+  const cashback = parseFloat(document.getElementById('ruleEditCashback').value);
+  const active = document.getElementById('ruleEditActive').value === '1';
+
+  if (isNaN(rate) || rate < 0 || rate > 50) { showToast('佣金比例需在 0–50% 范围内', 'error'); return; }
+  if (isNaN(cashback) || cashback < 0 || cashback > 30) { showToast('返现比例需在 0–30% 范围内', 'error'); return; }
+
+  const rules = getPartnerRules();
+  const r = rules.find(x => x.id === id);
+  if (!r) return;
+  r.commissionRate = rate / 100;
+  r.cashbackRate = cashback / 100;
+  r.isActive = active;
+  r.updatedAt = new Date().toISOString();
+  savePartnerRules(rules);
+
+  document.getElementById('ruleModal').style.display = 'none';
+  showToast('佣金规则已更新');
+  renderAdminRules();
+}
+
+/* Update withdraw badge on init */
+(function() {
+  const wds = getPartnerWithdrawals();
+  const pendingCount = wds.filter(w => w.status === 'pending').length;
+  const badge = document.getElementById('withdrawBadge');
+  if (badge) badge.textContent = pendingCount;
 })();

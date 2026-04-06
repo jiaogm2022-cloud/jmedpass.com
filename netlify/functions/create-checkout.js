@@ -8,12 +8,24 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 // CNY → USD conversion (approximate, update as needed)
 const CNY_TO_USD = 0.138;
 
+// Allowed redirect origins — never trust client-supplied origin
+const ALLOWED_ORIGINS = new Set([
+  'https://jmedpass.com',
+  'https://www.jmedpass.com',
+]);
+
+// Input limits
+const MAX_ITEMS = 20;
+const MAX_NAME_LEN = 200;
+const MAX_PRICE_CNY = 100000; // ¥100,000 per item
+const MAX_QTY = 99;
+
 exports.handler = async (event) => {
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      headers: corsHeaders(),
+      headers: corsHeaders(event),
       body: '',
     };
   }
@@ -24,30 +36,41 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { items, origin } = body;
+    const { items } = body;
 
     if (!items || items.length === 0) {
-      return respond(400, { error: '购物车为空' });
+      return respond(400, { error: '购物车为空' }, event);
+    }
+    if (items.length > MAX_ITEMS) {
+      return respond(400, { error: '商品数量超出限制' }, event);
     }
 
     // Build Stripe line items (convert CNY → USD → cents)
     const lineItems = items.map(function (item) {
-      const usdPrice = Math.round(item.price * CNY_TO_USD * 100); // cents
+      const price = Number(item.price);
+      const qty   = Math.floor(Number(item.qty));
+      if (!isFinite(price) || price <= 0 || price > MAX_PRICE_CNY) throw new Error('无效价格');
+      if (!isFinite(qty)   || qty   <= 0 || qty   > MAX_QTY)      throw new Error('无效数量');
+      const name = String(item.name || '').slice(0, MAX_NAME_LEN);
+      const brand = String(item.brand || '').slice(0, 100);
+      const spec  = String(item.spec  || '').slice(0, 100);
+      const usdPrice = Math.round(price * CNY_TO_USD * 100); // cents
       return {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: item.name,
-            description: item.brand + '  ·  ' + item.spec,
-            metadata: { category: item.cat || '' },
+            name,
+            description: brand + '  ·  ' + spec,
+            metadata: { category: String(item.cat || '').slice(0, 50) },
           },
           unit_amount: usdPrice,
         },
-        quantity: item.qty,
+        quantity: qty,
       };
     });
 
-    const baseUrl = origin || process.env.URL || 'https://sakuramg.com';
+    // Use server-side origin only — never trust client-supplied value
+    const baseUrl = process.env.URL || 'https://jmedpass.com';
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -104,27 +127,30 @@ exports.handler = async (event) => {
       cancel_url:  baseUrl + '/shenghuo.html?cancelled=1',
     });
 
-    return respond(200, { url: session.url, session_id: session.id });
+    return respond(200, { url: session.url, session_id: session.id }, event);
 
   } catch (err) {
     console.error('Stripe error:', err.message);
-    return respond(500, { error: err.message });
+    return respond(500, { error: err.message }, event);
   }
 };
 
-function respond(status, body) {
+function respond(status, body, event) {
   return {
     statusCode: status,
-    headers: corsHeaders(),
+    headers: corsHeaders(event),
     body: JSON.stringify(body),
   };
 }
 
-function corsHeaders() {
+function corsHeaders(event) {
+  const reqOrigin = (event && event.headers && event.headers.origin) || '';
+  const allowedOrigin = ALLOWED_ORIGINS.has(reqOrigin) ? reqOrigin : 'https://jmedpass.com';
   return {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Vary': 'Origin',
   };
 }

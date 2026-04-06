@@ -31,7 +31,6 @@
         <span>询盘管理</span>
         <span class="nav-badge" id="newBadge">0</span>
       </a>
-    </div>
       <a href="#" class="nav-item" data-page="products">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span>商品管理</span>
@@ -41,6 +40,28 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         <span>线上问诊</span>
         <span class="nav-badge" id="consultBadge">0</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">合伙人系统</div>
+      <a href="#" class="nav-item" data-page="partner-users">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>合伙人用户</span>
+        <span class="nav-badge" id="partnerUsersBadge" style="display:none"></span>
+      </a>
+      <a href="#" class="nav-item" data-page="partner-commissions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span>佣金管理</span>
+        <span class="nav-badge" id="commBadge" style="display:none"></span>
+      </a>
+      <a href="#" class="nav-item" data-page="partner-withdrawals">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span>提现审核</span>
+        <span class="nav-badge" id="withdrawBadge">0</span>
+      </a>
+      <a href="#" class="nav-item" data-page="partner-rules">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span>佣金规则</span>
       </a>
     </div>
     <div class="nav-group">
@@ -124,6 +145,46 @@
         <div class="sc-info">
           <span class="sc-num" id="statTopService">—</span>
           <span class="sc-label">最热门服务</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARTNER STAT CARDS -->
+    <div class="stat-cards" style="margin-top:16px;">
+      <div class="stat-card sc-total">
+        <div class="sc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-num" id="statPartners">0</span>
+          <span class="sc-label">活跃合伙人</span>
+        </div>
+      </div>
+      <div class="stat-card sc-new">
+        <div class="sc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-num" id="statPendingWd">0</span>
+          <span class="sc-label">待审核提现</span>
+        </div>
+      </div>
+      <div class="stat-card sc-today">
+        <div class="sc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-num" id="statPendingComm">0</span>
+          <span class="sc-label">待结算佣金</span>
+        </div>
+      </div>
+      <div class="stat-card sc-service">
+        <div class="sc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div class="sc-info">
+          <span class="sc-num" id="statSettledComm">$0</span>
+          <span class="sc-label">已结算佣金总额</span>
         </div>
       </div>
     </div>
@@ -318,6 +379,176 @@
 
 </div><!-- end main-wrap -->
 
+<!-- ===== PAGE: PARTNER USERS ===== -->
+<div class="page-content" id="page-partner-users" style="display:none">
+  <div class="page-header">
+    <h2>合伙人用户</h2>
+    <p>查看所有注册合伙人及其推荐关系</p>
+  </div>
+  <div class="table-card">
+    <div class="table-toolbar">
+      <input type="text" class="search-input" id="partnerUsersSearch" placeholder="搜索昵称 / 手机 / 推荐码…" oninput="filterPartnerUsers()" />
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span id="partnerUsersCount" style="font-size:.85rem;color:#64748b;"></span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="inq-table" id="partnerUsersTable">
+        <thead>
+          <tr>
+            <th>昵称</th>
+            <th>手机号</th>
+            <th>推荐码</th>
+            <th>推荐人</th>
+            <th>推荐客户数</th>
+            <th>累计佣金</th>
+            <th>注册时间</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="partnerUsersBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PARTNER COMMISSIONS ===== -->
+<div class="page-content" id="page-partner-commissions" style="display:none">
+  <div class="page-header">
+    <h2>佣金管理</h2>
+    <p>查看并管理所有佣金记录</p>
+  </div>
+  <div class="table-card">
+    <div class="table-toolbar">
+      <select id="commFilterStatus" onchange="renderAdminCommissions()" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:.875rem;">
+        <option value="">全部状态</option>
+        <option value="pending">待结算</option>
+        <option value="settled">已结算</option>
+        <option value="cancelled">已取消</option>
+      </select>
+      <span id="commCount" style="font-size:.85rem;color:#64748b;margin-left:8px;"></span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="inq-table">
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>推荐人</th>
+            <th>客户</th>
+            <th>服务类型</th>
+            <th>订单金额</th>
+            <th>佣金金额</th>
+            <th>佣金率</th>
+            <th>结算时间</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="adminCommBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PARTNER WITHDRAWALS ===== -->
+<div class="page-content" id="page-partner-withdrawals" style="display:none">
+  <div class="page-header">
+    <h2>提现审核</h2>
+    <p>审核合伙人提现申请</p>
+  </div>
+  <div class="table-card">
+    <div class="table-toolbar">
+      <select id="wdFilterStatus" onchange="renderAdminWithdrawals()" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:.875rem;">
+        <option value="pending">待审核</option>
+        <option value="processing">处理中</option>
+        <option value="completed">已完成</option>
+        <option value="rejected">已驳回</option>
+        <option value="">全部</option>
+      </select>
+      <span id="wdCount" style="font-size:.85rem;color:#64748b;margin-left:8px;"></span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="inq-table">
+        <thead>
+          <tr>
+            <th>申请时间</th>
+            <th>合伙人</th>
+            <th>金额</th>
+            <th>方式</th>
+            <th>收款信息</th>
+            <th>状态</th>
+            <th>备注</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="adminWdBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PARTNER RULES ===== -->
+<div class="page-content" id="page-partner-rules" style="display:none">
+  <div class="page-header">
+    <h2>佣金规则管理</h2>
+    <p>调整各品类的佣金比例（修改后对新订单生效）</p>
+  </div>
+  <div class="table-card">
+    <div style="overflow-x:auto;">
+      <table class="inq-table">
+        <thead>
+          <tr>
+            <th>品类名称</th>
+            <th>佣金比例</th>
+            <th>客户首单返现</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="adminRulesBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT RULE MODAL ===== -->
+<div class="modal-overlay" id="ruleModal" style="display:none">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>修改佣金规则</h3>
+      <button class="modal-close" onclick="document.getElementById('ruleModal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ruleEditId" />
+      <div class="pf-group" style="margin-bottom:16px;">
+        <label style="font-size:.875rem;font-weight:500;color:#374151;margin-bottom:6px;display:block;">品类</label>
+        <input type="text" id="ruleEditName" disabled style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.875rem;background:#f8fafc;color:#64748b;" />
+      </div>
+      <div class="pf-group" style="margin-bottom:16px;">
+        <label style="font-size:.875rem;font-weight:500;color:#374151;margin-bottom:6px;display:block;">佣金比例 (%)</label>
+        <input type="number" id="ruleEditRate" min="0" max="100" step="0.1" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.875rem;" />
+        <p style="font-size:.78rem;color:#94a3b8;margin-top:6px;">调整范围 0%–50%，当前默认 20%</p>
+      </div>
+      <div class="pf-group" style="margin-bottom:16px;">
+        <label style="font-size:.875rem;font-weight:500;color:#374151;margin-bottom:6px;display:block;">客户首单返现比例 (%)</label>
+        <input type="number" id="ruleEditCashback" min="0" max="30" step="0.1" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.875rem;" />
+      </div>
+      <div class="pf-group">
+        <label style="font-size:.875rem;font-weight:500;color:#374151;margin-bottom:6px;display:block;">是否启用</label>
+        <select id="ruleEditActive" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.875rem;">
+          <option value="1">启用</option>
+          <option value="0">停用</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary-sm" onclick="saveRule()">保存修改</button>
+      <button class="btn-outline-sm" onclick="document.getElementById('ruleModal').style.display='none'">取消</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== PRODUCT FORM MODAL ===== -->
 <div class="modal-overlay" id="prodModal" style="display:none">
   <div class="modal-card modal-wide">
@@ -452,6 +683,24 @@
       </select>
       <button class="btn-primary-sm" id="saveStatus">保存状态</button>
       <button class="btn-danger-sm" id="deleteInq">删除此询盘</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REJECT WITHDRAWAL MODAL ===== -->
+<div class="modal-overlay" id="rejectWdModal" style="display:none">
+  <div class="modal-card" style="max-width:420px">
+    <div class="modal-header">
+      <h3>驳回提现申请</h3>
+      <button class="modal-close" onclick="document.getElementById('rejectWdModal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.875rem;color:#64748b;margin-bottom:16px;">请填写驳回原因（将通知合伙人）</p>
+      <textarea id="rejectWdReason" rows="4" placeholder="例如：收款信息有误，请重新提交" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.875rem;resize:vertical;box-sizing:border-box;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger-sm" id="confirmRejectWdBtn" style="padding:8px 20px;">确认驳回</button>
+      <button class="btn-outline-sm" onclick="document.getElementById('rejectWdModal').style.display='none'">取消</button>
     </div>
   </div>
 </div>

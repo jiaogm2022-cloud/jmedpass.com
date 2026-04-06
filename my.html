@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>我的合伙人中心 · 樱医集团</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="partner.css" />
+</head>
+<body>
+
+<div class="my-layout">
+
+  <!-- ===== TOPBAR ===== -->
+  <header class="my-topbar">
+    <div class="my-topbar-logo">
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;color:inherit;">
+        <span class="logo-icon" style="font-size:1.4rem;">⚕</span>
+        <span class="my-topbar-logo-text">
+          樱医集团
+          <em>合伙人中心</em>
+        </span>
+      </a>
+    </div>
+    <div class="my-topbar-links">
+      <a href="partner.html">合伙人介绍</a>
+      <a href="index.html">回到主站</a>
+    </div>
+    <div class="my-topbar-user">
+      <div class="my-topbar-avatar" id="topbarAvatar">?</div>
+      <span id="topbarName" style="color:rgba(255,255,255,.8);">加载中…</span>
+      <button class="my-topbar-logout" id="logoutBtn">退出</button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="my-content">
+    <div class="container">
+
+      <!-- 新用户欢迎提示 -->
+      <div id="newUserBanner" style="display:none;background:linear-gradient(135deg,var(--primary),var(--rose));color:white;border-radius:var(--radius);padding:24px 32px;margin-bottom:24px;">
+        <h3 style="font-family:'Noto Serif SC',serif;font-size:1.2rem;margin-bottom:8px;">🎉 恭喜您成为樱医合伙人！</h3>
+        <p style="opacity:.9;font-size:.95rem;">您的专属推荐码已生成。现在就分享给朋友，每笔订单赚20%佣金！</p>
+      </div>
+
+      <!-- ===== STATS ROW ===== -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-label">累计收益</div>
+          <div class="stat-card-value accent" id="statTotal">$0.00</div>
+          <div class="stat-card-sub">所有已到账佣金</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">本月收益</div>
+          <div class="stat-card-value" id="statMonth">$0.00</div>
+          <div class="stat-card-sub" id="statMonthLabel">本月已结算</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">待结算</div>
+          <div class="stat-card-value" id="statPending">$0.00</div>
+          <div class="stat-card-sub">服务完成后T+7到账</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">可提现</div>
+          <div class="stat-card-value accent" id="statWithdrawable">$0.00</div>
+          <div class="stat-card-sub">满$50可申请提现</div>
+        </div>
+      </div>
+
+      <!-- 我的推荐码 -->
+      <div class="my-card" style="margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:.8rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;">我的专属推荐码</div>
+            <div class="referral-badge" id="myRefCode">SAKURA-XXXXXX</div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:.8rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;">推荐链接</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span id="myRefLink" style="font-size:.85rem;color:var(--dark);word-break:break-all;"></span>
+              <button class="btn-copy" id="copyLinkBtn" onclick="copyMyLink()">复制</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;font-size:.85rem;color:var(--muted);">
+            <span>推荐客户：<strong id="statCustomers" style="color:var(--dark);">0</strong> 人</span>
+            <span>注册时间：<strong id="statJoinDate" style="color:var(--dark);">-</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TABS ===== -->
+      <div class="my-tabs">
+        <button class="my-tab active" onclick="switchMyTab('share')">分享中心</button>
+        <button class="my-tab" onclick="switchMyTab('customers')">我的客户</button>
+        <button class="my-tab" onclick="switchMyTab('commissions')">佣金明细</button>
+        <button class="my-tab" onclick="switchMyTab('withdraw')">提现</button>
+        <button class="my-tab" onclick="switchMyTab('history')">提现记录</button>
+      </div>
+
+      <!-- ===== 分享中心 ===== -->
+      <div class="my-tab-panel active" id="panel-share">
+        <div class="my-card">
+          <div class="my-card-title">分享您的专属链接</div>
+          <div class="share-link-row">
+            <span id="shareRefLink">-</span>
+            <button class="btn-copy" onclick="copyMyLink()" id="copyBtn2">复制链接</button>
+          </div>
+          <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px;">朋友点击链接注册后，永久绑定于您，后续每笔消费您都赚取20%佣金。</p>
+          <div class="share-channels">
+            <button class="share-btn share-btn-wa" onclick="shareWhatsApp()">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              分享到 WhatsApp
+            </button>
+            <button class="share-btn share-btn-wx" onclick="shareWechat()">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-5.972 2.975-7.928C11.373 2.893 10.102 2.188 8.691 2.188zm-1.612 3.618a.877.877 0 110 1.754.877.877 0 010-1.754zm3.223 0a.877.877 0 110 1.754.877.877 0 010-1.754zM24 14.714c0-3.598-3.397-6.52-7.588-6.52s-7.588 2.922-7.588 6.52c0 3.597 3.397 6.52 7.588 6.52.964 0 1.902-.148 2.76-.408a.697.697 0 01.567.073l1.537.9a.273.273 0 00.137.047c.131 0 .237-.107.237-.242 0-.058-.021-.113-.039-.17l-.315-1.187a.5.5 0 01.175-.548C23.001 18.7 24 16.813 24 14.714zm-10.002-1.25a.744.744 0 110 1.488.744.744 0 010-1.488zm4.822 0a.744.744 0 110 1.488.744.744 0 010-1.488z"/></svg>
+              复制链接（微信分享）
+            </button>
+          </div>
+        </div>
+
+        <div class="my-card">
+          <div class="my-card-title">分享话术参考</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="shareCopyGrid">
+            <div style="background:var(--sakura-1);border-radius:var(--radius-sm);padding:20px;">
+              <div style="font-size:.78rem;font-weight:600;color:var(--primary);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">精密体检</div>
+              <p style="font-size:.875rem;color:var(--dark);line-height:1.7;" id="copyText1"></p>
+              <button class="btn-copy" style="margin-top:12px;font-size:.78rem;padding:6px 14px;" onclick="copySpeech(1)">复制话术</button>
+            </div>
+            <div style="background:var(--sakura-1);border-radius:var(--radius-sm);padding:20px;">
+              <div style="font-size:.78rem;font-weight:600;color:var(--primary);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">NMN保健品</div>
+              <p style="font-size:.875rem;color:var(--dark);line-height:1.7;" id="copyText2"></p>
+              <button class="btn-copy" style="margin-top:12px;font-size:.78rem;padding:6px 14px;" onclick="copySpeech(2)">复制话术</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 我的客户 ===== -->
+      <div class="my-tab-panel" id="panel-customers">
+        <div class="my-card">
+          <div class="my-card-title">我推荐的客户</div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>客户昵称</th>
+                  <th>注册时间</th>
+                  <th>累计消费</th>
+                  <th>我的累计佣金</th>
+                  <th>最近消费时间</th>
+                </tr>
+              </thead>
+              <tbody id="customersBody">
+                <tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">👥</div><p>暂无推荐客户<br /><a href="#" onclick="switchMyTab('share')" style="color:var(--primary);">立即分享，开始招募</a></p></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 佣金明细 ===== -->
+      <div class="my-tab-panel" id="panel-commissions">
+        <div class="my-card">
+          <div class="my-card-title">佣金明细</div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>服务类型</th>
+                  <th>客户</th>
+                  <th>订单金额</th>
+                  <th>佣金金额</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="commissionsBody">
+                <tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">💰</div><p>暂无佣金记录</p></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 提现 ===== -->
+      <div class="my-tab-panel" id="panel-withdraw">
+        <div class="my-card">
+          <div class="my-card-title">申请提现</div>
+          <div class="withdraw-balance-info">
+            <div class="wbi-item">
+              <span class="wbi-value" id="wbWithdrawable">$0.00</span>
+              <span class="wbi-label">可提现余额</span>
+            </div>
+            <div class="wbi-divider"></div>
+            <div class="wbi-item">
+              <span class="wbi-value" id="wbPending">$0.00</span>
+              <span class="wbi-label">待结算</span>
+            </div>
+            <div class="wbi-divider"></div>
+            <div class="wbi-item">
+              <span class="wbi-value" style="color:var(--muted);">$50</span>
+              <span class="wbi-label">最低提现金额</span>
+            </div>
+          </div>
+          <form onsubmit="doWithdraw(event)">
+            <div class="withdraw-form-row">
+              <div class="withdraw-field">
+                <label>提现金额 (USD)</label>
+                <input type="number" id="withdrawAmount" placeholder="最低 $50" min="50" step="0.01" />
+                <span class="withdraw-min-hint">最低 $50，最多不超过可提现余额</span>
+              </div>
+              <div class="withdraw-field">
+                <label>提现方式</label>
+                <select id="withdrawMethod">
+                  <option value="">请选择</option>
+                  <option value="bank_transfer">银行转账</option>
+                  <option value="paynow">PayNow</option>
+                  <option value="alipay">支付宝</option>
+                  <option value="wechat_pay">微信支付</option>
+                </select>
+              </div>
+              <div class="withdraw-field" style="grid-column:1/-1;">
+                <label>收款账号信息</label>
+                <input type="text" id="withdrawAccount" placeholder="输入收款账号 / 手机号 / 收款人姓名" />
+              </div>
+            </div>
+            <div id="withdrawError" style="color:#c0392b;font-size:.85rem;margin-top:8px;display:none;"></div>
+            <button type="submit" class="withdraw-submit">申请提现</button>
+            <p style="font-size:.8rem;color:var(--muted);margin-top:10px;">提现处理时间：1-3个工作日。如有疑问请联系客服。</p>
+          </form>
+        </div>
+      </div>
+
+      <!-- ===== 提现记录 ===== -->
+      <div class="my-tab-panel" id="panel-history">
+        <div class="my-card">
+          <div class="my-card-title">提现记录</div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>申请时间</th>
+                  <th>金额</th>
+                  <th>方式</th>
+                  <th>账号信息</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="withdrawalsBody">
+                <tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>暂无提现记录</p></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="partner-toast" id="toast"></div>
+
+<script src="partner.js"></script>
+<script>
+// ===== Auth guard =====
+const currentUserId = localStorage.getItem('sm_current_user');
+if (!currentUserId) {
+  window.location.href = 'login.html';
+}
+
+// ===== Data helpers =====
+function getUsers() { return JSON.parse(localStorage.getItem('sm_users') || '[]'); }
+function getOrders() { return JSON.parse(localStorage.getItem('sm_orders') || '[]'); }
+function getCommissions() { return JSON.parse(localStorage.getItem('sm_commissions') || '[]'); }
+function getWithdrawals() { return JSON.parse(localStorage.getItem('sm_withdrawals') || '[]'); }
+
+function fmtDate(iso) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleDateString('zh-CN', { year:'numeric', month:'2-digit', day:'2-digit' });
+}
+function fmtAmt(n) {
+  return '$' + parseFloat(n || 0).toFixed(2);
+}
+function statusLabel(s) {
+  const map = { settled:'已到账', pending:'待结算', cancelled:'已取消', processing:'处理中', completed:'已完成', rejected:'已驳回' };
+  const cls = { settled:'status-settled', pending:'status-pending', cancelled:'status-cancelled', processing:'status-processing', completed:'status-settled', rejected:'status-cancelled' };
+  return `<span class="status ${cls[s] || ''}">${map[s] || s}</span>`;
+}
+function maskName(name) {
+  if (!name) return '**';
+  return name.charAt(0) + '**';
+}
+
+// ===== Load user =====
+const users = getUsers();
+const me = users.find(u => u.id === currentUserId);
+if (!me) { localStorage.removeItem('sm_current_user'); window.location.href = 'login.html'; }
+
+// Topbar
+document.getElementById('topbarAvatar').textContent = (me.nickname || '?').charAt(0).toUpperCase();
+document.getElementById('topbarName').textContent = me.nickname || me.phone;
+
+// Referral code / link
+const siteBase = location.origin + location.pathname.replace('my.html','');
+const myLink = siteBase + '?ref=' + me.referralCode;
+document.getElementById('myRefCode').textContent = me.referralCode;
+document.getElementById('myRefLink').textContent = siteBase + '?ref=' + me.referralCode;
+document.getElementById('shareRefLink').textContent = myLink;
+
+// Join date
+document.getElementById('statJoinDate').textContent = fmtDate(me.createdAt);
+
+// Share speeches
+document.getElementById('copyText1').textContent =
+  `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n樱医集团是正规日本医疗机构直连，全程中文陪同。\n\n点击了解：${myLink}`;
+document.getElementById('copyText2').textContent =
+  `💊 我一直在吃的日本NMN抗衰精华，正品直采，效果真的能感觉到，推荐给你试试～\n\n购买链接：${myLink}`;
+
+// ===== New user banner =====
+const params = new URLSearchParams(location.search);
+if (params.get('new') === '1') {
+  document.getElementById('newUserBanner').style.display = 'block';
+}
+
+// ===== Seed demo data for new user =====
+initDemoData();
+
+function initDemoData() {
+  const existingOrders = getOrders().filter(o => o.referrerId === currentUserId);
+  if (existingOrders.length > 0) return; // already seeded
+
+  // Add 2 demo customers referred by this user (only seed if they have no referrals yet)
+  const allUsers = getUsers();
+  if (allUsers.filter(u => u.referredBy === currentUserId).length > 0) return;
+
+  const demoCustomers = [
+    {
+      id: 'demo_cust_1_' + currentUserId.slice(-4),
+      nickname: '王' + '**',
+      phone: '+65-demo-1',
+      email: '',
+      password: btoa('demo123'),
+      referralCode: 'SAKURA-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+      referredBy: currentUserId,
+      createdAt: new Date(Date.now() - 90 * 86400000).toISOString(),
+      status: 'active'
+    },
+    {
+      id: 'demo_cust_2_' + currentUserId.slice(-4),
+      nickname: '李' + '**',
+      phone: '+65-demo-2',
+      email: '',
+      password: btoa('demo123'),
+      referralCode: 'SAKURA-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+      referredBy: currentUserId,
+      createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
+      status: 'active'
+    }
+  ];
+  const updatedUsers = [...allUsers, ...demoCustomers];
+  localStorage.setItem('sm_users', JSON.stringify(updatedUsers));
+
+  // Demo orders
+  const orders = getOrders();
+  const demoOrders = [
+    { id:'demo_ord_1_'+currentUserId.slice(-4), userId:demoCustomers[0].id, category:'checkup', productName:'精密体检 PET-CT套餐', amount:5000, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-85*86400000).toISOString(), completedAt: new Date(Date.now()-83*86400000).toISOString() },
+    { id:'demo_ord_2_'+currentUserId.slice(-4), userId:demoCustomers[0].id, category:'stem_cell', productName:'干细胞抗衰老疗法', amount:30000, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-60*86400000).toISOString(), completedAt: new Date(Date.now()-58*86400000).toISOString() },
+    { id:'demo_ord_3_'+currentUserId.slice(-4), userId:demoCustomers[0].id, category:'nmn', productName:'NMN抗衰精华（月订）', amount:200, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-15*86400000).toISOString(), completedAt: new Date(Date.now()-13*86400000).toISOString() },
+    { id:'demo_ord_4_'+currentUserId.slice(-4), userId:demoCustomers[1].id, category:'nmn', productName:'NMN抗衰精华（月订）', amount:200, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-5*86400000).toISOString(), completedAt: new Date(Date.now()-3*86400000).toISOString() },
+    { id:'demo_ord_5_'+currentUserId.slice(-4), userId:demoCustomers[1].id, category:'checkup', productName:'精密体检基础套餐', amount:2000, currency:'USD', status:'pending', referrerId:currentUserId, createdAt: new Date(Date.now()-2*86400000).toISOString(), completedAt: null }
+  ];
+  localStorage.setItem('sm_orders', JSON.stringify([...orders, ...demoOrders]));
+
+  // Demo commissions
+  const comms = getCommissions();
+  const demoComms = [
+    { id:'demo_com_1_'+currentUserId.slice(-4), orderId:'demo_ord_1_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[0].id, orderAmount:5000, commissionRate:0.2, commissionAmt:1000, status:'settled', settleAt: new Date(Date.now()-76*86400000).toISOString(), settledAt: new Date(Date.now()-76*86400000).toISOString(), createdAt: new Date(Date.now()-83*86400000).toISOString() },
+    { id:'demo_com_2_'+currentUserId.slice(-4), orderId:'demo_ord_2_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[0].id, orderAmount:30000, commissionRate:0.2, commissionAmt:6000, status:'settled', settleAt: new Date(Date.now()-51*86400000).toISOString(), settledAt: new Date(Date.now()-51*86400000).toISOString(), createdAt: new Date(Date.now()-58*86400000).toISOString() },
+    { id:'demo_com_3_'+currentUserId.slice(-4), orderId:'demo_ord_3_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[0].id, orderAmount:200, commissionRate:0.2, commissionAmt:40, status:'settled', settleAt: new Date(Date.now()-6*86400000).toISOString(), settledAt: new Date(Date.now()-6*86400000).toISOString(), createdAt: new Date(Date.now()-13*86400000).toISOString() },
+    { id:'demo_com_4_'+currentUserId.slice(-4), orderId:'demo_ord_4_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[1].id, orderAmount:200, commissionRate:0.2, commissionAmt:40, status:'pending', settleAt: new Date(Date.now()+4*86400000).toISOString(), settledAt: null, createdAt: new Date(Date.now()-3*86400000).toISOString() },
+    { id:'demo_com_5_'+currentUserId.slice(-4), orderId:'demo_ord_5_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[1].id, orderAmount:2000, commissionRate:0.2, commissionAmt:400, status:'pending', settleAt: new Date(Date.now()+4*86400000).toISOString(), settledAt: null, createdAt: new Date(Date.now()-2*86400000).toISOString() }
+  ];
+  localStorage.setItem('sm_commissions', JSON.stringify([...comms, ...demoComms]));
+}
+
+// ===== Compute stats =====
+function renderStats() {
+  const comms = getCommissions().filter(c => c.beneficiaryId === currentUserId);
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const totalSettled = comms.filter(c => c.status === 'settled').reduce((s,c) => s + c.commissionAmt, 0);
+  const monthSettled = comms.filter(c => c.status === 'settled' && new Date(c.settledAt) >= monthStart).reduce((s,c) => s + c.commissionAmt, 0);
+  const pending = comms.filter(c => c.status === 'pending').reduce((s,c) => s + c.commissionAmt, 0);
+
+  const withdrawals = getWithdrawals().filter(w => w.userId === currentUserId && (w.status === 'completed' || w.status === 'processing'));
+  const withdrawn = withdrawals.reduce((s,w) => s + w.amount, 0);
+  const withdrawable = Math.max(0, totalSettled - withdrawn);
+
+  document.getElementById('statTotal').textContent = fmtAmt(totalSettled);
+  document.getElementById('statMonth').textContent = fmtAmt(monthSettled);
+  document.getElementById('statPending').textContent = fmtAmt(pending);
+  document.getElementById('statWithdrawable').textContent = fmtAmt(withdrawable);
+  document.getElementById('wbWithdrawable').textContent = fmtAmt(withdrawable);
+  document.getElementById('wbPending').textContent = fmtAmt(pending);
+
+  // Customer count
+  const myCustomers = getUsers().filter(u => u.referredBy === currentUserId);
+  document.getElementById('statCustomers').textContent = myCustomers.length;
+
+  return withdrawable;
+}
+
+// ===== Render customers =====
+function renderCustomers() {
+  const myCustomers = getUsers().filter(u => u.referredBy === currentUserId);
+  const comms = getCommissions().filter(c => c.beneficiaryId === currentUserId);
+  const orders = getOrders().filter(o => o.referrerId === currentUserId);
+  const tbody = document.getElementById('customersBody');
+
+  if (myCustomers.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">👥</div><p>暂无推荐客户<br /><a href="#" onclick="switchMyTab(\'share\')" style="color:var(--primary);">立即分享，开始招募</a></p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = myCustomers.map(c => {
+    const cOrders = orders.filter(o => o.userId === c.id && o.status === 'completed');
+    const totalSpend = cOrders.reduce((s,o) => s + o.amount, 0);
+    const myComm = comms.filter(cm => cm.customerId === c.id && cm.status === 'settled').reduce((s,cm) => s + cm.commissionAmt, 0);
+    const lastOrder = cOrders.sort((a,b) => new Date(b.completedAt) - new Date(a.completedAt))[0];
+    return `<tr>
+      <td>${maskName(c.nickname)}</td>
+      <td>${fmtDate(c.createdAt)}</td>
+      <td class="amount">${fmtAmt(totalSpend)}</td>
+      <td class="amount">${fmtAmt(myComm)}</td>
+      <td>${lastOrder ? fmtDate(lastOrder.completedAt) : '-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== Render commissions =====
+function renderCommissions() {
+  const comms = getCommissions().filter(c => c.beneficiaryId === currentUserId)
+    .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const allUsers = getUsers();
+  const tbody = document.getElementById('commissionsBody');
+  if (comms.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">💰</div><p>暂无佣金记录</p></div></td></tr>';
+    return;
+  }
+  const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'线上问诊' };
+  const orders = getOrders();
+  tbody.innerHTML = comms.map(c => {
+    const order = orders.find(o => o.id === c.orderId) || {};
+    const customer = allUsers.find(u => u.id === c.customerId) || {};
+    return `<tr>
+      <td>${fmtDate(c.createdAt)}</td>
+      <td>${categoryMap[order.category] || order.category || '-'}</td>
+      <td>${maskName(customer.nickname)}</td>
+      <td>${fmtAmt(c.orderAmount)}</td>
+      <td class="amount">${fmtAmt(c.commissionAmt)}</td>
+      <td>${statusLabel(c.status)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== Render withdrawals history =====
+function renderWithdrawals() {
+  const ws = getWithdrawals().filter(w => w.userId === currentUserId)
+    .sort((a,b) => new Date(b.requestedAt) - new Date(a.requestedAt));
+  const methodMap = { bank_transfer:'银行转账', paynow:'PayNow', alipay:'支付宝', wechat_pay:'微信支付' };
+  const tbody = document.getElementById('withdrawalsBody');
+  if (ws.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>暂无提现记录</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = ws.map(w => `<tr>
+    <td>${fmtDate(w.requestedAt)}</td>
+    <td class="amount">${fmtAmt(w.amount)}</td>
+    <td>${methodMap[w.method] || w.method}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;">${w.accountInfo || '-'}</td>
+    <td>${statusLabel(w.status)}</td>
+  </tr>`).join('');
+}
+
+// ===== Withdraw =====
+function doWithdraw(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('withdrawError');
+  const amount = parseFloat(document.getElementById('withdrawAmount').value);
+  const method = document.getElementById('withdrawMethod').value;
+  const account = document.getElementById('withdrawAccount').value.trim();
+  const withdrawable = renderStats();
+
+  if (isNaN(amount) || amount < 50) { showErrEl(errEl, '最低提现金额为 $50'); return; }
+  if (amount > withdrawable) { showErrEl(errEl, `可提现余额不足（当前可提现 ${fmtAmt(withdrawable)}）`); return; }
+  if (!method) { showErrEl(errEl, '请选择提现方式'); return; }
+  if (!account) { showErrEl(errEl, '请填写收款账号信息'); return; }
+
+  const ws = getWithdrawals();
+  const newW = {
+    id: 'wd_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5),
+    userId: currentUserId,
+    amount,
+    currency: 'USD',
+    method,
+    accountInfo: account,
+    status: 'pending',
+    requestedAt: new Date().toISOString(),
+    processedAt: null,
+    adminNote: ''
+  };
+  ws.push(newW);
+  localStorage.setItem('sm_withdrawals', JSON.stringify(ws));
+
+  showToast('提现申请已提交，1-3个工作日处理', 'success');
+  document.getElementById('withdrawAmount').value = '';
+  document.getElementById('withdrawMethod').value = '';
+  document.getElementById('withdrawAccount').value = '';
+  renderStats();
+  renderWithdrawals();
+}
+
+function showErrEl(el, msg) {
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+// ===== Tab switching =====
+function switchMyTab(name) {
+  document.querySelectorAll('.my-tab').forEach((t,i) => {
+    const panels = ['share','customers','commissions','withdraw','history'];
+    t.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.my-tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + name);
+  });
+}
+
+// ===== Copy helpers =====
+function copyMyLink() {
+  navigator.clipboard.writeText(myLink).then(() => {
+    showToast('链接已复制！', 'success');
+    document.getElementById('copyLinkBtn').textContent = '已复制';
+    document.getElementById('copyBtn2').textContent = '已复制';
+    document.getElementById('copyBtn2').classList.add('copied');
+    setTimeout(() => {
+      document.getElementById('copyLinkBtn').textContent = '复制';
+      document.getElementById('copyBtn2').textContent = '复制链接';
+      document.getElementById('copyBtn2').classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function copySpeech(n) {
+  const text = document.getElementById('copyText' + n).textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('话术已复制！', 'success'));
+}
+
+function shareWhatsApp() {
+  const text = encodeURIComponent(`我发现了一个很好的日本医疗服务平台——樱医集团，精密体检、干细胞、医美都有，全程中文服务。注册就是合伙人，推荐朋友还能赚佣金 💰\n了解一下：${myLink}`);
+  window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+function shareWechat() {
+  copyMyLink();
+  showToast('链接已复制，请粘贴到微信分享', 'success');
+}
+
+// ===== Toast =====
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'partner-toast show' + (type ? ' ' + type : '');
+  setTimeout(() => { t.className = 'partner-toast'; }, 2500);
+}
+
+// ===== Logout =====
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  localStorage.removeItem('sm_current_user');
+  window.location.href = 'login.html';
+});
+
+// ===== Initialize =====
+renderStats();
+renderCustomers();
+renderCommissions();
+renderWithdrawals();
+</script>
+</body>
+</html>

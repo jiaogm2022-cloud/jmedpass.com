@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>登录 / 注册 · 樱医集团合伙人</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="partner.css" />
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="login-logo">
+      <a href="index.html" style="text-decoration:none;">
+        <span class="logo-icon" style="font-size:2rem;">⚕</span>
+        <span class="login-logo-name">樱医集团</span>
+        <span class="login-logo-sub">SAKURA MEDICAL GROUP · 合伙人平台</span>
+      </a>
+    </div>
+
+    <!-- 推荐人提示 -->
+    <div class="auth-notice" id="refNotice"></div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <div class="auth-tab" id="tabLogin" onclick="switchTab('login')">登录</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">注册成为合伙人</div>
+    </div>
+
+    <!-- 登录表单 -->
+    <form class="auth-form" id="loginForm">
+      <div class="auth-field">
+        <label>手机号 / 邮箱</label>
+        <input type="text" id="loginPhone" placeholder="输入注册时使用的手机号或邮箱" autocomplete="username" />
+      </div>
+      <div class="auth-field">
+        <label>密码</label>
+        <input type="password" id="loginPassword" placeholder="输入密码" autocomplete="current-password" />
+      </div>
+      <div class="auth-error" id="loginError"></div>
+      <button type="submit" class="auth-submit">登录</button>
+    </form>
+
+    <!-- 注册表单 -->
+    <form class="auth-form" id="registerForm">
+      <div class="auth-field">
+        <label>昵称</label>
+        <input type="text" id="regNickname" placeholder="您的昵称（显示给客户）" maxlength="30" />
+      </div>
+      <div class="auth-field">
+        <label>手机号 / WhatsApp</label>
+        <input type="tel" id="regPhone" placeholder="如 +65 8888 8888" />
+      </div>
+      <div class="auth-field">
+        <label>邮箱（选填）</label>
+        <input type="email" id="regEmail" placeholder="your@email.com" />
+      </div>
+      <div class="auth-field">
+        <label>设置密码</label>
+        <input type="password" id="regPassword" placeholder="至少6位" autocomplete="new-password" />
+      </div>
+      <div class="auth-error" id="registerError"></div>
+      <button type="submit" class="auth-submit">注册，立即成为合伙人</button>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:12px;text-align:center;">
+        注册即代表您同意本平台合伙人协议，佣金仅为单级推荐，非多层次直销。
+      </p>
+    </form>
+
+    <div class="auth-back">
+      <a href="partner.html">← 返回合伙人介绍页</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="partner-toast" id="toast"></div>
+
+<script src="partner.js"></script>
+<script>
+// ===== Read URL params =====
+const params = new URLSearchParams(location.search);
+const refCode = params.get('ref');
+const tabParam = params.get('tab');
+
+// Show referrer notice
+if (refCode) {
+  const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
+  const referrer = users.find(u => u.referralCode === refCode);
+  if (referrer) {
+    const notice = document.getElementById('refNotice');
+    notice.textContent = `您的朋友 ${referrer.nickname} 邀请您体验日本顶级医疗服务`;
+    notice.classList.add('show');
+  }
+}
+
+// Default tab
+switchTab(tabParam === 'register' ? 'register' : 'login');
+
+function switchTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+  document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+  document.getElementById('registerForm').classList.toggle('active', tab === 'register');
+}
+
+async function hashPassword(password) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin(e) {
+  e.preventDefault();
+  const phone = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+
+  if (!phone || !password) { showAuthError(errEl, '请填写所有必填项'); return; }
+
+  const hashed = await hashPassword(password);
+  const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
+  const user = users.find(u => (u.phone === phone || u.email === phone) && u.password === hashed);
+
+  if (!user) { showAuthError(errEl, '账号或密码错误，请检查后重试'); return; }
+  if (user.status === 'frozen') { showAuthError(errEl, '该账号已被冻结，请联系客服'); return; }
+
+  localStorage.setItem('sm_current_user', user.id);
+  showToastMsg('登录成功，正在跳转…', 'success');
+  setTimeout(() => { window.location.href = 'my.html'; }, 800);
+}
+
+async function doRegister(e) {
+  e.preventDefault();
+  const nickname = document.getElementById('regNickname').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const errEl = document.getElementById('registerError');
+
+  if (!nickname) { showAuthError(errEl, '请填写昵称'); return; }
+  if (!phone) { showAuthError(errEl, '请填写手机号'); return; }
+  if (password.length < 6) { showAuthError(errEl, '密码至少需要6位'); return; }
+
+  const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
+  if (users.find(u => u.phone === phone)) { showAuthError(errEl, '该手机号已注册，请直接登录'); return; }
+  if (email && users.find(u => u.email === email)) { showAuthError(errEl, '该邮箱已注册，请直接登录'); return; }
+
+  const hashed = await hashPassword(password);
+
+  // Generate referral code
+  const code = 'SAKURA-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+
+  // Find referrer
+  let referredBy = null;
+  if (refCode) {
+    const ref = users.find(u => u.referralCode === refCode);
+    if (ref) referredBy = ref.id;
+  }
+  // Also check localStorage for ref
+  const storedRef = localStorage.getItem('sm_pending_ref');
+  if (!referredBy && storedRef) {
+    const ref = users.find(u => u.referralCode === storedRef);
+    if (ref) referredBy = ref.id;
+  }
+
+  const newUser = {
+    id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5),
+    nickname,
+    phone,
+    email: email || '',
+    password: hashed,
+    referralCode: code,
+    referredBy,
+    createdAt: new Date().toISOString(),
+    status: 'active'
+  };
+
+  users.push(newUser);
+  localStorage.setItem('sm_users', JSON.stringify(users));
+  localStorage.setItem('sm_current_user', newUser.id);
+  localStorage.removeItem('sm_pending_ref');
+
+  showToastMsg('注册成功！欢迎成为樱医合伙人', 'success');
+  setTimeout(() => { window.location.href = 'my.html?new=1'; }, 1000);
+}
+
+function showAuthError(el, msg) {
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+function showToastMsg(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'partner-toast show' + (type ? ' ' + type : '');
+  setTimeout(() => { t.className = 'partner-toast'; }, 2500);
+}
+
+document.getElementById('loginForm').addEventListener('submit', doLogin);
+document.getElementById('registerForm').addEventListener('submit', doRegister);
+</script>
+</body>
+</html>

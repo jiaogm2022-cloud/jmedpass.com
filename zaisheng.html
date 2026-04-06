@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-page="zaisheng">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,17 +18,63 @@
   <meta property="og:locale" content="zh_CN" />
   <meta property="og:locale:alternate" content="en_US" />
   <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale:alternate" content="ko_KR" />
+  <meta property="og:locale:alternate" content="vi_VN" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="日本再生医疗 | 干细胞抗衰老治疗 | 樱医集团" />
   <meta name="twitter:description" content="樱医集团日本再生医疗——干细胞治疗、NK免疫细胞、卵巢年轻化、抗衰老治疗。日本厚生劳动省认可机构，安全合规，专业医学评估，中文全程服务。" />
   <!-- Canonical -->
   <link rel="canonical" href="https://jmedpass.com/zaisheng.html" />
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "MedicalOrganization",
+        "@id": "https://jmedpass.com/#organization",
+        "name": "Sakura Medical Group",
+        "alternateName": ["樱医集团", "サクラメディカルグループ", "사쿠라 메디칼 그룹"],
+        "url": "https://jmedpass.com",
+        "logo": "https://jmedpass.com/favicon.svg",
+        "contactPoint": { "@type": "ContactPoint", "contactType": "customer service", "availableLanguage": ["Chinese", "Japanese", "English", "Korean", "Vietnamese"] }
+      },
+      {
+        "@type": "MedicalWebPage",
+        "@id": "https://jmedpass.com/zaisheng.html",
+        "url": "https://jmedpass.com/zaisheng.html",
+        "name": "Japan Regenerative Medicine | Stem Cell Therapy | Sakura Medical Group",
+        "description": "Japan's leading stem cell and regenerative medicine — anti-aging, ovarian rejuvenation, joint repair and metabolic disease support. Ministry of Health certified institutions, multilingual full service.",
+        "inLanguage": ["zh-CN", "en", "ja", "ko", "vi"],
+        "isPartOf": { "@id": "https://jmedpass.com/#organization" },
+        "about": {
+          "@type": "MedicalTherapy",
+          "name": "Stem Cell Regenerative Therapy",
+          "relevantSpecialty": "Regenerative Medicine"
+        },
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://jmedpass.com/index.html" },
+            { "@type": "ListItem", "position": 2, "name": "Regenerative Medicine", "item": "https://jmedpass.com/zaisheng.html" }
+          ]
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="service-style.css" />
+  <link rel="alternate" hreflang="zh" href="https://jmedpass.com/zaisheng.html" />
+  <link rel="alternate" hreflang="en" href="https://jmedpass.com/zaisheng.html" />
+  <link rel="alternate" hreflang="ja" href="https://jmedpass.com/zaisheng.html" />
+  <link rel="alternate" hreflang="ko" href="https://jmedpass.com/zaisheng.html" />
+  <link rel="alternate" hreflang="vi" href="https://jmedpass.com/zaisheng.html" />
+  <link rel="alternate" hreflang="x-default" href="https://jmedpass.com/zaisheng.html" />
 </head>
 <body>
 
@@ -46,12 +92,15 @@
       <a href="mianyi.html" data-i18n="nav.mianyi">免疫疗法</a>
       <a href="zaixian.html" data-i18n="nav.zaixian">线上问诊</a>
       <a href="shenghuo.html" data-i18n="nav.shenghuo">生活方式</a>
+      <a href="partner.html" style="color:var(--primary);font-weight:600;">合伙人</a>
       <a href="index.html#contact" class="nav-cta" data-i18n="nav.consult">立即咨询</a>
     </nav>
         <div class="lang-switcher">
       <button class="lang-btn active" data-lang="zh">中文</button>
       <button class="lang-btn" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="ja">JP</button>
+      <button class="lang-btn" data-lang="vi">VI</button>
+      <button class="lang-btn" data-lang="ko">KR</button>
     </div>
     <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </div>
