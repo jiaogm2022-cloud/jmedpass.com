@@ -1,13 +1,23 @@
 /* ===== Sakura Medical · Retrieve Stripe Session Details (Vercel) ===== */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { getAuthenticatedAdmin } = require('./_lib/auth');
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', 'GET, OPTIONS');
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const admin = getAuthenticatedAdmin(req);
+  if (!admin) {
+    return res.status(403).json({ error: 'Forbidden' });
   }
 
   const sessionId = req.query.session_id;

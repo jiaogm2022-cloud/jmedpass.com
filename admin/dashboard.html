@@ -4,9 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>控制台 · 樱医集团后台</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css" />
+  <style>body{visibility:hidden}</style>
+  <script>
+    window.__adminSessionReady = fetch('/api/admin-session', { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('unauthorized');
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || !data.authenticated) throw new Error('unauthorized');
+        document.body.style.visibility = 'visible';
+        return data;
+      })
+      .catch(function () {
+        window.location.replace('/admin');
+      });
+  </script>
 </head>
 <body class="dashboard-page">
 
@@ -66,7 +83,7 @@
     </div>
     <div class="nav-group">
       <div class="nav-group-label">快捷操作</div>
-      <a href="../index.html" target="_blank" class="nav-item">
+      <a href="/" target="_blank" rel="noopener noreferrer" class="nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         <span>查看网站</span>
       </a>

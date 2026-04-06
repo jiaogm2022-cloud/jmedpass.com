@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <title>我的合伙人中心 · 樱医集团</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -18,7 +19,7 @@
   <!-- ===== TOPBAR ===== -->
   <header class="my-topbar">
     <div class="my-topbar-logo">
-      <a href="index.html" style="display:flex;align-items:center;gap:10px;color:inherit;">
+      <a href="/" style="display:flex;align-items:center;gap:10px;color:inherit;">
         <span class="logo-icon" style="font-size:1.4rem;">⚕</span>
         <span class="my-topbar-logo-text">
           樱医集团
@@ -27,8 +28,8 @@
       </a>
     </div>
     <div class="my-topbar-links">
-      <a href="partner.html">合伙人介绍</a>
-      <a href="index.html">回到主站</a>
+      <a href="/partner">合伙人介绍</a>
+      <a href="/">回到主站</a>
     </div>
     <div class="my-topbar-user">
       <div class="my-topbar-avatar" id="topbarAvatar">?</div>
@@ -269,7 +270,7 @@
 // ===== Auth guard =====
 const currentUserId = localStorage.getItem('sm_current_user');
 if (!currentUserId) {
-  window.location.href = 'login.html';
+  window.location.href = '/login';
 }
 
 // ===== Data helpers =====
@@ -298,14 +299,14 @@ function maskName(name) {
 // ===== Load user =====
 const users = getUsers();
 const me = users.find(u => u.id === currentUserId);
-if (!me) { localStorage.removeItem('sm_current_user'); window.location.href = 'login.html'; }
+if (!me) { localStorage.removeItem('sm_current_user'); window.location.href = '/login'; }
 
 // Topbar
 document.getElementById('topbarAvatar').textContent = (me.nickname || '?').charAt(0).toUpperCase();
 document.getElementById('topbarName').textContent = me.nickname || me.phone;
 
 // Referral code / link
-const siteBase = location.origin + location.pathname.replace('my.html','');
+const siteBase = location.origin + '/';
 const myLink = siteBase + '?ref=' + me.referralCode;
 document.getElementById('myRefCode').textContent = me.referralCode;
 document.getElementById('myRefLink').textContent = siteBase + '?ref=' + me.referralCode;
@@ -581,7 +582,7 @@ function showToast(msg, type) {
 // ===== Logout =====
 document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.removeItem('sm_current_user');
-  window.location.href = 'login.html';
+  window.location.href = '/login';
 });
 
 // ===== Initialize =====

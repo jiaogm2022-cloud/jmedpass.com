@@ -1,9 +1,19 @@
 /* ===== SAKURA MEDICAL — ADMIN JS ===== */
 
 // Auth guard
-if (localStorage.getItem('sm_admin_auth') !== 'yes') {
-  window.location.href = 'index.html';
-}
+window.__adminSessionReady = window.__adminSessionReady || fetch('/api/admin-session', { credentials: 'same-origin' })
+  .then(function (response) {
+    if (!response.ok) throw new Error('unauthorized');
+    return response.json();
+  })
+  .then(function (data) {
+    if (!data || !data.authenticated) throw new Error('unauthorized');
+    document.body.style.visibility = 'visible';
+    return data;
+  })
+  .catch(function () {
+    window.location.replace('/admin');
+  });
 
 /* ===== XSS ESCAPE HELPER ===== */
 function escHtml(str) {
@@ -63,9 +73,16 @@ document.getElementById('sidebarToggle').addEventListener('click', () => {
 });
 
 /* ===== LOGOUT ===== */
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  localStorage.setItem('sm_admin_auth', 'no');
-  window.location.href = 'index.html';
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  try {
+    await fetch('/api/admin-logout', {
+      method: 'POST',
+      credentials: 'same-origin',
+    });
+  } catch (error) {
+    // Fall through to redirect even if the network request fails.
+  }
+  window.location.href = '/admin';
 });
 
 /* ===== PAGE NAVIGATION ===== */

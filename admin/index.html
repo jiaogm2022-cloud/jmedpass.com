@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>登录 · 樱医集团后台</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css" />
@@ -55,10 +56,17 @@
 </div>
 
 <script>
-  // Already logged in → skip login
-  if (localStorage.getItem('sm_admin_auth') === 'yes') {
-    window.location.href = 'dashboard.html';
-  }
+  fetch('/api/admin-session', { credentials: 'same-origin' })
+    .then(function (response) {
+      if (!response.ok) return null;
+      return response.json();
+    })
+    .then(function (data) {
+      if (data && data.authenticated) {
+        window.location.href = '/admin/dashboard';
+      }
+    })
+    .catch(function () {});
 
   document.getElementById('eyeBtn').addEventListener('click', function () {
     var inp = document.getElementById('loginPass');
@@ -72,13 +80,6 @@
     }
   });
 
-  var PASS_HASH = 'c4c0b99854f97f16ae681cb3c396f20858c2499c7b1c8f33cdad958c57f3958d';
-
-  async function sha256(str) {
-    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
-  }
-
   document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     var user = document.getElementById('loginUser').value.trim();
@@ -86,13 +87,22 @@
     var errEl = document.getElementById('loginError');
     var btn = document.getElementById('loginBtn');
 
-    var hash = await sha256(pass);
-    if (user === 'admin' && hash === PASS_HASH) {
-      localStorage.setItem('sm_admin_auth', 'yes');
+    try {
+      var response = await fetch('/api/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ username: user, password: pass })
+      });
+
+      if (!response.ok) {
+        throw new Error('login_failed');
+      }
+
       btn.textContent = '登录成功，跳转中…';
       btn.disabled = true;
-      setTimeout(function () { window.location.href = 'dashboard.html'; }, 600);
-    } else {
+      setTimeout(function () { window.location.href = '/admin/dashboard'; }, 400);
+    } catch (error) {
       errEl.style.display = 'flex';
       document.getElementById('loginPass').value = '';
       document.getElementById('loginPass').focus();
