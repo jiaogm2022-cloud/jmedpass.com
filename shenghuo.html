@@ -541,7 +541,7 @@ function addToCart(id, openDrawer) {
   if (cart[id]) {
     cart[id].qty++;
   } else {
-    cart[id] = { id:p.id, name:p.name, brand:p.brand, price:p.price, orig:p.orig, emoji:p.emoji, grad:p.grad, qty:1 };
+    cart[id] = { id:p.id, name:p.name, brand:p.brand, spec:p.spec, price:p.price, orig:p.orig, emoji:p.emoji, grad:p.grad, qty:1 };
   }
   saveCart();
   updateCartUI();
@@ -670,13 +670,28 @@ function checkout() {
   btn.disabled = true;
   btn.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px"></span>正在跳转支付…';
 
+  /* Map cart items to translated names for Stripe display */
+  var currentLang = typeof getLang === 'function' ? getLang() : 'zh';
+  var translatedItems = items.map(function(ci) {
+    var p = PRODUCTS.find(function(pr) { return pr.id === ci.id; });
+    return {
+      id: ci.id,
+      name: p ? pName(p) : ci.name,
+      brand: p ? p.brand : ci.brand,
+      spec: p ? pSpec(p) : (ci.spec || ''),
+      price: ci.price,
+      qty: ci.qty,
+      cat: p ? p.cat : '',
+    };
+  });
+
   fetch('/.netlify/functions/create-checkout', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      items: items,
+      items: translatedItems,
       origin: window.location.origin,
-      lang: typeof getLang === 'function' ? getLang() : 'zh',
+      lang: currentLang,
     }),
   })
   .then(function(res) {

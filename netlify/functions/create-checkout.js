@@ -53,6 +53,46 @@ exports.handler = async (event) => {
     const LOCALE_MAP = { zh: 'zh', en: 'en', ja: 'ja', vi: 'vi', ko: 'ko' };
     const stripeLocale = LOCALE_MAP[lang] || 'auto';
 
+    // Translated shipping & UI strings
+    const SHIPPING_STRINGS = {
+      zh: {
+        freeStandard: '🎉 满额包邮 · EMS标准配送 (7–14工作日)',
+        express: 'EMS加急配送 (3–5工作日) · ¥',
+        standard: 'EMS标准配送 (7–14工作日) · ¥',
+        freeHint: '  (再购¥{remain}即可免运费)',
+        submit: '樱医集团承诺正品直采，日本GMP认证工厂，EMS国际快递安全配送',
+      },
+      en: {
+        freeStandard: '🎉 Free Shipping · EMS Standard (7–14 business days)',
+        express: 'EMS Express (3–5 business days) · ¥',
+        standard: 'EMS Standard (7–14 business days) · ¥',
+        freeHint: '  (¥{remain} more for free shipping)',
+        submit: 'Sakura Medical guarantees authentic products, Japan GMP certified, EMS international delivery',
+      },
+      ja: {
+        freeStandard: '🎉 送料無料 · EMS標準配送 (7–14営業日)',
+        express: 'EMS速達配送 (3–5営業日) · ¥',
+        standard: 'EMS標準配送 (7–14営業日) · ¥',
+        freeHint: '  (あと¥{remain}で送料無料)',
+        submit: '桜医グループは正規品直送・日本GMP認定工場・EMS国際配送で安心をお届けします',
+      },
+      ko: {
+        freeStandard: '🎉 무료 배송 · EMS 표준 배송 (7–14 영업일)',
+        express: 'EMS 특급 배송 (3–5 영업일) · ¥',
+        standard: 'EMS 표준 배송 (7–14 영업일) · ¥',
+        freeHint: '  (¥{remain} 더 구매 시 무료 배송)',
+        submit: '사쿠라 메디컬은 정품 직배송, 일본 GMP 인증 공장, EMS 국제 배송을 보장합니다',
+      },
+      vi: {
+        freeStandard: '🎉 Miễn phí vận chuyển · EMS tiêu chuẩn (7–14 ngày làm việc)',
+        express: 'EMS chuyển phát nhanh (3–5 ngày làm việc) · ¥',
+        standard: 'EMS tiêu chuẩn (7–14 ngày làm việc) · ¥',
+        freeHint: '  (Mua thêm ¥{remain} để được miễn phí vận chuyển)',
+        submit: 'Sakura Medical cam kết hàng chính hãng, nhà máy GMP Nhật Bản, vận chuyển EMS quốc tế an toàn',
+      },
+    };
+    const S = SHIPPING_STRINGS[lang] || SHIPPING_STRINGS.zh;
+
     if (!items || items.length === 0) {
       return respond(400, { error: '購物車為空' }, event);
     }
@@ -103,7 +143,7 @@ exports.handler = async (event) => {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: 0, currency: 'sgd' },
-            display_name: '🎉 送料無料 · EMS標準配送 (7–14営業日)',
+            display_name: S.freeStandard,
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 7 },
               maximum: { unit: 'business_day', value: 14 },
@@ -114,7 +154,7 @@ exports.handler = async (event) => {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: expressSgdCents, currency: 'sgd' },
-            display_name: 'EMS加急配送 (3–5工作日) · ¥' + EXPRESS_SHIPPING_JPY.toLocaleString(),
+            display_name: S.express + EXPRESS_SHIPPING_JPY.toLocaleString(),
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 3 },
               maximum: { unit: 'business_day', value: 5 },
@@ -129,7 +169,7 @@ exports.handler = async (event) => {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: standardSgdCents, currency: 'sgd' },
-            display_name: 'EMS標準配送 (7–14営業日) · ¥' + STANDARD_SHIPPING_JPY.toLocaleString() + '  (あと¥' + Math.ceil(remainForFree).toLocaleString() + 'で送料無料)',
+            display_name: S.standard + STANDARD_SHIPPING_JPY.toLocaleString() + S.freeHint.replace('{remain}', Math.ceil(remainForFree).toLocaleString()),
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 7 },
               maximum: { unit: 'business_day', value: 14 },
@@ -140,7 +180,7 @@ exports.handler = async (event) => {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: expressSgdCents, currency: 'sgd' },
-            display_name: 'EMS加急配送 (3–5工作日) · ¥' + EXPRESS_SHIPPING_JPY.toLocaleString(),
+            display_name: S.express + EXPRESS_SHIPPING_JPY.toLocaleString(),
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 3 },
               maximum: { unit: 'business_day', value: 5 },
@@ -180,7 +220,7 @@ exports.handler = async (event) => {
 
       custom_text: {
         submit: {
-          message: '樱医集团承诺正品直采，日本GMP认证工厂，EMS国際快递安全配送',
+          message: S.submit,
         },
       },
 
