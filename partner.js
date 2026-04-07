@@ -25,7 +25,7 @@
       { id: 'rule_cosmetic',   category: 'cosmetic',   name: '医美整形',        commissionRate: 0.20, cashbackRate: 0.03, isActive: true },
       { id: 'rule_immunity',   category: 'immunity',   name: '免疫疗法(NK细胞)', commissionRate: 0.20, cashbackRate: 0.03, isActive: true },
       { id: 'rule_nmn',        category: 'nmn',        name: 'NMN/保健品',      commissionRate: 0.20, cashbackRate: 0.00, isActive: true },
-      { id: 'rule_consult',    category: 'consult',    name: '线上问诊',        commissionRate: 0.20, cashbackRate: 0.00, isActive: true }
+      { id: 'rule_consult',    category: 'consult',    name: '远程专家会诊',    commissionRate: 0.20, cashbackRate: 0.00, isActive: true }
     ];
     localStorage.setItem('sm_commission_rules', JSON.stringify(defaultRules));
   }

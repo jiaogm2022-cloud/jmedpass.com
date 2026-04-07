@@ -542,6 +542,15 @@
   box-shadow: 0 8px 24px rgba(155,35,53,.3);
   flex-shrink: 0;
 }
+.process-step-en {
+  margin: -12px 0 14px;
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(155,35,53,.56);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 600;
+}
 .process-step-icon {
   font-size: 1.6rem;
   margin-bottom: 14px;

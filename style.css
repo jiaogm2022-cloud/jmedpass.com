@@ -515,14 +515,14 @@ img { max-width: 100%; display: block; }
 .service-img-3 {
   background-image:
     linear-gradient(to bottom, rgba(5,20,50,.08) 0%, rgba(5,15,40,.72) 100%),
-    url('images/services/svc_zaisheng.jpg');
+    url('images/services/svc_regenerative_medicine.jpg');
   background-size: cover;
   background-position: center center;
 }
 .service-img-4 {
   background-image:
     linear-gradient(to bottom, rgba(5,20,50,.08) 0%, rgba(5,15,40,.72) 100%),
-    url('images/services/svc_mianyi.jpg');
+    url('images/services/svc_immunotherapy.jpg');
   background-size: cover;
   background-position: center center;
 }

@@ -18,6 +18,26 @@
       "permanent": true
     },
     {
+      "source": "/zaisheng",
+      "destination": "/regenerative-medicine",
+      "permanent": true
+    },
+    {
+      "source": "/mianyi",
+      "destination": "/immunotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/ganxibao-kangshuai",
+      "destination": "/stem-cell-anti-aging",
+      "permanent": true
+    },
+    {
+      "source": "/ganxibao-luanchao",
+      "destination": "/ovarian-rejuvenation",
+      "permanent": true
+    },
+    {
       "source": "/(.*)\\.html",
       "destination": "/$1",
       "permanent": true

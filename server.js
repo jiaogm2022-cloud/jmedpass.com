@@ -2,7 +2,7 @@
  * 樱医集团 · 本地开发服务器
  * ─────────────────────────────────────────
  * 用法：
- *   1. 打开终端，cd 到 sakura-medical 文件夹
+ *   1. 打开终端，cd 到 jmedpass.com 文件夹
  *   2. npm install
  *   3. node server.js
  *   4. 浏览器打开 http://localhost:3000/shenghuo.html

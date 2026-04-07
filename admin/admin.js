@@ -95,7 +95,7 @@ function showPage(name) {
   const navEl = document.querySelector(`.nav-item[data-page="${name}"]`);
   if (navEl) navEl.classList.add('active');
   const titles = {
-    overview:'数据总览', inquiries:'询盘管理', products:'商品管理', consultations:'线上问诊',
+    overview:'数据总览', inquiries:'询盘管理', products:'商品管理', consultations:'远程专家会诊',
     'partner-users':'合伙人用户', 'partner-commissions':'佣金管理',
     'partner-withdrawals':'提现审核', 'partner-rules':'佣金规则'
   };
@@ -718,7 +718,7 @@ function renderConsultations() {
 
   const tbody = document.getElementById('conTableBody');
   if (!slice.length) {
-    tbody.innerHTML = '<tr><td colspan="9" class="no-data" style="padding:60px 0">暂无线上问诊预约数据</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="no-data" style="padding:60px 0">暂无远程专家会诊预约数据</td></tr>';
   } else {
     tbody.innerHTML = slice.map(c => `
       <tr>
@@ -770,7 +770,7 @@ document.getElementById('conExportBtn').addEventListener('click', () => {
   const blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `线上问诊_${new Date().toISOString().slice(0,10)}.csv`;
+  a.download = `远程专家会诊_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
   showToast('导出成功', 'success');
 });
@@ -953,7 +953,7 @@ function renderAdminCommissions() {
   const allComms = getPartnerCommissions();
   const allUsers = getPartnerUsers();
   const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
-  const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'线上问诊' };
+  const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'远程专家会诊' };
 
   const filtered = filter ? allComms.filter(c => c.status === filter) : allComms;
   filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));

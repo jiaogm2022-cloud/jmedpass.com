@@ -63,6 +63,30 @@
 # ── Admin directory protection ────────────────────────
 # Block directory listing — /admin and /admin/ return 404
 [[redirects]]
+  from = "/zaisheng"
+  to = "/regenerative-medicine"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mianyi"
+  to = "/immunotherapy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ganxibao-kangshuai"
+  to = "/stem-cell-anti-aging"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ganxibao-luanchao"
+  to = "/ovarian-rejuvenation"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/admin"
   to = "/404.html"
   status = 404

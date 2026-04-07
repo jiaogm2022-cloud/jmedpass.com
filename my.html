@@ -317,7 +317,7 @@ document.getElementById('statJoinDate').textContent = fmtDate(me.createdAt);
 
 // Share speeches
 document.getElementById('copyText1').textContent =
-  `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n樱医集团是正规日本医疗机构直连，全程中文陪同。\n\n点击了解：${myLink}`;
+  `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n樱医集团直连日本正规医疗机构，并提供专业医学翻译与全流程协调支持。\n\n点击了解：${myLink}`;
 document.getElementById('copyText2').textContent =
   `💊 我一直在吃的日本NMN抗衰精华，正品直采，效果真的能感觉到，推荐给你试试～\n\n购买链接：${myLink}`;
 
@@ -452,7 +452,7 @@ function renderCommissions() {
     tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">💰</div><p>暂无佣金记录</p></div></td></tr>';
     return;
   }
-  const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'线上问诊' };
+  const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'远程专家会诊' };
   const orders = getOrders();
   tbody.innerHTML = comms.map(c => {
     const order = orders.find(o => o.id === c.orderId) || {};
@@ -563,7 +563,7 @@ function copySpeech(n) {
 }
 
 function shareWhatsApp() {
-  const text = encodeURIComponent(`我发现了一个很好的日本医疗服务平台——樱医集团，精密体检、干细胞、医美都有，全程中文服务。注册就是合伙人，推荐朋友还能赚佣金 💰\n了解一下：${myLink}`);
+  const text = encodeURIComponent(`我发现了一个很好的日本医疗服务平台——樱医集团，精密体检、干细胞、医美都有，并提供专业医学翻译与跨境协调支持。注册就是合伙人，推荐朋友还能赚佣金 💰\n了解一下：${myLink}`);
   window.open(`https://wa.me/?text=${text}`, '_blank');
 }
 function shareWechat() {

@@ -241,7 +241,7 @@ module.exports = async function handler(req, res) {
         items_count: String(items.length),
         subtotal_jpy: String(subtotalJPY),
         free_shipping: isFreeShipping ? 'yes' : 'no',
-        source: 'sakura-medical-shop',
+        source: 'jmedpass-shop',
       },
 
       success_url: baseUrl + '/success.html?session_id={CHECKOUT_SESSION_ID}',
