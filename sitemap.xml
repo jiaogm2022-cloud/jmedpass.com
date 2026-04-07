@@ -4,118 +4,181 @@
 
   <url>
     <loc>https://jmedpass.com/</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/cosmetic-surgery</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/cosmetic-surgery"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/cosmetic-surgery"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/cosmetic-surgery"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/cosmetic-surgery"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/cosmetic-surgery"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/cosmetic-surgery"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/cosmetic-surgery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/cosmetic-surgery"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/cosmetic-surgery</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/cosmetic-surgery"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/cosmetic-surgery"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/cosmetic-surgery"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/health-screening</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/health-screening"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/health-screening"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/health-screening"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/health-screening"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/health-screening"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/health-screening"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/health-screening"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/health-screening"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/health-screening</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/health-screening"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/health-screening"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/health-screening"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/regenerative-medicine</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/regenerative-medicine"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/regenerative-medicine"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/regenerative-medicine"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/regenerative-medicine"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/regenerative-medicine"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/regenerative-medicine"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/regenerative-medicine"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/regenerative-medicine"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/regenerative-medicine</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/regenerative-medicine"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/regenerative-medicine"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/regenerative-medicine"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/immunotherapy</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/immunotherapy"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/immunotherapy"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/immunotherapy"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/immunotherapy"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/immunotherapy"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/immunotherapy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/immunotherapy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/immunotherapy"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/immunotherapy</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/immunotherapy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/immunotherapy"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/immunotherapy"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/online-consultation</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/online-consultation"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/online-consultation"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/online-consultation"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/online-consultation"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/online-consultation"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/online-consultation"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/online-consultation"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/online-consultation"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/online-consultation</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/online-consultation"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/online-consultation"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/online-consultation"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/wellness</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/wellness"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/wellness"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/wellness"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/wellness"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/wellness"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/wellness"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/wellness"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/wellness"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/wellness</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/wellness"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/wellness"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/wellness"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/stem-cell-anti-aging</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/stem-cell-anti-aging"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/stem-cell-anti-aging"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/stem-cell-anti-aging"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/stem-cell-anti-aging"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/stem-cell-anti-aging"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/stem-cell-anti-aging"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/stem-cell-anti-aging"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/stem-cell-anti-aging"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/stem-cell-anti-aging</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/stem-cell-anti-aging"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/stem-cell-anti-aging"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/stem-cell-anti-aging"/>
   </url>
 
   <url>
     <loc>https://jmedpass.com/ovarian-rejuvenation</loc>
-    <lastmod>2026-04-06</lastmod>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://jmedpass.com/ovarian-rejuvenation"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/ovarian-rejuvenation"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://jmedpass.com/ovarian-rejuvenation"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://jmedpass.com/ovarian-rejuvenation"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://jmedpass.com/ovarian-rejuvenation"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/ovarian-rejuvenation"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/ovarian-rejuvenation"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/ovarian-rejuvenation"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/ovarian-rejuvenation</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/ovarian-rejuvenation"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/ovarian-rejuvenation"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/ovarian-rejuvenation"/>
   </url>
 
@@ -124,6 +187,39 @@
     <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/about"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/about</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/about"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/partner</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/partner"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/partner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/partner"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/partner</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/partner"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/partner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/partner"/>
   </url>
 
   <url>
@@ -131,6 +227,19 @@
     <lastmod>2026-04-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/privacy"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/privacy</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/privacy"/>
   </url>
 
   <url>
@@ -138,6 +247,19 @@
     <lastmod>2026-04-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/terms"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/terms</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/terms"/>
   </url>
 
   <url>
@@ -145,6 +267,19 @@
     <lastmod>2026-04-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/medical-disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/medical-disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/medical-disclaimer"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/medical-disclaimer</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/medical-disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/medical-disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/medical-disclaimer"/>
   </url>
 
 </urlset>
