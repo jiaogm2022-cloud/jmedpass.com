@@ -5,7 +5,7 @@
  *   1. 打开终端，cd 到 jmedpass.com 文件夹
  *   2. npm install
  *   3. node server.js
- *   4. 浏览器打开 http://localhost:3000/shenghuo.html
+ *   4. 浏览器打开 http://localhost:3000/wellness.html
  * ─────────────────────────────────────────
  */
 
@@ -107,7 +107,7 @@ const server = http.createServer(async (req, res) => {
             submit: { message: '樱医集团承诺正品直采，GMP认证，全球安全配送' },
           },
           success_url: `http://localhost:${PORT}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url:  `http://localhost:${PORT}/shenghuo.html?cancelled=1`,
+          cancel_url:  `http://localhost:${PORT}/wellness.html?cancelled=1`,
         });
 
         console.log(`[Stripe] ✓ Session created: ${session.id}`);
@@ -174,7 +174,7 @@ server.listen(PORT, () => {
   console.log('');
   console.log('🌸  樱医集团 · 本地开发服务器已启动');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log(`  商城：  http://localhost:${PORT}/shenghuo.html`);
+  console.log(`  商城：  http://localhost:${PORT}/wellness.html`);
   console.log(`  首页：  http://localhost:${PORT}/index.html`);
   console.log(`  模式：  Stripe 测试模式 ✓`);
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

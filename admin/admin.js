@@ -393,7 +393,7 @@ renderOverview();
    ==================================================================== */
 const PROD_KEY = 'sm_products';
 
-// Default products (from shenghuo.html)
+// Default products (from wellness.html)
 const DEFAULT_PRODUCTS = [
   { id:1,  cat:'nmn',    brand:'AFC Japan',           name:'NMN 9000 Ultra 超高纯度',        spec:'60粒 · 60日量', price:1280, orig:1580, badge:'热销', emoji:'⚡', grad:'linear-gradient(135deg,#7c3aed,#4f46e5)', desc:'AFC Japan 旗舰级 NMN 产品，每粒含 NMN 150mg，纯度高达 99% 以上。采用日本独家低温萃取工艺，有效保留 NMN 活性成分，帮助激活体内 NAD+ 水平，从细胞层面对抗衰老。', highlights:['NMN 纯度 ≥99%，无杂质添加','每日摄入 300mg，临床推荐剂量','日本国内生产，厚生劳动省备案','60粒装，60天完整疗程'], images:[] },
   { id:2,  cat:'nmn',    brand:'Mirai Lab',            name:'Pure NMN 12000 高纯胶囊',        spec:'60粒 · 60日量', price:1680, orig:1980, badge:'新品', emoji:'⚡', grad:'linear-gradient(135deg,#6d28d9,#7c3aed)', desc:'Mirai Lab 研发的高浓度 NMN 胶囊，每粒含 NMN 200mg，辅以白藜芦醇协同增效。全球顶级运动员及健康意识人群首选，已通过多项第三方独立检测认证。', highlights:['超高浓度 200mg/粒','白藜芦醇协同增效配方','第三方检测报告透明公开','无麸质、无转基因'], images:[] },

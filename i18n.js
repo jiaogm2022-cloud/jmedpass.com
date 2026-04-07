@@ -3,7 +3,7 @@ var I18N = {
 
   zh: {
     /* --- NAV (shared) --- */
-    'nav.meimei':'医美整形','nav.tijian':'精密体检','nav.regenerative-medicine':'再生医疗','nav.immunotherapy':'免疫疗法','nav.zaixian':'远程专家会诊','nav.shenghuo':'生命管理','nav.consult':'预约专员',
+    'nav.cosmetic-surgery':'医美整形','nav.health-screening':'精密体检','nav.regenerative-medicine':'再生医疗','nav.immunotherapy':'免疫疗法','nav.online-consultation':'远程专家会诊','nav.wellness':'生命管理','nav.consult':'预约专员',
     'nav.services':'服务项目','nav.why':'为何选择我们','nav.process':'服务流程','nav.testimonials':'客户见证',
     /* --- OHDOCTOR --- */
     'ohdoc.badge':'战略合作平台',
@@ -142,7 +142,7 @@ var I18N = {
     'form.r.id':'印度尼西亚','form.r.ph':'菲律宾','form.r.kh':'柬埔寨','form.r.mm':'缅甸',
     'form.r.in':'印度','form.r.mn':'蒙古','form.r.other':'其他',
     'form.svc':'感兴趣的服务',
-    'form.svc.meimei':'医美整形','form.svc.tijian':'精密体检',
+    'form.svc.cosmetic-surgery':'医美整形','form.svc.health-screening':'精密体检',
     'form.svc.regenerative-medicine':'再生医疗','form.svc.immunotherapy':'免疫疗法',
     'form.msg':'留言（选填）','form.msg.ph':'请简述您的需求或问题…',
     'form.submit':'提交预约申请','form.note':'提交后，我们的顾问将在24小时内与您联系',
@@ -746,7 +746,7 @@ var I18N = {
   },
 
   en: {
-    'nav.meimei':'Aesthetic Surgery','nav.tijian':'Health Check-up','nav.regenerative-medicine':'Regenerative Medicine','nav.immunotherapy':'Immunotherapy','nav.zaixian':'Online Consult','nav.shenghuo':'Wellness','nav.consult':'Consult Now',
+    'nav.cosmetic-surgery':'Aesthetic Surgery','nav.health-screening':'Health Check-up','nav.regenerative-medicine':'Regenerative Medicine','nav.immunotherapy':'Immunotherapy','nav.online-consultation':'Online Consult','nav.wellness':'Wellness','nav.consult':'Consult Now',
     'nav.services':'Services','nav.why':'Why Choose Us','nav.process':'Our Process','nav.testimonials':'Testimonials',
     /* --- OHDOCTOR --- */
     'ohdoc.badge':'Strategic Partner',
@@ -877,7 +877,7 @@ var I18N = {
     'form.r.id':'Indonesia','form.r.ph':'Philippines','form.r.kh':'Cambodia','form.r.mm':'Myanmar',
     'form.r.in':'India','form.r.mn':'Mongolia','form.r.other':'Other',
     'form.svc':'Services of Interest',
-    'form.svc.meimei':'Aesthetic Surgery','form.svc.tijian':'Health Check-up',
+    'form.svc.cosmetic-surgery':'Aesthetic Surgery','form.svc.health-screening':'Health Check-up',
     'form.svc.regenerative-medicine':'Regenerative Medicine','form.svc.immunotherapy':'Immunotherapy',
     'form.msg':'Message (Optional)','form.msg.ph':'Briefly describe your needs…',
     'form.submit':'Submit Enquiry','form.note':'Our consultant will contact you within 24 hours',
@@ -1472,7 +1472,7 @@ var I18N = {
   },
 
   ja: {
-    'nav.meimei':'医療美容','nav.tijian':'精密健診','nav.regenerative-medicine':'再生医療','nav.immunotherapy':'免疫療法','nav.zaixian':'オンライン診療','nav.shenghuo':'健康生活','nav.consult':'今すぐ相談',
+    'nav.cosmetic-surgery':'医療美容','nav.health-screening':'精密健診','nav.regenerative-medicine':'再生医療','nav.immunotherapy':'免疫療法','nav.online-consultation':'オンライン診療','nav.wellness':'健康生活','nav.consult':'今すぐ相談',
     'nav.services':'サービス','nav.why':'選ばれる理由','nav.process':'ご利用の流れ','nav.testimonials':'お客様の声',
     /* --- OHDOCTOR --- */
     'ohdoc.badge':'戦略的提携パートナー',
@@ -1603,7 +1603,7 @@ var I18N = {
     'form.r.id':'インドネシア','form.r.ph':'フィリピン','form.r.kh':'カンボジア','form.r.mm':'ミャンマー',
     'form.r.in':'インド','form.r.mn':'モンゴル','form.r.other':'その他',
     'form.svc':'ご興味のあるサービス',
-    'form.svc.meimei':'医療美容','form.svc.tijian':'精密健診',
+    'form.svc.cosmetic-surgery':'医療美容','form.svc.health-screening':'精密健診',
     'form.svc.regenerative-medicine':'再生医療','form.svc.immunotherapy':'免疫療法',
     'form.msg':'メッセージ（任意）','form.msg.ph':'ご要望やご質問をご記入ください…',
     'form.submit':'相談を申し込む','form.note':'ご提出後24時間以内にコンサルタントからご連絡します',
@@ -2199,7 +2199,7 @@ var I18N = {
 
   ko: {
     /* --- NAV (shared) --- */
-    'nav.meimei':'미용성형','nav.tijian':'정밀건강검진','nav.regenerative-medicine':'재생의료','nav.immunotherapy':'면역요법','nav.zaixian':'온라인 진료','nav.shenghuo':'웰니스','nav.consult':'지금 상담하기',
+    'nav.cosmetic-surgery':'미용성형','nav.health-screening':'정밀건강검진','nav.regenerative-medicine':'재생의료','nav.immunotherapy':'면역요법','nav.online-consultation':'온라인 진료','nav.wellness':'웰니스','nav.consult':'지금 상담하기',
     'nav.services':'서비스 항목','nav.why':'왜 사쿠라인가','nav.process':'서비스 절차','nav.testimonials':'고객 후기',
     /* --- HERO (index) --- */
     'hero.badge':'일본 인증 · 전 세계 귀빈 고객의 선택',
@@ -2339,7 +2339,7 @@ var I18N = {
     'form.r.id':'인도네시아','form.r.ph':'필리핀','form.r.kh':'캄보디아','form.r.mm':'미얀마',
     'form.r.in':'인도','form.r.mn':'몽골','form.r.other':'기타',
     'form.svc':'관심 서비스',
-    'form.svc.meimei':'미용성형','form.svc.tijian':'정밀건강검진',
+    'form.svc.cosmetic-surgery':'미용성형','form.svc.health-screening':'정밀건강검진',
     'form.svc.regenerative-medicine':'재생의료','form.svc.immunotherapy':'면역요법',
     'form.msg':'메시지 (선택)','form.msg.ph':'요청 사항이나 문의 내용을 간략히 적어주세요…',
     'form.submit':'상담 예약 신청','form.note':'제출 후 24시간 이내에 담당자가 연락드립니다',
@@ -2788,7 +2788,7 @@ var I18N = {
 
   vi: {
     /* --- NAV --- */
-    'nav.meimei':'Thẩm mỹ','nav.tijian':'Khám sức khỏe','nav.regenerative-medicine':'Y học tái sinh','nav.immunotherapy':'Liệu pháp miễn dịch','nav.zaixian':'Tư vấn trực tuyến','nav.shenghuo':'Sức khỏe & Wellness','nav.consult':'Tư vấn ngay',
+    'nav.cosmetic-surgery':'Thẩm mỹ','nav.health-screening':'Khám sức khỏe','nav.regenerative-medicine':'Y học tái sinh','nav.immunotherapy':'Liệu pháp miễn dịch','nav.online-consultation':'Tư vấn trực tuyến','nav.wellness':'Sức khỏe & Wellness','nav.consult':'Tư vấn ngay',
     'nav.services':'Dịch vụ','nav.why':'Tại sao chọn chúng tôi','nav.process':'Quy trình','nav.testimonials':'Khách hàng nói gì',
     /* --- HERO --- */
     'hero.badge':'Chứng nhận Nhật Bản · Lựa chọn của khách hàng toàn cầu',
@@ -2927,7 +2927,7 @@ var I18N = {
     'form.r.id':'Indonesia','form.r.ph':'Philippines','form.r.kh':'Campuchia','form.r.mm':'Myanmar',
     'form.r.in':'Ấn Độ','form.r.mn':'Mông Cổ','form.r.other':'Khác',
     'form.svc':'Dịch vụ quan tâm',
-    'form.svc.meimei':'Thẩm mỹ phẫu thuật','form.svc.tijian':'Khám sức khỏe chuyên sâu',
+    'form.svc.cosmetic-surgery':'Thẩm mỹ phẫu thuật','form.svc.health-screening':'Khám sức khỏe chuyên sâu',
     'form.svc.regenerative-medicine':'Y học tái sinh','form.svc.immunotherapy':'Liệu pháp miễn dịch',
     'form.msg':'Tin nhắn (tùy chọn)','form.msg.ph':'Mô tả ngắn gọn nhu cầu hoặc câu hỏi của bạn…',
     'form.submit':'Gửi yêu cầu tư vấn','form.note':'Chuyên viên sẽ liên hệ với bạn trong vòng 24 giờ',
@@ -3449,14 +3449,14 @@ var PAGE_META = {
     ko: { t:'사쿠라 메디칼 | 일본 의료·미용성형·정밀건강검진·재생의료·NMN건강', d:'사쿠라 메디칼 그룹 — 전 세계 귀빈 고객을 위한 일본 의료 플랫폼. 미용성형·정밀건강검진·줄기세포 재생의료·면역요법·온라인 진료·일본 정품 NMN 건강기능식품.' },
     vi: { t:'Sakura Medical Group | Y tế Nhật Bản, Thẩm mỹ, Khám sức khỏe, Tái sinh & Wellness', d:'Sakura Medical Group — nền tảng y tế Nhật Bản hàng đầu cho khách hàng toàn cầu. Thẩm mỹ phẫu thuật, khám sức khỏe chuyên sâu, tế bào gốc, liệu pháp miễn dịch, tư vấn trực tuyến và sản phẩm wellness Nhật Bản chính hãng.' }
   },
-  'meimei': {
+  'cosmetic-surgery': {
     zh: { t:'日本医美整形 | 双眼皮·隆鼻·面部提升 | 樱医集团', d:'樱医集团提供日本顶级医美整形——双眼皮、隆鼻、面部提升、吸脂。日本持牌整形外科专家操刀，中文全程陪同，安全合规。全球贵宾赴日整形首选。' },
     en: { t:'Japan Aesthetic Surgery | Eyelid, Rhinoplasty, Facelift | Sakura Medical', d:'Sakura Medical connects valued guests worldwide with Japan\'s top certified aesthetic surgeons — eyelid surgery, rhinoplasty, facelift, liposuction. Minimally invasive techniques, multilingual concierge, transparent pricing.' },
     ja: { t:'日本美容整形 | 二重まぶた・隆鼻・フェイスリフト | 桜医集団', d:'桜医集団が日本トップの美容外科医と接続。二重まぶた・鼻整形・フェイスリフト・脂肪吸引。最先端低侵襲技術、多言語コンシェルジュ、透明料金。' },
     ko: { t:'일본 미용성형 | 쌍꺼풀·코성형·안면거상 | 사쿠라 메디칼', d:'사쿠라 메디칼이 일본 최고 인증 성형외과 의사와 연결해 드립니다. 쌍꺼풀·코성형·안면거상·지방흡입. 첨단 최소침습 기술, 다국어 컨시어지, 투명한 가격.' },
     vi: { t:'Thẩm mỹ Nhật Bản | Mắt 2 mí, Nâng mũi, Căng da mặt | Sakura Medical', d:'Sakura Medical kết nối khách hàng toàn cầu với bác sĩ phẫu thuật thẩm mỹ hàng đầu Nhật Bản — mắt 2 mí, nâng mũi, căng da mặt, hút mỡ. Kỹ thuật xâm lấn tối thiểu, đồng hành đa ngôn ngữ, báo giá minh bạch.' }
   },
-  'tijian': {
+  'health-screening': {
     zh: { t:'日本精密体检 | PET-CT癌症筛查·人间ドック | 樱医集团', d:'樱医集团日本精密体检——PET-CT全身癌症筛查、MRI、心脑血管检查、基因检测。以多维医学评估、专家深度报告解读和长期健康档案管理，构建无国界的一站式健康防御体系。' },
     en: { t:'Japan Precision Health Checkup | PET-CT Cancer Screening | Sakura Medical', d:'Sakura Medical\'s Japan Ningen Dock program for valued guests worldwide — PET-CT full-body cancer screening, MRI, cardiovascular checks and genetic testing. Detect tumors as small as 5mm. Multilingual report consultation.' },
     ja: { t:'日本精密人間ドック | PET-CTがん検診 | 桜医集団', d:'桜医集団の日本人間ドック — PET-CT全身がん検診・MRI・心脳血管検査・遺伝子検査。5mm早期腫瘍を発見可能。多言語レポート解説対応。' },
@@ -3477,14 +3477,14 @@ var PAGE_META = {
     ko: { t:'일본 면역요법 | NK세포 암 면역치료 | 사쿠라 메디칼', d:'사쿠라 메디칼의 일본 면역요법 — NK세포·수지상세포 면역치료로 암과 싸웁니다. PMDA·후생노동성 인증 종양센터, 1회 60〜100억 개 고활성 면역세포 투여.' },
     vi: { t:'Liệu pháp miễn dịch Nhật Bản | Tế bào NK chống ung thư | Sakura Medical', d:'Liệu pháp miễn dịch Nhật Bản của Sakura Medical — tế bào NK và tế bào đuôi gai chống ung thư. Trung tâm ung thư được PMDA & MHLW chứng nhận, 6–10 tỷ tế bào miễn dịch mỗi lần truyền.' }
   },
-  'zaixian': {
+  'online-consultation': {
     zh: { t:'日本名院专家远程视频会诊 | 第二诊疗意见 | 樱医集团', d:'樱医集团远程专家会诊服务——即时链接东京、大阪核心医疗资源，协助正式赴日前与日本资深专科医师进行深度视频交流，获取权威诊疗建议与第二医学意见。' },
     en: { t:'Japan Online Doctor Consultation | Chinese, Vietnamese, English | Sakura Medical', d:'Consult licensed Japanese doctors online in your language — internal medicine, dermatology, AGA hair loss, weight management and more. Prescriptions delivered worldwide, no travel needed.' },
     ja: { t:'日本医師オンライン診療 | 中国語・多言語対応 | 桜医集団', d:'桜医集団のオンライン診療 — 日本持免許医師による中国語・多言語診察。内科・皮膚科・AGA・ダイエット管理ほか8科目対応。処方薬を世界中へ配送。' },
     ko: { t:'일본 의사 온라인 진료 | 한국어·다국어 | 사쿠라 메디칼', d:'사쿠라 메디칼의 온라인 진료 — 일본 면허 의사의 한국어·다국어 진료. 내과·피부과·AGA 탈모·체중관리 등 8개과 지원. 처방약 전 세계 배송.' },
     vi: { t:'Tư vấn bác sĩ Nhật trực tuyến | Tiếng Việt, Đa ngôn ngữ | Sakura Medical', d:'Tư vấn với bác sĩ Nhật có giấy phép bằng tiếng Việt — nội khoa, da liễu, rụng tóc AGA, quản lý cân nặng và nhiều hơn nữa. Thuốc kê đơn giao toàn cầu, không cần đến Nhật.' }
   },
-  'shenghuo': {
+  'wellness': {
     zh: { t:'日本养生保健品 | NMN抗衰老·正品直采 | 樱医集团', d:'樱医集团日本养生商城——NMN抗衰老、男性保健、女性胶原蛋白、肠道益生菌、免疫营养等100+款日本正品。医学团队严选，日本官方渠道直采，全球配送。' },
     en: { t:'Japanese Health Supplements | NMN Anti-Aging, Authentic Japan Direct | Sakura Medical', d:'Sakura Medical\'s Japan wellness shop — 100+ premium NMN anti-aging, men\'s and women\'s supplements, gut health and immune nutrition. Medically curated, Japan-direct sourced, worldwide delivery.' },
     ja: { t:'日本健康サプリ | NMNアンチエイジング・正規調達 | 桜医集団', d:'桜医集団の日本健康ショップ — NMNアンチエイジング・男女サプリ・腸活・免疫栄養など100種以上。医学チーム厳選、日本正規ルート直接調達、世界発送。' },

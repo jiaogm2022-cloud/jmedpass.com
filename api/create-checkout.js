@@ -245,7 +245,7 @@ module.exports = async function handler(req, res) {
       },
 
       success_url: baseUrl + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url:  baseUrl + '/shenghuo.html?cancelled=1',
+      cancel_url:  baseUrl + '/wellness.html?cancelled=1',
     });
 
     return res.status(200).json({

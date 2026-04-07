@@ -38,6 +38,26 @@
       "permanent": true
     },
     {
+      "source": "/meimei",
+      "destination": "/cosmetic-surgery",
+      "permanent": true
+    },
+    {
+      "source": "/tijian",
+      "destination": "/health-screening",
+      "permanent": true
+    },
+    {
+      "source": "/shenghuo",
+      "destination": "/wellness",
+      "permanent": true
+    },
+    {
+      "source": "/zaixian",
+      "destination": "/online-consultation",
+      "permanent": true
+    },
+    {
       "source": "/(.*)\\.html",
       "destination": "/$1",
       "permanent": true
