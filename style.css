@@ -1201,9 +1201,34 @@ img { max-width: 100%; display: block; }
   .trust-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); width: 100%; justify-content: center; }
   .trust-item:last-child { border-bottom: none; }
   .stat-item { padding: 0 20px; }
-  .why-card-stack { height: 520px; }
-  .why-main-card { width: 240px; }
-  .why-fc-3 { bottom: 0; }
+  .why-card-stack {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+  }
+  .why-main-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    order: 1;
+    width: min(100%, 320px);
+  }
+  .why-float-card {
+    position: relative;
+    inset: auto;
+    transform: none;
+    animation: none;
+    order: 2;
+    min-width: 180px;
+  }
+  .why-fc-3 {
+    left: auto;
+    transform: none;
+  }
 }
 
 @media (max-width: 480px) {
