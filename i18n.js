@@ -96,6 +96,7 @@ var I18N = {
     'why.f3.t':'透明资费与合规契约','why.f3.d':'坚持明码标价与契约精神，提供严谨的费用清单，以纯净的消费环境保障您的合法权益。',
     'why.f4.t':'全周期健康延伸管理','why.f4.d':'提供6-12个月跨国随访管理。我们与日本主治医生保持即时互通，为您构建闭环式的健康守护体系。',
     'why.card.t':'樱医品质承诺','why.card.d':'我们严格筛选具备日本专科认定资质的顶尖医师，所有协作医院均通过JCQHC（日本医疗机能评价机构）权威认证。以严苛标准，致敬每一份生命托付。',
+    'why.b1':'JCQHC认证','why.b2':'JCI国际认证','why.b3':'ISO 9001',
     'why.fc1':'精英客户推崇','why.fc2':'全球即时响应','why.fc3':'执着生命科学',
     /* --- PROCESS (index) --- */
     'proc.tag':'服务流程','proc.title':'六步全程护航 · 零障碍赴日就医',
@@ -834,6 +835,7 @@ var I18N = {
     'why.f3.t':'Transparent Pricing','why.f3.d':'All services clearly priced. A detailed cost breakdown is provided before signing, eliminating hidden charges.',
     'why.f4.t':'Post-return Follow-up','why.f4.d':'6–12 months of bilingual follow-up after returning home, maintaining communication with your Japanese physician.',
     'why.card.t':'Sakura Quality Promise','why.card.d':'All our partner physicians hold Japanese specialty certification, and hospitals are JCQHC-accredited.',
+    'why.b1':'JCQHC Accredited','why.b2':'JCI Certified','why.b3':'ISO 9001',
     'why.fc1':'Client Satisfaction','why.fc2':'Emergency Response','why.fc3':'Years of Expertise',
     'proc.tag':'Our Process','proc.title':'Six Steps to Seamless Medical Travel in Japan',
     'proc.sub':'From initial consultation to post-return follow-up, our team accompanies every step',
@@ -1560,6 +1562,7 @@ var I18N = {
     'why.f3.t':'明瞭価格保証','why.f3.d':'全サービスを明示価格で提供。契約前に詳細な費用明細書をご提示し、追加費用は一切ありません。',
     'why.f4.t':'帰国後フォローアップ','why.f4.d':'帰国後6〜12ヶ月間、中国語での継続フォローアップと日本の担当医との連携を提供します。',
     'why.card.t':'桜医クオリティ保証','why.card.d':'提携医師は全員、日本専門医資格を保有。病院はJCQHC（日本医療機能評価機構）認定を取得しています。',
+    'why.b1':'JCQHC認定','why.b2':'JCI国際認証','why.b3':'ISO 9001',
     'why.fc1':'顧客満足度','why.fc2':'緊急対応','why.fc3':'年の実績',
     'proc.tag':'ご利用の流れ','proc.title':'6ステップで安心の日本医療渡航',
     'proc.sub':'初回相談から帰国後フォローアップまで、各段階でプロチームがサポートします',
@@ -2233,6 +2236,7 @@ var I18N = {
     'why.f3.t':'투명한 가격 보장','why.f3.d':'모든 항목은 명확하게 표시되며, 계약 전 상세 비용 명세서를 제공합니다. 숨은 비용은 없습니다.',
     'why.f4.t':'귀국 후 지속 추적 관리','why.f4.d':'귀국 후 6~12개월 추적 관리 서비스를 제공하며 일본 주치의와의 소통을 유지합니다.',
     'why.card.t':'사쿠라 품질 약속','why.card.d':'모든 제휴 의사는 일본 전문의 자격을 보유하며, 병원은 JCQHC(일본의료기능평가기구) 인증을 받았습니다.',
+    'why.b1':'JCQHC 인증','why.b2':'JCI 국제인증','why.b3':'ISO 9001',
     'why.fc1':'고객 만족도','why.fc2':'긴급 대응','why.fc3':'업계 경력',
     /* --- PROCESS (index) --- */
     'proc.tag':'서비스 절차','proc.title':'6단계 완벽 동행 · 장벽 없는 일본 의료 여정',
@@ -2822,6 +2826,7 @@ var I18N = {
     'why.f3.t':'Báo giá minh bạch','why.f3.d':'Tất cả dịch vụ niêm yết rõ ràng. Bảng chi tiết chi phí cung cấp trước khi ký hợp đồng, không có phí ẩn.',
     'why.f4.t':'Theo dõi sau khi về nước','why.f4.d':'6–12 tháng theo dõi song ngữ sau khi về nước, duy trì liên lạc với bác sĩ điều trị tại Nhật.',
     'why.card.t':'Cam kết chất lượng Sakura','why.card.d':'Tất cả bác sĩ đối tác đều có chứng chỉ chuyên khoa Nhật Bản, bệnh viện được JCQHC công nhận.',
+    'why.b1':'Chứng nhận JCQHC','why.b2':'Chứng nhận quốc tế JCI','why.b3':'ISO 9001',
     'why.fc1':'Mức độ hài lòng','why.fc2':'Phản hồi khẩn cấp','why.fc3':'Kinh nghiệm ngành',
     /* --- PROCESS --- */
     'proc.tag':'Quy trình','proc.title':'6 Bước đồng hành hoàn hảo · Đến Nhật khám bệnh không rào cản',
