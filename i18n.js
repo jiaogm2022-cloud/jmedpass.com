@@ -1327,6 +1327,7 @@ var I18N = {
     'zx.faq.5.q':'What languages can I consult in?',
     'zx.cta.t':'Japanese Specialist Care, Anytime Anywhere',
     'zx.cta.s':'No travel to Japan needed — consult a licensed Japanese doctor by phone and have your prescription delivered home',
+    'zx.cta.btn1':'Book Your Exclusive Consultant','zx.cta.btn2':'Start In-Depth Assessment',
     /* --- SHENGHUO (lifestyle & wellness) --- */
     'sh.hero.tag':'Authentic Japan Direct Sourcing · Global Delivery',
     'sh.hero.title':'Lifestyle & Wellness<br /><span style="font-size:.65em;font-weight:300;opacity:.85">Nourish Every Day with Japan\'s Finest Health Essentials</span>',
@@ -2052,6 +2053,7 @@ var I18N = {
     'zx.faq.5.q':'どの言語で診療を受けられますか？',
     'zx.cta.t':'いつでもどこでも日本の専門医療を',
     'zx.cta.s':'来日不要 — スマートフォン1台で日本の認定医師に相談し、処方薬を自宅へお届け',
+    'zx.cta.btn1':'専属コンサルタントを予約','zx.cta.btn2':'詳細評価プランを開始',
     /* --- SHENGHUO (lifestyle & wellness) --- */
     'sh.hero.tag':'日本正規ルート直接調達 · 世界発送',
     'sh.hero.title':'ライフスタイル健康<br /><span style="font-size:.65em;font-weight:300;opacity:.85">日本最高級の健康食品で、毎日を豊かに</span>',
@@ -2685,6 +2687,7 @@ var I18N = {
     'zx.faq.5.q':'어떤 언어로 진료받을 수 있나요?',
     'zx.faq.5.a':'한국어(한국어), 중국어(보통화/광둥어), 일본어, 영어 4개 언어로 진료가 가능합니다. 모든 진료 기록, 처방전 설명, 복약 지도는 한국어로 제공될 수 있습니다.',
     'zx.cta.t':'언제 어디서나 일본 전문의 진료를','zx.cta.s':'일본 방문 없이 스마트폰으로 일본 면허 의사와 전문 진료를 받고 처방약을 집으로 배송받으세요',
+    'zx.cta.btn1':'전담 컨설턴트 예약','zx.cta.btn2':'심층 평가 플랜 시작',
     /* --- SHENGHUO (웰니스) --- */
     'sh.hero.tag':'일본 정품 직수입 · 전 세계 배송',
     'sh.hero.title':'웰니스<br /><span style="font-size:.65em;font-weight:300;opacity:.85">일본 최고 건강 제품으로 매일을 가꾸세요</span>',
@@ -3287,6 +3290,7 @@ var I18N = {
     'zx.faq.5.q':'Tôi có thể tư vấn bằng ngôn ngữ nào?',
     'zx.cta.t':'Y tế chuyên khoa Nhật Bản — mọi lúc, mọi nơi',
     'zx.cta.s':'Không cần đến Nhật — tư vấn với bác sĩ Nhật có giấy phép qua điện thoại, thuốc kê đơn giao tận nhà',
+    'zx.cta.btn1':'Đặt lịch tư vấn riêng','zx.cta.btn2':'Bắt đầu đánh giá chuyên sâu',
     'zx.s3.num':'4 ngôn ngữ','zx.s4.num':'Toàn cầu',
     'zx.in.lead':'Không cần visa, không cần vé máy bay. Tư vấn 1-1 với bác sĩ Nhật có giấy phép qua điện thoại thông minh. Bác sĩ Nhật nổi tiếng với thái độ chẩn đoán tỉ mỉ, nghiêm túc — mỗi lần tư vấn đều có hồ sơ bệnh án đầy đủ, cho bạn trải nghiệm như đến Nhật trực tiếp.',
     'zx.in.p1':'Nền tảng tư vấn trực tuyến của chúng tôi được vận hành bởi cơ sở y tế được Bộ Y tế, Lao động và Phúc lợi Nhật Bản cấp phép. Tất cả bác sĩ tham gia đều có giấy phép hành nghề y tại Nhật Bản với kinh nghiệm lâm sàng phong phú trong chuyên khoa của mình.',
