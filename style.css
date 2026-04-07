@@ -666,10 +666,10 @@ img { max-width: 100%; display: block; }
   line-height: 1.75;
 }
 .why-right { position: relative; }
-.why-card-stack { position: relative; height: 480px; }
+.why-card-stack { position: relative; height: 620px; }
 .why-main-card {
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
@@ -725,7 +725,7 @@ img { max-width: 100%; display: block; }
 .wfc-label { font-size: .72rem; color: var(--muted); letter-spacing: .05em; }
 .why-fc-1 { top: 40px; left: 10px; animation-delay: 0s; }
 .why-fc-2 { top: 40px; right: 10px; animation-delay: 1.3s; }
-.why-fc-3 { bottom: 40px; left: 50%; transform: translateX(-50%); animation-delay: 2.6s; }
+.why-fc-3 { bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 2.6s; }
 @keyframes floatCard {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -1201,8 +1201,9 @@ img { max-width: 100%; display: block; }
   .trust-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); width: 100%; justify-content: center; }
   .trust-item:last-child { border-bottom: none; }
   .stat-item { padding: 0 20px; }
-  .why-card-stack { height: 380px; }
+  .why-card-stack { height: 520px; }
   .why-main-card { width: 240px; }
+  .why-fc-3 { bottom: 0; }
 }
 
 @media (max-width: 480px) {
