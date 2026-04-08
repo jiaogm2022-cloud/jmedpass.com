@@ -54,6 +54,9 @@
       </div>
       <div class="auth-error" id="loginError"></div>
       <button type="submit" class="auth-submit" data-i18n="login.submitLogin">登录</button>
+      <p style="font-size:.82rem;text-align:right;margin-top:10px;">
+        <a href="javascript:void(0)" id="forgotPasswordLink" style="color:var(--accent);text-decoration:none;" data-i18n="login.forgot">忘记密码？</a>
+      </p>
     </form>
 
     <!-- 注册表单 -->
@@ -67,12 +70,24 @@
         <input type="tel" id="regPhone" data-i18n-ph="login.regPhonePh" placeholder="如 +65 8888 8888" />
       </div>
       <div class="auth-field">
-        <label data-i18n="login.emailLabel">邮箱（选填）</label>
-        <input type="email" id="regEmail" data-i18n-ph="login.emailPh" placeholder="your@email.com" />
+        <label data-i18n="login.emailLabel">邮箱</label>
+        <input type="email" id="regEmail" data-i18n-ph="login.emailPh" placeholder="your@email.com" required />
       </div>
       <div class="auth-field">
         <label data-i18n="login.pwdLabel">设置密码</label>
-        <input type="password" id="regPassword" data-i18n-ph="login.pwdPh" placeholder="至少6位" autocomplete="new-password" />
+        <input type="password" id="regPassword" data-i18n-ph="login.pwdPh" placeholder="至少8位" autocomplete="new-password" />
+      </div>
+      <div class="auth-field">
+        <label>确认密码</label>
+        <input type="password" id="regPasswordConfirm" placeholder="再次输入密码" autocomplete="new-password" />
+      </div>
+      <div class="auth-field">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+          <input type="checkbox" id="regAgree" style="margin-top:4px;" />
+          <span style="font-size:.88rem;line-height:1.6;color:var(--mid);">
+            我已阅读并同意<a href="/terms" target="_blank" style="color:var(--accent);text-decoration:underline;">合伙人计划说明</a>、<a href="/privacy" target="_blank" style="color:var(--accent);text-decoration:underline;">隐私政策</a>及佣金规则；本计划仅为单级推荐奖励。
+          </span>
+        </label>
       </div>
       <div class="auth-error" id="registerError"></div>
       <button type="submit" class="auth-submit" data-i18n="login.submitRegister">注册，立即成为合伙人</button>
@@ -103,19 +118,25 @@ function t(key, fallback) {
 
 // ===== Read URL params =====
 const params = new URLSearchParams(location.search);
-const refCode = params.get('ref');
+const refCode = params.get('ref') || localStorage.getItem('sm_pending_ref') || '';
 const tabParam = params.get('tab');
+
+fetch('/api/partner-session', { credentials: 'same-origin' })
+  .then(function (response) { return response.json(); })
+  .then(function (data) {
+    if (data && data.authenticated) {
+      window.location.href = '/my';
+    }
+  })
+  .catch(function () {});
 
 // Show referrer notice
 if (refCode) {
-  const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
-  const referrer = users.find(u => u.referralCode === refCode);
-  if (referrer) {
-    const notice = document.getElementById('refNotice');
-    const msg = t('login.msg.invited', '您的朋友 {name} 邀请您体验日本顶级医疗服务').replace('{name}', referrer.nickname);
-    notice.textContent = msg;
-    notice.classList.add('show');
-  }
+  const notice = document.getElementById('refNotice');
+  notice.textContent = '您正在通过推荐链接注册，完成注册后推荐关系会自动绑定。';
+  notice.classList.add('show');
+  localStorage.setItem('sm_pending_ref', refCode);
+  localStorage.setItem('sm_pending_ref_at', Date.now().toString());
 }
 
 // Default tab
@@ -133,6 +154,17 @@ async function hashPassword(password) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
+function normalizePhoneInput(value) {
+  return String(value || '')
+    .trim()
+    .replace(/[^\d+]/g, '')
+    .replace(/(?!^)\+/g, '');
+}
+
+function isValidPhoneInput(value) {
+  return /^\+?\d{6,15}$/.test(normalizePhoneInput(value));
+}
+
 async function doLogin(e) {
   e.preventDefault();
   const phone = document.getElementById('loginPhone').value.trim();
@@ -140,72 +172,80 @@ async function doLogin(e) {
   const errEl = document.getElementById('loginError');
 
   if (!phone || !password) { showAuthError(errEl, t('login.err.required', '请填写所有必填项')); return; }
-
-  const hashed = await hashPassword(password);
-  const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
-  const user = users.find(u => (u.phone === phone || u.email === phone) && u.password === hashed);
-
-  if (!user) { showAuthError(errEl, t('login.err.wrongPwd', '账号或密码错误，请检查后重试')); return; }
-  if (user.status === 'frozen') { showAuthError(errEl, t('login.err.frozen', '该账号已被冻结，请联系客服')); return; }
-
-  localStorage.setItem('sm_current_user', user.id);
-  showToastMsg(t('login.msg.loginOk', '登录成功，正在跳转…'), 'success');
-  setTimeout(() => { window.location.href = '/my'; }, 800);
+  try {
+    const response = await fetch('/api/partner-login', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: phone, password }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showAuthError(errEl, data.error || t('login.err.wrongPwd', '账号或密码错误，请检查后重试'));
+      return;
+    }
+    showToastMsg(t('login.msg.loginOk', '登录成功，正在跳转…'), 'success');
+    setTimeout(() => { window.location.href = '/my'; }, 800);
+  } catch (error) {
+    showAuthError(errEl, '登录失败，请稍后重试');
+  }
 }
 
 async function doRegister(e) {
   e.preventDefault();
+  const submitBtn = document.querySelector('#registerForm .auth-submit');
+  const defaultLabel = submitBtn.textContent;
   const nickname = document.getElementById('regNickname').value.trim();
-  const phone = document.getElementById('regPhone').value.trim();
+  const phone = normalizePhoneInput(document.getElementById('regPhone').value);
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
+  const confirmPassword = document.getElementById('regPasswordConfirm').value;
+  const agreeTerms = document.getElementById('regAgree').checked;
   const errEl = document.getElementById('registerError');
 
   if (!nickname) { showAuthError(errEl, t('login.err.nickRequired', '请填写昵称')); return; }
   if (!phone) { showAuthError(errEl, t('login.err.phoneRequired', '请填写手机号')); return; }
-  if (password.length < 6) { showAuthError(errEl, t('login.err.pwdShort', '密码至少需要6位')); return; }
+  if (!isValidPhoneInput(phone)) { showAuthError(errEl, '请输入有效的手机号或 WhatsApp 号码'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError(errEl, '请填写有效的邮箱地址'); return; }
+  if (password.length < 8) { showAuthError(errEl, '密码至少需要8位'); return; }
+  if (password !== confirmPassword) { showAuthError(errEl, '两次输入的密码不一致'); return; }
+  if (!agreeTerms) { showAuthError(errEl, '请先同意合伙人协议与隐私说明'); return; }
 
-  const users = JSON.parse(localStorage.getItem('sm_users') || '[]');
-  if (users.find(u => u.phone === phone)) { showAuthError(errEl, t('login.err.phoneTaken', '该手机号已注册，请直接登录')); return; }
-  if (email && users.find(u => u.email === email)) { showAuthError(errEl, t('login.err.emailTaken', '该邮箱已注册，请直接登录')); return; }
+  try {
+    submitBtn.disabled = true;
+    submitBtn.textContent = '注册中…';
+    const response = await fetch('/api/partner-register', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nickname,
+        phone,
+        email,
+        password,
+        confirmPassword,
+        agreeTerms,
+        referralCode: refCode || localStorage.getItem('sm_pending_ref') || '',
+        referralToken: localStorage.getItem('sm_pending_ref_token') || '',
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showAuthError(errEl, data.error || '注册失败，请稍后重试');
+      submitBtn.disabled = false;
+      submitBtn.textContent = defaultLabel;
+      return;
+    }
 
-  const hashed = await hashPassword(password);
-
-  // Generate referral code
-  const code = 'SAKURA-' + Math.random().toString(36).slice(2, 8).toUpperCase();
-
-  // Find referrer
-  let referredBy = null;
-  if (refCode) {
-    const ref = users.find(u => u.referralCode === refCode);
-    if (ref) referredBy = ref.id;
+    localStorage.removeItem('sm_pending_ref');
+    localStorage.removeItem('sm_pending_ref_at');
+    showToastMsg(t('login.msg.registerOk', '注册成功！欢迎成为樱医合伙人'), 'success');
+    setTimeout(() => { window.location.href = '/my?new=1'; }, 1000);
+  } catch (error) {
+    showAuthError(errEl, '注册失败，请稍后重试');
+    submitBtn.disabled = false;
+    submitBtn.textContent = defaultLabel;
   }
-  // Also check localStorage for ref
-  const storedRef = localStorage.getItem('sm_pending_ref');
-  if (!referredBy && storedRef) {
-    const ref = users.find(u => u.referralCode === storedRef);
-    if (ref) referredBy = ref.id;
-  }
-
-  const newUser = {
-    id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5),
-    nickname,
-    phone,
-    email: email || '',
-    password: hashed,
-    referralCode: code,
-    referredBy,
-    createdAt: new Date().toISOString(),
-    status: 'active'
-  };
-
-  users.push(newUser);
-  localStorage.setItem('sm_users', JSON.stringify(users));
-  localStorage.setItem('sm_current_user', newUser.id);
-  localStorage.removeItem('sm_pending_ref');
-
-  showToastMsg(t('login.msg.registerOk', '注册成功！欢迎成为樱医合伙人'), 'success');
-  setTimeout(() => { window.location.href = '/my?new=1'; }, 1000);
 }
 
 function showAuthError(el, msg) {
@@ -223,6 +263,15 @@ function showToastMsg(msg, type) {
 
 document.getElementById('loginForm').addEventListener('submit', doLogin);
 document.getElementById('registerForm').addEventListener('submit', doRegister);
+
+// Forgot password — prompt user to contact support
+document.getElementById('forgotPasswordLink').addEventListener('click', function () {
+  var phone = document.getElementById('loginPhone').value.trim();
+  var msg = phone
+    ? '请通过 WhatsApp (+65 8942 7926) 或邮件 (jiaogm2022@gmail.com) 联系客服，提供您的注册手机号 ' + phone + ' 进行密码重置。'
+    : '请通过 WhatsApp (+65 8942 7926) 或邮件 (jiaogm2022@gmail.com) 联系客服，提供您的注册手机号进行密码重置。';
+  showToastMsg(msg, 'info');
+});
 </script>
 </body>
 </html>

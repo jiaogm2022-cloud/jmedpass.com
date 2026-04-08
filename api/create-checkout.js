@@ -4,11 +4,16 @@
    ===================================================================== */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { loadProducts } = require('./_lib/partner-data');
 
-// JPY → SGD conversion (approximate, update as needed)
-// Stripe account default currency is SGD (Singapore Dollar)
-// 1 JPY ≈ 0.00896 SGD (as of April 2026)
-const JPY_TO_SGD = 0.00896;
+// JPY → SGD conversion
+// Configurable via environment variable JPY_TO_SGD_RATE (e.g. "0.00896")
+// In production, update this regularly or integrate a live rate API.
+const JPY_TO_SGD = Number(process.env.JPY_TO_SGD_RATE) || 0.00896;
+
+if (!process.env.JPY_TO_SGD_RATE) {
+  console.warn('[CHECKOUT] JPY_TO_SGD_RATE env not set, using fallback 0.00896. Set this in Vercel dashboard to keep rates current.');
+}
 
 // Allowed redirect origins
 const ALLOWED_ORIGINS = new Set([
@@ -19,7 +24,6 @@ const ALLOWED_ORIGINS = new Set([
 // Input limits
 const MAX_ITEMS = 20;
 const MAX_NAME_LEN = 200;
-const MAX_PRICE_JPY = 2500000;
 const MAX_QTY = 99;
 
 /* ===== Shipping rate configuration (JPY) =====
@@ -114,18 +118,34 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: '商品数量超出限制' });
     }
 
+    const catalog = loadProducts();
+
+    function getLocalizedProductText(product, field) {
+      if (!product || !field) return '';
+      if (lang === 'en' && product[`${field}EN`]) return product[`${field}EN`];
+      if (lang === 'ja' && product[`${field}JA`]) return product[`${field}JA`];
+      if (lang === 'ko' && product[`${field}KO`]) return product[`${field}KO`];
+      if (lang === 'vi' && product[`${field}VI`]) return product[`${field}VI`];
+      return product[field] || '';
+    }
+
     // Calculate subtotal in JPY for shipping threshold logic
     var subtotalJPY = 0;
 
-    // Build Stripe line items (convert JPY → SGD → cents)
+    // Build Stripe line items using server-side catalog pricing
     const lineItems = items.map(function (item) {
-      const price = Number(item.price);
-      const qty   = Math.floor(Number(item.qty));
-      if (!isFinite(price) || price <= 0 || price > MAX_PRICE_JPY) throw new Error('无效价格');
-      if (!isFinite(qty)   || qty   <= 0 || qty   > MAX_QTY)      throw new Error('无效数量');
-      const name = String(item.name || '').slice(0, MAX_NAME_LEN);
-      const brand = String(item.brand || '').slice(0, 100);
-      const spec  = String(item.spec  || '').slice(0, 100);
+      const id = Number(item.id);
+      const qty = Math.floor(Number(item.qty));
+      if (!Number.isInteger(id) || id <= 0) throw new Error('无效商品');
+      if (!isFinite(qty) || qty <= 0 || qty > MAX_QTY) throw new Error('无效数量');
+
+      const product = catalog.find(function (entry) { return Number(entry.id) === id; });
+      if (!product) throw new Error('商品不存在或已下架');
+
+      const price = Number(product.price);
+      const name = String(getLocalizedProductText(product, 'name')).slice(0, MAX_NAME_LEN);
+      const brand = String(product.brand || '').slice(0, 100);
+      const spec = String(getLocalizedProductText(product, 'spec')).slice(0, 100);
       const sgdPrice = Math.round(price * JPY_TO_SGD * 100);
 
       subtotalJPY += price * qty;
@@ -136,7 +156,10 @@ module.exports = async function handler(req, res) {
           product_data: {
             name,
             description: brand + '  ·  ' + spec,
-            metadata: { category: String(item.cat || '').slice(0, 50) },
+            metadata: {
+              product_id: String(product.id),
+              category: String(product.cat || '').slice(0, 50),
+            },
           },
           unit_amount: sgdPrice,
         },
@@ -244,8 +267,8 @@ module.exports = async function handler(req, res) {
         source: 'jmedpass-shop',
       },
 
-      success_url: baseUrl + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url:  baseUrl + '/wellness.html?cancelled=1',
+      success_url: baseUrl + '/success?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url:  baseUrl + '/wellness?cancelled=1',
     });
 
     return res.status(200).json({

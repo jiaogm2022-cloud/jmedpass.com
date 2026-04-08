@@ -89,7 +89,7 @@
     <div class="svc-hero-tag" data-i18n="zx.hero.tag">日本名院专家 · 远程视频会诊</div>
     <h1 class="svc-hero-title" data-i18n-html="zx.hero.title">远程专家会诊<br /><span style="font-size:.65em;font-weight:300;opacity:.85">跨境第二诊疗意见对接服务</span></h1>
     <p class="svc-hero-desc" data-i18n="zx.hero.desc">打破地域壁垒，为您即时链接东京、大阪核心医疗资源。我们协助您在正式赴日前，与日本资深专科医师进行深度视频交流，获取权威的诊疗建议与第二医学意见。</p>
-    <a href="/#contact" class="svc-hero-cta" data-i18n="zx.hero.cta">开启专家会诊通道 →</a>
+    <a href="/#contact?service=online-consultation" class="svc-hero-cta" data-i18n="zx.hero.cta">开启专家会诊通道 →</a>
   </div>
 </section>
 
@@ -482,7 +482,7 @@
     <p data-i18n="zx.cta.s">在关键医疗决策前，先让日本资深专科医生为您提供结构化诊疗建议与第二医学意见。</p>
     <div class="cta-btns">
       <a href="https://wa.me/6589427926" target="_blank" rel="noopener noreferrer" class="cta-btn-white" data-i18n="zx.cta.btn1">预约您的专属顾问</a>
-      <a href="/#contact" class="cta-btn-outline" data-i18n="zx.cta.btn2">启动深度评估方案</a>
+      <a href="/#contact?service=online-consultation" class="cta-btn-outline" data-i18n="zx.cta.btn2">启动深度评估方案</a>
     </div>
   </div>
 </section>
@@ -538,37 +538,66 @@
 <script>
 document.getElementById('navbar').classList.add('scrolled');
 
+function normalizePhoneInput(value) {
+  return String(value || '')
+    .trim()
+    .replace(/[^\d+]/g, '')
+    .replace(/(?!^)\+/g, '');
+}
+
+function isValidPhoneInput(value) {
+  return /^\+?\d{6,15}$/.test(normalizePhoneInput(value));
+}
+
 /* ===== BOOKING FORM ===== */
-document.getElementById('zxBookingForm').addEventListener('submit', function(e) {
+document.getElementById('zxBookingForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   var name    = document.getElementById('zxName').value.trim();
-  var phone   = document.getElementById('zxPhone').value.trim();
+  var phone   = normalizePhoneInput(document.getElementById('zxPhone').value);
   var region  = document.getElementById('zxRegion').value;
   var dept    = document.getElementById('zxDept').value;
   var pref    = document.getElementById('zxPreferred').value.trim();
   var symptoms= document.getElementById('zxSymptoms').value.trim();
+  var submitBtn = document.getElementById('zxSubmitBtn');
 
   if (!name || !phone || !dept) {
     alert('请填写姓名、联系方式及会诊方向');
     return;
   }
+  if (!isValidPhoneInput(phone)) {
+    alert('请输入有效的手机号或 WhatsApp 号码');
+    return;
+  }
 
-  var record = {
-    id: 'con_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-    name: name, phone: phone, region: region,
-    dept: dept, preferred: pref, symptoms: symptoms,
-    status: 'new', time: Date.now()
-  };
+  submitBtn.disabled = true;
+  submitBtn.textContent = '提交中…';
 
   try {
-    var key = 'sm_consultations';
-    var list = JSON.parse(localStorage.getItem(key) || '[]');
-    list.push(record);
-    localStorage.setItem(key, JSON.stringify(list));
-  } catch(err) { console.error(err); }
+    var response = await fetch('/api/consultations', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        region: region,
+        dept: dept,
+        preferred: pref,
+        symptoms: symptoms
+      })
+    });
+    var data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || 'submit_failed');
+    }
 
-  document.getElementById('zxBookingForm').style.display = 'none';
-  document.getElementById('zxSuccess').style.display = 'flex';
+    document.getElementById('zxBookingForm').style.display = 'none';
+    document.getElementById('zxSuccess').style.display = 'flex';
+  } catch (err) {
+    alert(err.message || '提交失败，请稍后重试');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>提交评估申请';
+  }
 });
 </script>
 </body>

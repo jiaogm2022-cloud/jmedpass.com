@@ -491,53 +491,32 @@ img { max-width: 100%; display: block; }
 .service-img {
   width: 100%;
   height: 100%;
+  background-color: #efe7eb;
   background-size: cover;
   background-position: center;
-  transition: transform .6s ease;
+  transition: transform .6s ease, opacity .35s ease;
+  opacity: .72;
 }
+.service-img.is-loaded { opacity: 1; }
 .service-card:hover .service-img { transform: scale(1.05); }
 
 /* Service card real photos */
 .service-img-1 {
-  background-image:
-    linear-gradient(to bottom, rgba(80,10,30,.1) 0%, rgba(26,16,24,.78) 100%),
-    url('images/services/svc_zy4.jpg');
-  background-size: cover;
   background-position: center center;
 }
 .service-img-2 {
-  background-image:
-    linear-gradient(to bottom, rgba(5,20,50,.08) 0%, rgba(5,15,40,.72) 100%),
-    url('images/services/svc_tijian.jpg');
-  background-size: cover;
   background-position: center center;
 }
 .service-img-3 {
-  background-image:
-    linear-gradient(to bottom, rgba(5,20,50,.08) 0%, rgba(5,15,40,.72) 100%),
-    url('images/services/svc_regenerative_medicine.jpg');
-  background-size: cover;
   background-position: center center;
 }
 .service-img-4 {
-  background-image:
-    linear-gradient(to bottom, rgba(5,20,50,.08) 0%, rgba(5,15,40,.72) 100%),
-    url('images/services/svc_immunotherapy.jpg');
-  background-size: cover;
   background-position: center center;
 }
 .service-img-5 {
-  background-image:
-    linear-gradient(to bottom, rgba(10,20,40,.08) 0%, rgba(8,15,35,.72) 100%),
-    url('images/services/svc_zaixian.jpg');
-  background-size: cover;
   background-position: center center;
 }
 .service-img-6 {
-  background-image:
-    linear-gradient(to bottom, rgba(40,30,10,.08) 0%, rgba(20,15,5,.65) 100%),
-    url('images/services/svc_shenghuo.jpg');
-  background-size: cover;
   background-position: center center;
 }
 
@@ -1240,4 +1219,23 @@ img { max-width: 100%; display: block; }
   .btn-primary, .btn-outline { width: 100%; text-align: center; display: block; }
   .contact-form-card { padding: 24px 16px; }
   .float-wa { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+}
+
+/* ===== Reduced motion / performance ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .navbar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .why-float-card {
+    animation: none;
+  }
+  #sakuraCanvas {
+    display: none;
+  }
 }

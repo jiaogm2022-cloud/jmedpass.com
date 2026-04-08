@@ -1,7 +1,13 @@
 /* ===== SAKURA CANVAS ANIMATION ===== */
 (function () {
-  const canvas = document.getElementById('sakuraCanvas');
+  // Respect user preference for reduced motion
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas = document.getElementById('sakuraCanvas');
   if (!canvas) return;
+  if (prefersReducedMotion) {
+    canvas.style.display = 'none';
+    return;
+  }
   const ctx = canvas.getContext('2d');
 
   function resize() {
@@ -140,6 +146,34 @@
   });
 })();
 
+/* ===== LAZY BACKGROUNDS ===== */
+(function () {
+  const lazyBackgrounds = document.querySelectorAll('[data-bg]');
+  if (!lazyBackgrounds.length) return;
+
+  const loadBackground = (el) => {
+    if (el.dataset.bgLoaded === '1') return;
+    el.style.backgroundImage = el.dataset.bg;
+    el.dataset.bgLoaded = '1';
+    el.classList.add('is-loaded');
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    lazyBackgrounds.forEach(loadBackground);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadBackground(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '180px 0px', threshold: 0.05 });
+
+  lazyBackgrounds.forEach((el) => observer.observe(el));
+})();
+
 /* ===== SMOOTH ANCHOR SCROLL ===== */
 document.querySelectorAll('a[href^="#"]').forEach((a) => {
   a.addEventListener('click', (e) => {
@@ -155,38 +189,93 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
 (function () {
   const form = document.getElementById('contactForm');
   if (!form) return;
-  form.addEventListener('submit', (e) => {
+
+  // Auto-select service from URL hash param (e.g. /#contact?service=health-screening)
+  (function autoSelectService() {
+    var hash = location.hash || '';
+    var match = hash.match(/[?&]service=([^&]+)/);
+    if (!match) return;
+    var SERVICE_MAP = {
+      'cosmetic-surgery': '医美整形',
+      'health-screening': '精密体检',
+      'regenerative-medicine': '再生医疗',
+      'immunotherapy': '免疫疗法',
+      'stem-cell-anti-aging': '再生医疗',
+      'ovarian-rejuvenation': '再生医疗',
+      'online-consultation': '再生医疗',
+    };
+    var value = SERVICE_MAP[match[1]];
+    if (!value) return;
+    var checkboxes = form.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (cb) {
+      if (cb.value === value) cb.checked = true;
+    });
+  })();
+
+  function normalizePhoneInput(value) {
+    return String(value || '')
+      .trim()
+      .replace(/[^\d+]/g, '')
+      .replace(/(?!^)\+/g, '');
+  }
+
+  function isValidPhoneInput(value) {
+    return /^\+?\d{6,15}$/.test(normalizePhoneInput(value));
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('.btn-submit');
+    const defaultText = '提交预约申请';
 
     // Collect data
     const name     = form.querySelector('input[type="text"]').value.trim();
-    const phone    = form.querySelector('input[type="tel"]').value.trim();
+    const phone    = normalizePhoneInput(form.querySelector('input[type="tel"]').value);
     const region   = form.querySelector('select').value;
     const services = [...form.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.value);
     const message  = form.querySelector('textarea').value.trim();
 
-    // Save to localStorage for admin
-    const DB_KEY = 'sm_inquiries';
-    let list = [];
-    try { list = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch {}
-    list.unshift({
-      id: 'inq_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7),
-      name, phone, region, services, message,
-      status: 'new',
-      time: Date.now()
-    });
-    localStorage.setItem(DB_KEY, JSON.stringify(list));
+    if (!isValidPhoneInput(phone)) {
+      btn.textContent = '请输入有效的手机号或 WhatsApp';
+      btn.style.background = 'linear-gradient(135deg, #b91c1c, #ef4444)';
+      setTimeout(() => {
+        btn.textContent = defaultText;
+        btn.style.background = '';
+      }, 2500);
+      return;
+    }
 
-    btn.textContent = '✓ 提交成功！我们将尽快联系您';
-    btn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
     btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = '提交预约申请';
-      btn.style.background = '';
-      btn.disabled = false;
-      form.reset();
-    }, 4000);
+
+    try {
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, region, services, message }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'submit_failed');
+      }
+
+      btn.textContent = '✓ 提交成功！我们将尽快联系您';
+      btn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+      setTimeout(() => {
+        btn.textContent = defaultText;
+        btn.style.background = '';
+        btn.disabled = false;
+        form.reset();
+      }, 4000);
+    } catch (error) {
+      btn.textContent = error.message || '提交失败，请稍后重试';
+      btn.style.background = 'linear-gradient(135deg, #b91c1c, #ef4444)';
+      setTimeout(() => {
+        btn.textContent = defaultText;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    }
   });
 })();
 

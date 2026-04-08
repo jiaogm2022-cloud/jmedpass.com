@@ -9,21 +9,9 @@
  * ─────────────────────────────────────────
  */
 
-const http  = require('http');
-const fs    = require('fs');
-const path  = require('path');
-
-/* ── Stripe test secret key (local dev only) ── */
-const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-const CNY_TO_USD = 0.138; // 1 CNY ≈ 0.138 USD
-
-let stripe;
-try {
-  stripe = require('stripe')(STRIPE_SECRET_KEY);
-} catch (e) {
-  console.error('\n❌ stripe 模块未找到，请先运行：npm install\n');
-  process.exit(1);
-}
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
 const PORT = 3000;
 const MIME = {
@@ -44,100 +32,27 @@ const MIME = {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
 
-  /* CORS for all responses */
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  if (req.method === 'OPTIONS') { res.writeHead(200); res.end(); return; }
-
-  /* ── API: Create Stripe Checkout Session ── */
-  if (req.method === 'POST' && url.pathname === '/netlify/functions/create-checkout') {
-    let raw = '';
-    req.on('data', c => { raw += c; });
-    req.on('end', async () => {
-      try {
-        const { items } = JSON.parse(raw);
-
-        const lineItems = items.map(item => ({
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: item.name,
-              description: item.brand + '  ·  ' + item.spec,
-            },
-            unit_amount: Math.round(item.price * CNY_TO_USD * 100),
-          },
-          quantity: item.qty,
-        }));
-
-        const session = await stripe.checkout.sessions.create({
-          mode: 'payment',
-          payment_method_types: ['card', 'alipay'],
-          line_items: lineItems,
-          locale: 'zh',
-          shipping_address_collection: {
-            allowed_countries: ['CN','HK','TW','SG','MY','AU','US','GB','JP','KR'],
-          },
-          shipping_options: [
-            {
-              shipping_rate_data: {
-                type: 'fixed_amount',
-                fixed_amount: { amount: 0, currency: 'usd' },
-                display_name: '标准国际配送 (7–14工作日)',
-                delivery_estimate: {
-                  minimum: { unit: 'business_day', value: 7 },
-                  maximum: { unit: 'business_day', value: 14 },
-                },
-              },
-            },
-            {
-              shipping_rate_data: {
-                type: 'fixed_amount',
-                fixed_amount: { amount: 1500, currency: 'usd' },
-                display_name: '快速配送 (3–5工作日)',
-                delivery_estimate: {
-                  minimum: { unit: 'business_day', value: 3 },
-                  maximum: { unit: 'business_day', value: 5 },
-                },
-              },
-            },
-          ],
-          phone_number_collection: { enabled: true },
-          custom_text: {
-            submit: { message: '樱医集团承诺正品直采，GMP认证，全球安全配送' },
-          },
-          success_url: `http://localhost:${PORT}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url:  `http://localhost:${PORT}/wellness.html?cancelled=1`,
-        });
-
-        console.log(`[Stripe] ✓ Session created: ${session.id}`);
-        json(res, 200, { url: session.url });
-
-      } catch (err) {
-        console.error('[Stripe] ✗ Error:', err.message);
-        json(res, 500, { error: err.message });
-      }
-    });
+  if (url.pathname.startsWith('/api/')) {
+    await handleApiRequest(req, res, url);
     return;
   }
 
-  /* ── API: Get Order Details ── */
-  if (req.method === 'GET' && url.pathname === '/netlify/functions/get-order') {
-    const sid = url.searchParams.get('session_id');
-    if (!sid) { json(res, 400, { error: 'Missing session_id' }); return; }
-    try {
-      const session = await stripe.checkout.sessions.retrieve(sid);
-      json(res, 200, {
-        id: session.id,
-        payment_status: session.payment_status,
-        customer_details: session.customer_details,
-        shipping_details: session.shipping_details,
-        amount_total: session.amount_total,
-        currency: session.currency,
-      });
-    } catch (err) {
-      json(res, 500, { error: err.message });
-    }
+  if (url.pathname.startsWith('/.netlify/functions/')) {
+    const apiPath = url.pathname.replace('/.netlify/functions/', '/api/');
+    const forwardedUrl = new URL(apiPath + url.search, `http://localhost:${PORT}`);
+    await handleApiRequest(req, res, forwardedUrl);
+    return;
+  }
+
+  /* ── Block access to sensitive paths ── */
+  const BLOCKED_PREFIXES = ['/data/', '/.env', '/.git/', '/node_modules/'];
+  const BLOCKED_EXTS = ['.sqlite', '.sqlite-wal', '.sqlite-shm'];
+  const lowerPath = url.pathname.toLowerCase();
+  if (BLOCKED_PREFIXES.some(p => lowerPath.startsWith(p))
+      || BLOCKED_EXTS.some(e => lowerPath.endsWith(e))
+      || lowerPath.includes('..')) {
+    res.writeHead(403, { 'Content-Type': 'text/plain' });
+    res.end('403 Forbidden');
     return;
   }
 
@@ -164,9 +79,44 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-function json(res, status, body) {
-  res.writeHead(status, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(body));
+async function handleApiRequest(req, res, url) {
+  const apiName = url.pathname.replace(/^\/api\//, '');
+  const modulePath = path.join(__dirname, 'api', `${apiName}.js`);
+  if (!fs.existsSync(modulePath)) {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'API Not Found' }));
+    return;
+  }
+
+  delete require.cache[require.resolve(modulePath)];
+  const handler = require(modulePath);
+  req.query = Object.fromEntries(url.searchParams.entries());
+
+  const wrappedRes = {
+    setHeader: (...args) => res.setHeader(...args),
+    status(code) {
+      this.statusCode = code;
+      return this;
+    },
+    json(payload) {
+      res.statusCode = this.statusCode || 200;
+      if (!res.getHeader('Content-Type')) {
+        res.setHeader('Content-Type', 'application/json');
+      }
+      res.end(JSON.stringify(payload));
+    },
+    end(payload) {
+      res.statusCode = this.statusCode || res.statusCode || 200;
+      res.end(payload);
+    },
+  };
+
+  try {
+    await handler(req, wrappedRes);
+  } catch (error) {
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: error.message }));
+  }
 }
 
 /* ════════════════════════════════════ */

@@ -1,17 +1,33 @@
 /* ===== SAKURA PARTNER SYSTEM — SHARED UTILITIES ===== */
 
-// Save ref code from URL params to localStorage (30-day)
+// Save ref code from URL params — now requests a signed token from server
+// so users cannot forge referral relationships via localStorage editing.
 (function () {
-  const params = new URLSearchParams(location.search);
-  const ref = params.get('ref');
+  var params = new URLSearchParams(location.search);
+  var ref = params.get('ref');
   if (ref) {
-    localStorage.setItem('sm_pending_ref', ref);
-    localStorage.setItem('sm_pending_ref_at', Date.now().toString());
+    // Request a server-signed referral token
+    fetch('/api/referral-token?ref=' + encodeURIComponent(ref))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.token) {
+          localStorage.setItem('sm_pending_ref', ref);
+          localStorage.setItem('sm_pending_ref_token', data.token);
+          localStorage.setItem('sm_pending_ref_at', Date.now().toString());
+        }
+      })
+      .catch(function () {
+        // Fallback: still store the code for display purposes, but
+        // without a valid signed token the server will reject it.
+        localStorage.setItem('sm_pending_ref', ref);
+        localStorage.setItem('sm_pending_ref_at', Date.now().toString());
+      });
   }
   // Expire after 30 days
-  const storedAt = localStorage.getItem('sm_pending_ref_at');
+  var storedAt = localStorage.getItem('sm_pending_ref_at');
   if (storedAt && Date.now() - parseInt(storedAt) > 30 * 86400000) {
     localStorage.removeItem('sm_pending_ref');
+    localStorage.removeItem('sm_pending_ref_token');
     localStorage.removeItem('sm_pending_ref_at');
   }
 })();
