@@ -3,17 +3,6 @@
   "trailingSlash": false,
   "buildCommand": "",
   "outputDirectory": ".",
-  "ignoreCommand": "",
-  "excludeFiles": [
-    "data/**",
-    "server.js",
-    ".env*",
-    "*.sqlite",
-    "*.sqlite-wal",
-    "*.sqlite-shm",
-    "node_modules/**",
-    ".git/**"
-  ],
   "redirects": [
     {
       "source": "/(.*)",

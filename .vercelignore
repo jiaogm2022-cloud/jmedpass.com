@@ -1,0 +1,9 @@
+data/
+server.js
+.env*
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+.git/
+SECURITY_AUDIT.md
+scripts/
