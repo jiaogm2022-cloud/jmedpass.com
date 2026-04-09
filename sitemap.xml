@@ -288,4 +288,32 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/medical-disclaimer"/>
   </url>
 
+  <!-- ===== English Blog Articles ===== -->
+  <url>
+    <loc>https://jmedpass.com/en/blog/japan-stem-cell-therapy-cost-guide</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/blog/japan-stem-cell-therapy-cost-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/en/blog/japan-stem-cell-therapy-cost-guide"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/blog/japan-egg-freezing-cost-guide</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/blog/japan-egg-freezing-cost-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/en/blog/japan-egg-freezing-cost-guide"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/en/blog/japan-health-check-booking-guide</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jmedpass.com/en/blog/japan-health-check-booking-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/en/blog/japan-health-check-booking-guide"/>
+  </url>
+
 </urlset>
