@@ -1,7 +1,72 @@
+# robots.txt for jmedpass.com
+# Japanese Medical Tourism - Health Checks, Stem Cell Therapy, Egg Freezing, Assisted Reproduction
+
+# Allow all major search engines to crawl public content
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+Disallow: /*?*utm_*
+Disallow: /*?*sort=
+Disallow: /*?*page=*&sort=
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: Yandexbot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: Slurp
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+# Block SEO spam and low-quality crawlers
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Default rule for all other bots
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
 
-# Disallow Netlify function endpoints from indexing
-Disallow: /.netlify/
-
+# Sitemap location
 Sitemap: https://jmedpass.com/sitemap.xml
+
+# Crawl delay for all bots (in seconds)
+Crawl-delay: 0.5
