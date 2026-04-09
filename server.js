@@ -1,5 +1,5 @@
 /**
- * 樱医集团 · 本地开发服务器
+ * 日医通 · 本地开发服务器
  * ─────────────────────────────────────────
  * 用法：
  *   1. 打开终端，cd 到 jmedpass.com 文件夹
@@ -122,7 +122,7 @@ async function handleApiRequest(req, res, url) {
 /* ════════════════════════════════════ */
 server.listen(PORT, () => {
   console.log('');
-  console.log('🌸  樱医集团 · 本地开发服务器已启动');
+  console.log('🌸  日医通 · 本地开发服务器已启动');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(`  商城：  http://localhost:${PORT}/wellness.html`);
   console.log(`  首页：  http://localhost:${PORT}/index.html`);

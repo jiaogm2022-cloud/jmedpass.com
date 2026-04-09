@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>登录 / 注册 · 樱医集团合伙人</title>
+  <title>登录 / 注册 · 日医通合伙人</title>
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,8 +20,8 @@
     <div class="login-logo">
       <a href="/" style="text-decoration:none;">
         <span class="logo-icon" style="font-size:2rem;">⚕</span>
-        <span class="login-logo-name" data-i18n="login.brand">樱医集团</span>
-        <span class="login-logo-sub" data-i18n="login.brandSub">SAKURA MEDICAL GROUP · 合伙人平台</span>
+        <span class="login-logo-name" data-i18n="login.brand">日医通</span>
+        <span class="login-logo-sub" data-i18n="login.brandSub">JMEDPASS · 合伙人平台</span>
       </a>
     </div>
 
@@ -239,7 +239,7 @@ async function doRegister(e) {
 
     localStorage.removeItem('sm_pending_ref');
     localStorage.removeItem('sm_pending_ref_at');
-    showToastMsg(t('login.msg.registerOk', '注册成功！欢迎成为樱医合伙人'), 'success');
+    showToastMsg(t('login.msg.registerOk', '注册成功！欢迎成为日医通合伙人'), 'success');
     setTimeout(() => { window.location.href = '/my?new=1'; }, 1000);
   } catch (error) {
     showAuthError(errEl, '注册失败，请稍后重试');

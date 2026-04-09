@@ -1,4 +1,4 @@
-/* ===== SAKURA MEDICAL — ADMIN JS ===== */
+/* ===== JMEDPASS — ADMIN JS ===== */
 
 // Auth guard
 window.__adminSessionReady = window.__adminSessionReady || fetch('/api/admin-session', { credentials: 'same-origin' })

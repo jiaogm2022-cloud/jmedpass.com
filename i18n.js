@@ -2,20 +2,20 @@
 var PAGE_META = {
   "index": {
     "zh": {
-      "t": "樱医集团 | 日本医疗·医美整形·精密体检·再生医疗·NMN养生",
-      "d": "樱医集团——日本认证 · 跨国医疗典范。赴日医美重塑、精密筛查、再生医学、免疫疗法、远程专家会诊及日本正品NMN养生保健品，全球配送。"
+      "t": "日医通 | 日本医疗·医美整形·精密体检·再生医疗·NMN养生",
+      "d": "日医通——日本认证 · 跨国医疗典范。赴日医美重塑、精密筛查、再生医学、免疫疗法、远程专家会诊及日本正品NMN养生保健品，全球配送。"
     },
     "en": {
       "t": "JMedPass | Japan Medical Concierge, Checkups, Regenerative Medicine & Immunotherapy",
       "d": "JMedPass connects discerning international clients with Japan's top-tier medical resources, including aesthetic surgery, precision health checkups, regenerative medicine, immunotherapy, remote specialist consultation and premium wellness products."
     },
     "ja": {
-      "t": "桜医集団 | 日本医療・美容整形・精密健診・再生医療・NMN健康食品",
-      "d": "桜医集団（JMedPass）— 世界中のお客様向け日本医療プラットフォーム。美容整形・精密健診・幹細胞再生医療・免疫療法・オンライン診療・日本正規品NMNサプリ、世界配送対応。"
+      "t": "日医通集団 | 日本医療・美容整形・精密健診・再生医療・NMN健康食品",
+      "d": "日医通集団（JMedPass）— 世界中のお客様向け日本医療プラットフォーム。美容整形・精密健診・幹細胞再生医療・免疫療法・オンライン診療・日本正規品NMNサプリ、世界配送対応。"
     },
     "ko": {
-      "t": "사쿠라 메디칼 | 일본 의료·미용성형·정밀건강검진·재생의료·NMN건강",
-      "d": "사쿠라 메디칼 그룹 — 전 세계 귀빈 고객을 위한 일본 의료 플랫폼. 미용성형·정밀건강검진·줄기세포 재생의료·면역요법·온라인 진료·일본 정품 NMN 건강기능식품."
+      "t": "JMedPass 메디칼 | 일본 의료·미용성형·정밀건강검진·재생의료·NMN건강",
+      "d": "JMedPass 메디칼 그룹 — 전 세계 귀빈 고객을 위한 일본 의료 플랫폼. 미용성형·정밀건강검진·줄기세포 재생의료·면역요법·온라인 진료·일본 정품 NMN 건강기능식품."
     },
     "vi": {
       "t": "JMedPass | Y tế Nhật Bản, Thẩm mỹ, Khám sức khỏe, Tái sinh & Wellness",
@@ -24,8 +24,8 @@ var PAGE_META = {
   },
   "about": {
     "zh": {
-      "t": "樱医集团 | SAKURA MEDICAL GROUP",
-      "d": "樱医集团 JMedPass 是日本医疗定制与资源管理机构，为全球尊享客户提供医疗咨询、预约协调、行程管控、专业翻译及再生医疗对接服务。"
+      "t": "日医通 | JMEDPASS",
+      "d": "日医通 JMedPass 是日本医疗定制与资源管理机构，为全球尊享客户提供医疗咨询、预约协调、行程管控、专业翻译及再生医疗对接服务。"
     },
     "en": {
       "t": "About JMedPass | Japan Medical Concierge & Resource Management",
@@ -34,8 +34,8 @@ var PAGE_META = {
   },
   "privacy": {
     "zh": {
-      "t": "隐私政策 | 樱医集团 JMedPass",
-      "d": "樱医集团隐私政策，说明我们如何收集、使用、保存与保护客户信息。"
+      "t": "隐私政策 | 日医通 JMedPass",
+      "d": "日医通隐私政策，说明我们如何收集、使用、保存与保护客户信息。"
     },
     "en": {
       "t": "Privacy Policy | JMedPass",
@@ -44,8 +44,8 @@ var PAGE_META = {
   },
   "terms": {
     "zh": {
-      "t": "服务条款 | 樱医集团 JMedPass",
-      "d": "樱医集团服务条款，说明网站使用、咨询预约、订单、责任边界与条款更新规则。"
+      "t": "服务条款 | 日医通 JMedPass",
+      "d": "日医通服务条款，说明网站使用、咨询预约、订单、责任边界与条款更新规则。"
     },
     "en": {
       "t": "Terms of Service | JMedPass",
@@ -54,8 +54,8 @@ var PAGE_META = {
   },
   "medical-disclaimer": {
     "zh": {
-      "t": "医疗免责声明 | 樱医集团 JMedPass",
-      "d": "樱医集团医疗免责声明，说明网站内容不能替代医生诊疗意见，医疗决定应以持牌医生评估为准。"
+      "t": "医疗免责声明 | 日医通 JMedPass",
+      "d": "日医通医疗免责声明，说明网站内容不能替代医生诊疗意见，医疗决定应以持牌医生评估为准。"
     },
     "en": {
       "t": "Medical Disclaimer | JMedPass",
@@ -64,139 +64,139 @@ var PAGE_META = {
   },
   "cosmetic-surgery": {
     "zh": {
-      "t": "日本医美整形 | 双眼皮·隆鼻·面部提升 | 樱医集团",
-      "d": "樱医集团提供日本顶级医美整形——双眼皮、隆鼻、面部提升、吸脂。日本持牌整形外科专家操刀，中文全程陪同，安全合规。全球贵宾赴日整形首选。"
+      "t": "日本医美整形 | 双眼皮·隆鼻·面部提升 | 日医通",
+      "d": "日医通提供日本顶级医美整形——双眼皮、隆鼻、面部提升、吸脂。日本持牌整形外科专家操刀，中文全程陪同，安全合规。全球贵宾赴日整形首选。"
     },
     "en": {
       "t": "Japan Aesthetic Surgery | Eyelid, Rhinoplasty & Facelift | JMedPass",
       "d": "JMedPass connects international clients with Japan's certified aesthetic surgeons for eyelid surgery, rhinoplasty, facelift, liposuction, medical interpretation and premium care coordination."
     },
     "ja": {
-      "t": "日本美容整形 | 二重まぶた・隆鼻・フェイスリフト | 桜医集団",
-      "d": "桜医集団が日本トップの美容外科医と接続。二重まぶた・鼻整形・フェイスリフト・脂肪吸引。最先端低侵襲技術、多言語コンシェルジュ、透明料金。"
+      "t": "日本美容整形 | 二重まぶた・隆鼻・フェイスリフト | 日医通集団",
+      "d": "日医通集団が日本トップの美容外科医と接続。二重まぶた・鼻整形・フェイスリフト・脂肪吸引。最先端低侵襲技術、多言語コンシェルジュ、透明料金。"
     },
     "ko": {
-      "t": "일본 미용성형 | 쌍꺼풀·코성형·안면거상 | 사쿠라 메디칼",
-      "d": "사쿠라 메디칼이 일본 최고 인증 성형외과 의사와 연결해 드립니다. 쌍꺼풀·코성형·안면거상·지방흡입. 첨단 최소침습 기술, 다국어 컨시어지, 투명한 가격."
+      "t": "일본 미용성형 | 쌍꺼풀·코성형·안면거상 | JMedPass 메디칼",
+      "d": "JMedPass 메디칼이 일본 최고 인증 성형외과 의사와 연결해 드립니다. 쌍꺼풀·코성형·안면거상·지방흡입. 첨단 최소침습 기술, 다국어 컨시어지, 투명한 가격."
     },
     "vi": {
-      "t": "Thẩm mỹ Nhật Bản | Mắt 2 mí, Nâng mũi, Căng da mặt | Sakura Medical",
-      "d": "Sakura Medical kết nối khách hàng toàn cầu với bác sĩ phẫu thuật thẩm mỹ hàng đầu Nhật Bản — mắt 2 mí, nâng mũi, căng da mặt, hút mỡ. Kỹ thuật xâm lấn tối thiểu, đồng hành đa ngôn ngữ, báo giá minh bạch."
+      "t": "Thẩm mỹ Nhật Bản | Mắt 2 mí, Nâng mũi, Căng da mặt | JMedPass",
+      "d": "JMedPass kết nối khách hàng toàn cầu với bác sĩ phẫu thuật thẩm mỹ hàng đầu Nhật Bản — mắt 2 mí, nâng mũi, căng da mặt, hút mỡ. Kỹ thuật xâm lấn tối thiểu, đồng hành đa ngôn ngữ, báo giá minh bạch."
     }
   },
   "health-screening": {
     "zh": {
-      "t": "日本精密体检 | PET-CT癌症筛查·人间ドック | 樱医集团",
-      "d": "樱医集团日本精密体检——PET-CT全身癌症筛查、MRI、心脑血管检查、基因检测。以多维医学评估、专家深度报告解读和长期健康档案管理，构建无国界的一站式健康防御体系。"
+      "t": "日本精密体检 | PET-CT癌症筛查·人间ドック | 日医通",
+      "d": "日医通日本精密体检——PET-CT全身癌症筛查、MRI、心脑血管检查、基因检测。以多维医学评估、专家深度报告解读和长期健康档案管理，构建无国界的一站式健康防御体系。"
     },
     "en": {
       "t": "Japan Precision Health Screening | PET-CT Cancer Screening | JMedPass",
       "d": "JMedPass coordinates Japan precision health screening, PET-CT cancer screening, MRI, cardiovascular checks, expert report interpretation and long-term health record support."
     },
     "ja": {
-      "t": "日本精密人間ドック | PET-CTがん検診 | 桜医集団",
-      "d": "桜医集団の日本人間ドック — PET-CT全身がん検診・MRI・心脳血管検査・遺伝子検査。5mm早期腫瘍を発見可能。多言語レポート解説対応。"
+      "t": "日本精密人間ドック | PET-CTがん検診 | 日医通集団",
+      "d": "日医通集団の日本人間ドック — PET-CT全身がん検診・MRI・心脳血管検査・遺伝子検査。5mm早期腫瘍を発見可能。多言語レポート解説対応。"
     },
     "ko": {
-      "t": "일본 정밀건강검진 | PET-CT 암검진 | 사쿠라 메디칼",
-      "d": "사쿠라 메디칼의 일본 정밀건강검진 — PET-CT 전신 암 검진, MRI, 심뇌혈관 검사, 유전자 검사. 5mm 조기 종양 발견 가능. 다국어 결과 설명 제공."
+      "t": "일본 정밀건강검진 | PET-CT 암검진 | JMedPass 메디칼",
+      "d": "JMedPass 메디칼의 일본 정밀건강검진 — PET-CT 전신 암 검진, MRI, 심뇌혈관 검사, 유전자 검사. 5mm 조기 종양 발견 가능. 다국어 결과 설명 제공."
     },
     "vi": {
-      "t": "Khám sức khỏe chuyên sâu Nhật Bản | PET-CT Tầm soát ung thư | Sakura Medical",
-      "d": "Sakura Medical — Ningen Dock Nhật Bản: PET-CT toàn thân, MRI, kiểm tra tim mạch não, xét nghiệm gen. Phát hiện khối u 5mm giai đoạn sớm. Giải thích báo cáo đa ngôn ngữ."
+      "t": "Khám sức khỏe chuyên sâu Nhật Bản | PET-CT Tầm soát ung thư | JMedPass",
+      "d": "JMedPass — Ningen Dock Nhật Bản: PET-CT toàn thân, MRI, kiểm tra tim mạch não, xét nghiệm gen. Phát hiện khối u 5mm giai đoạn sớm. Giải thích báo cáo đa ngôn ngữ."
     }
   },
   "regenerative-medicine": {
     "zh": {
-      "t": "日本再生医疗 | 干细胞抗衰老·卵巢年轻化 | 樱医集团",
-      "d": "樱医集团日本再生医疗——干细胞抗衰老、卵巢年轻化、关节修复、代谢病辅助。日本厚生劳动省认可机构，安全合规，专业医学评估，中文全程服务。"
+      "t": "日本再生医疗 | 干细胞抗衰老·卵巢年轻化 | 日医通",
+      "d": "日医通日本再生医疗——干细胞抗衰老、卵巢年轻化、关节修复、代谢病辅助。日本厚生劳动省认可机构，安全合规，专业医学评估，中文全程服务。"
     },
     "en": {
       "t": "Japan Regenerative Medicine | Stem Cell Therapy | JMedPass",
       "d": "JMedPass coordinates Japan regenerative medicine programs including stem cell anti-aging, ovarian rejuvenation, joint repair and metabolic support through compliant medical institutions."
     },
     "ja": {
-      "t": "日本再生医療 | 幹細胞抗老化・卵巣若返り | 桜医集団",
-      "d": "桜医集団の日本再生医療 — 幹細胞抗老化・卵巣若返り・関節修復・代謝疾患サポート。厚生労働省認定機関、多言語対応フルサービス。"
+      "t": "日本再生医療 | 幹細胞抗老化・卵巣若返り | 日医通集団",
+      "d": "日医通集団の日本再生医療 — 幹細胞抗老化・卵巣若返り・関節修復・代謝疾患サポート。厚生労働省認定機関、多言語対応フルサービス。"
     },
     "ko": {
-      "t": "일본 재생의료 | 줄기세포 항노화·난소 회춘 | 사쿠라 메디칼",
-      "d": "사쿠라 메디칼의 일본 재생의료 — 줄기세포 항노화, 난소 회춘, 관절 회복, 대사질환 지원. 후생노동성 인증 기관, 다국어 풀서비스."
+      "t": "일본 재생의료 | 줄기세포 항노화·난소 회춘 | JMedPass 메디칼",
+      "d": "JMedPass 메디칼의 일본 재생의료 — 줄기세포 항노화, 난소 회춘, 관절 회복, 대사질환 지원. 후생노동성 인증 기관, 다국어 풀서비스."
     },
     "vi": {
-      "t": "Y học tái sinh Nhật Bản | Tế bào gốc chống lão hóa & Trẻ hóa buồng trứng | Sakura Medical",
-      "d": "Y học tái sinh Nhật Bản của Sakura Medical — tế bào gốc chống lão hóa, trẻ hóa buồng trứng, phục hồi khớp, hỗ trợ bệnh chuyển hóa. Cơ sở được MHLW chứng nhận, phục vụ đa ngôn ngữ."
+      "t": "Y học tái sinh Nhật Bản | Tế bào gốc chống lão hóa & Trẻ hóa buồng trứng | JMedPass",
+      "d": "Y học tái sinh Nhật Bản của JMedPass — tế bào gốc chống lão hóa, trẻ hóa buồng trứng, phục hồi khớp, hỗ trợ bệnh chuyển hóa. Cơ sở được MHLW chứng nhận, phục vụ đa ngôn ngữ."
     }
   },
   "immunotherapy": {
     "zh": {
-      "t": "日本免疫疗法 | NK细胞癌症免疫治疗 | 樱医集团",
-      "d": "樱医集团日本免疫疗法——NK细胞、树突细胞免疫治疗，用于癌症防治与抗肿瘤。日本PMDA认可肿瘤医院合作，中文全程服务，正规合法。"
+      "t": "日本免疫疗法 | NK细胞癌症免疫治疗 | 日医通",
+      "d": "日医通日本免疫疗法——NK细胞、树突细胞免疫治疗，用于癌症防治与抗肿瘤。日本PMDA认可肿瘤医院合作，中文全程服务，正规合法。"
     },
     "en": {
       "t": "Japan Immunotherapy | NK Cell & Dendritic Cell Therapy | JMedPass",
       "d": "JMedPass coordinates Japan immunotherapy programs including NK cell therapy and dendritic cell therapy, with specialist matching, medical interpretation and compliant follow-up support."
     },
     "ja": {
-      "t": "日本免疫療法 | NK細胞がん免疫治療 | 桜医集団",
-      "d": "桜医集団の日本免疫療法 — NK細胞・樹状細胞免疫療法でがんと戦う。PMDA・厚労省認定腫瘍センター、1回60〜100億個の高活性免疫細胞投与。"
+      "t": "日本免疫療法 | NK細胞がん免疫治療 | 日医通集団",
+      "d": "日医通集団の日本免疫療法 — NK細胞・樹状細胞免疫療法でがんと戦う。PMDA・厚労省認定腫瘍センター、1回60〜100億個の高活性免疫細胞投与。"
     },
     "ko": {
-      "t": "일본 면역요법 | NK세포 암 면역치료 | 사쿠라 메디칼",
-      "d": "사쿠라 메디칼의 일본 면역요법 — NK세포·수지상세포 면역치료로 암과 싸웁니다. PMDA·후생노동성 인증 종양센터, 1회 60〜100억 개 고활성 면역세포 투여."
+      "t": "일본 면역요법 | NK세포 암 면역치료 | JMedPass 메디칼",
+      "d": "JMedPass 메디칼의 일본 면역요법 — NK세포·수지상세포 면역치료로 암과 싸웁니다. PMDA·후생노동성 인증 종양센터, 1회 60〜100억 개 고활성 면역세포 투여."
     },
     "vi": {
-      "t": "Liệu pháp miễn dịch Nhật Bản | Tế bào NK chống ung thư | Sakura Medical",
-      "d": "Liệu pháp miễn dịch Nhật Bản của Sakura Medical — tế bào NK và tế bào đuôi gai chống ung thư. Trung tâm ung thư được PMDA & MHLW chứng nhận, 6–10 tỷ tế bào miễn dịch mỗi lần truyền."
+      "t": "Liệu pháp miễn dịch Nhật Bản | Tế bào NK chống ung thư | JMedPass",
+      "d": "Liệu pháp miễn dịch Nhật Bản của JMedPass — tế bào NK và tế bào đuôi gai chống ung thư. Trung tâm ung thư được PMDA & MHLW chứng nhận, 6–10 tỷ tế bào miễn dịch mỗi lần truyền."
     }
   },
   "online-consultation": {
     "zh": {
-      "t": "日本名院专家远程视频会诊 | 第二诊疗意见 | 樱医集团",
-      "d": "樱医集团远程专家会诊服务——即时链接东京、大阪核心医疗资源，协助正式赴日前与日本资深专科医师进行深度视频交流，获取权威诊疗建议与第二医学意见。"
+      "t": "日本名院专家远程视频会诊 | 第二诊疗意见 | 日医通",
+      "d": "日医通远程专家会诊服务——即时链接东京、大阪核心医疗资源，协助正式赴日前与日本资深专科医师进行深度视频交流，获取权威诊疗建议与第二医学意见。"
     },
     "en": {
       "t": "Japan Remote Specialist Consultation | Second Medical Opinion | JMedPass",
       "d": "Access Japan-based specialist doctors through secure remote video consultation, second medical opinion coordination, professional medical interpretation and compliant follow-up support."
     },
     "ja": {
-      "t": "日本医師オンライン診療 | 中国語・多言語対応 | 桜医集団",
-      "d": "桜医集団のオンライン診療 — 日本持免許医師による中国語・多言語診察。内科・皮膚科・AGA・ダイエット管理ほか8科目対応。処方薬を世界中へ配送。"
+      "t": "日本医師オンライン診療 | 中国語・多言語対応 | 日医通集団",
+      "d": "日医通集団のオンライン診療 — 日本持免許医師による中国語・多言語診察。内科・皮膚科・AGA・ダイエット管理ほか8科目対応。処方薬を世界中へ配送。"
     },
     "ko": {
-      "t": "일본 의사 온라인 진료 | 한국어·다국어 | 사쿠라 메디칼",
-      "d": "사쿠라 메디칼의 온라인 진료 — 일본 면허 의사의 한국어·다국어 진료. 내과·피부과·AGA 탈모·체중관리 등 8개과 지원. 처방약 전 세계 배송."
+      "t": "일본 의사 온라인 진료 | 한국어·다국어 | JMedPass 메디칼",
+      "d": "JMedPass 메디칼의 온라인 진료 — 일본 면허 의사의 한국어·다국어 진료. 내과·피부과·AGA 탈모·체중관리 등 8개과 지원. 처방약 전 세계 배송."
     },
     "vi": {
-      "t": "Tư vấn bác sĩ Nhật trực tuyến | Tiếng Việt, Đa ngôn ngữ | Sakura Medical",
+      "t": "Tư vấn bác sĩ Nhật trực tuyến | Tiếng Việt, Đa ngôn ngữ | JMedPass",
       "d": "Tư vấn với bác sĩ Nhật có giấy phép bằng tiếng Việt — nội khoa, da liễu, rụng tóc AGA, quản lý cân nặng và nhiều hơn nữa. Thuốc kê đơn giao toàn cầu, không cần đến Nhật."
     }
   },
   "wellness": {
     "zh": {
-      "t": "日本养生保健品 | NMN抗衰老·正品直采 | 樱医集团",
-      "d": "樱医集团日本养生商城——NMN抗衰老、男性保健、女性胶原蛋白、肠道益生菌、免疫营养等100+款日本正品。医学团队严选，日本官方渠道直采，全球配送。"
+      "t": "日本养生保健品 | NMN抗衰老·正品直采 | 日医通",
+      "d": "日医通日本养生商城——NMN抗衰老、男性保健、女性胶原蛋白、肠道益生菌、免疫营养等100+款日本正品。医学团队严选，日本官方渠道直采，全球配送。"
     },
     "en": {
       "t": "Japan Wellness & Health Product Concierge | JMedPass",
       "d": "JMedPass provides curated Japan wellness and health product concierge support, including premium supplements, order coordination, transparent guidance and global delivery support."
     },
     "ja": {
-      "t": "日本健康サプリ | NMNアンチエイジング・正規調達 | 桜医集団",
-      "d": "桜医集団の日本健康ショップ — NMNアンチエイジング・男女サプリ・腸活・免疫栄養など100種以上。医学チーム厳選、日本正規ルート直接調達、世界発送。"
+      "t": "日本健康サプリ | NMNアンチエイジング・正規調達 | 日医通集団",
+      "d": "日医通集団の日本健康ショップ — NMNアンチエイジング・男女サプリ・腸活・免疫栄養など100種以上。医学チーム厳選、日本正規ルート直接調達、世界発送。"
     },
     "ko": {
-      "t": "일본 건강기능식품 | NMN 항노화·정품 직수입 | 사쿠라 메디칼",
-      "d": "사쿠라 메디칼의 일본 웰니스 쇼핑몰 — NMN 항노화, 남녀 건강기능식품, 장 건강, 면역 영양 등 100종 이상. 의학팀 엄선, 일본 정품 직수입, 전 세계 배송."
+      "t": "일본 건강기능식품 | NMN 항노화·정품 직수입 | JMedPass 메디칼",
+      "d": "JMedPass 메디칼의 일본 웰니스 쇼핑몰 — NMN 항노화, 남녀 건강기능식품, 장 건강, 면역 영양 등 100종 이상. 의학팀 엄선, 일본 정품 직수입, 전 세계 배송."
     },
     "vi": {
-      "t": "Thực phẩm bổ sung Nhật Bản | NMN chống lão hóa, Hàng chính hãng | Sakura Medical",
-      "d": "Cửa hàng wellness Nhật Bản của Sakura Medical — hơn 100 sản phẩm NMN chống lão hóa, sức khỏe nam nữ, đường ruột, dinh dưỡng miễn dịch. Đội y tế tuyển chọn, hàng chính hãng từ Nhật, giao toàn cầu."
+      "t": "Thực phẩm bổ sung Nhật Bản | NMN chống lão hóa, Hàng chính hãng | JMedPass",
+      "d": "Cửa hàng wellness Nhật Bản của JMedPass — hơn 100 sản phẩm NMN chống lão hóa, sức khỏe nam nữ, đường ruột, dinh dưỡng miễn dịch. Đội y tế tuyển chọn, hàng chính hãng từ Nhật, giao toàn cầu."
     }
   },
   "stem-cell-anti-aging": {
     "zh": {
-      "t": "干细胞抗衰老治疗 | 日本再生医疗 | 樱医集团",
+      "t": "干细胞抗衰老治疗 | 日本再生医疗 | 日医通",
       "d": "日本干细胞抗衰老专项治疗——自体干细胞静脉回输，逆转细胞老化，改善皮肤、睡眠、精力与免疫力。厚生劳动省认可机构，每次2.5–3亿个高活性细胞。"
     },
     "en": {
@@ -204,21 +204,21 @@ var PAGE_META = {
       "d": "Japan stem cell anti-aging coordination through compliant regenerative medicine institutions, with specialist assessment, medical interpretation and cross-border care support."
     },
     "ja": {
-      "t": "幹細胞アンチエイジング治療 | 日本再生医療 | 桜医集団",
+      "t": "幹細胞アンチエイジング治療 | 日本再生医療 | 日医通集団",
       "d": "日本の幹細胞アンチエイジング専門治療 — 自己幹細胞点滴で細胞老化を逆転。肌・睡眠・体力・免疫力の改善。厚労省認定機関、1回2.5〜3億個の高活性細胞投与。"
     },
     "ko": {
-      "t": "줄기세포 항노화 치료 | 일본 재생의료 | 사쿠라 메디칼",
+      "t": "줄기세포 항노화 치료 | 일본 재생의료 | JMedPass 메디칼",
       "d": "일본 줄기세포 항노화 전문 치료 — 자가 줄기세포 정맥 투여로 세포 노화 역전. 피부·수면·체력·면역력 개선. 후생노동성 인증 기관, 1회 2.5〜3억 개 고활성 세포."
     },
     "vi": {
-      "t": "Điều trị chống lão hóa bằng tế bào gốc | Y học tái sinh Nhật Bản | Sakura Medical",
+      "t": "Điều trị chống lão hóa bằng tế bào gốc | Y học tái sinh Nhật Bản | JMedPass",
       "d": "Liệu pháp tế bào gốc chống lão hóa Nhật Bản — truyền tĩnh mạch tế bào gốc tự thân đảo ngược lão hóa tế bào. Cải thiện da, giấc ngủ, năng lượng và miễn dịch. Cơ sở được MHLW chứng nhận, 250–300 triệu tế bào mỗi lần."
     }
   },
   "ovarian-rejuvenation": {
     "zh": {
-      "t": "干细胞卵巢年轻化 | 女性再生医疗 | 樱医集团",
+      "t": "干细胞卵巢年轻化 | 女性再生医疗 | 日医通",
       "d": "日本干细胞卵巢年轻化疗法——改善卵巢功能衰退、提升AMH值、恢复自然排卵、缓解更年期症状。日本合规医疗机构，每次2.5–3亿细胞，中文全程陪同。"
     },
     "en": {
@@ -226,60 +226,60 @@ var PAGE_META = {
       "d": "Japan stem cell ovarian rejuvenation coordination for women seeking regenerative medicine assessment, specialist consultation, compliant care pathways and multilingual support."
     },
     "ja": {
-      "t": "幹細胞卵巣若返り | 女性再生医療 | 桜医集団",
+      "t": "幹細胞卵巣若返り | 女性再生医療 | 日医通集団",
       "d": "日本の幹細胞卵巣若返り療法 — 卵巣機能低下の改善、AMH値向上、自然排卵の回復、更年期症状の緩和。1回2.5〜3億細胞、厚労省認定機関。"
     },
     "ko": {
-      "t": "줄기세포 난소 회춘 | 여성 재생의료 | 사쿠라 메디칼",
+      "t": "줄기세포 난소 회춘 | 여성 재생의료 | JMedPass 메디칼",
       "d": "일본 줄기세포 난소 회춘 요법 — 난소 기능 저하 개선, AMH 수치 향상, 자연 배란 회복, 갱년기 증상 완화. 1회 2.5〜3억 세포, 후생노동성 인증 기관."
     },
     "vi": {
-      "t": "Trẻ hóa buồng trứng bằng tế bào gốc | Y học tái sinh nữ giới | Sakura Medical",
+      "t": "Trẻ hóa buồng trứng bằng tế bào gốc | Y học tái sinh nữ giới | JMedPass",
       "d": "Liệu pháp tế bào gốc trẻ hóa buồng trứng Nhật Bản — phục hồi suy giảm chức năng buồng trứng, cải thiện AMH, khôi phục rụng trứng tự nhiên, giảm triệu chứng mãn kinh. 250–300 triệu tế bào mỗi lần, được MHLW chứng nhận."
     }
   },
   "partner": {
     "zh": {
-      "t": "合伙人计划 · 人人都是合伙人 · 樱医集团",
-      "d": "加入樱医合伙人计划，零门槛注册，分享即赚，每笔订单赚取售价20%佣金，终身绑定持续复购收益。"
+      "t": "合伙人计划 · 人人都是合伙人 · 日医通",
+      "d": "加入日医通合伙人计划，零门槛注册，分享即赚，每笔订单赚取售价20%佣金，终身绑定持续复购收益。"
     },
     "en": {
       "t": "JMedPass Partner Program | Japan Medical Concierge Referral Network",
       "d": "Join the JMedPass partner network for Japan medical concierge referrals, premium client coordination, transparent referral rewards and long-term cross-border service support."
     },
     "ja": {
-      "t": "パートナープログラム · サクラメディカル",
-      "d": "サクラメディカルパートナープログラム。参加費ゼロ、紹介購入ごとに20%報酬、顧客永久紐付。"
+      "t": "パートナープログラム · 日医通",
+      "d": "日医通パートナープログラム。参加費ゼロ、紹介購入ごとに20%報酬、顧客永久紐付。"
     },
     "ko": {
-      "t": "파트너 프로그램 · 사쿠라 메디칼",
-      "d": "사쿠라 메디칼 파트너 프로그램. 가입비 무료, 추천 구매마다 20% 커미션, 고객 평생 연결."
+      "t": "파트너 프로그램 · JMedPass 메디칼",
+      "d": "JMedPass 메디칼 파트너 프로그램. 가입비 무료, 추천 구매마다 20% 커미션, 고객 평생 연결."
     },
     "vi": {
-      "t": "Chương trình Đối tác · Sakura Medical",
-      "d": "Tham gia chương trình Đối tác Sakura Medical. Miễn phí tham gia, hoa hồng 20% mỗi đơn giới thiệu, liên kết khách trọn đời."
+      "t": "Chương trình Đối tác · JMedPass",
+      "d": "Tham gia chương trình Đối tác JMedPass. Miễn phí tham gia, hoa hồng 20% mỗi đơn giới thiệu, liên kết khách trọn đời."
     }
   },
   "login": {
     "zh": {
-      "t": "登录 / 注册 · 樱医集团合伙人",
-      "d": "登录或注册樱医集团合伙人平台"
+      "t": "登录 / 注册 · 日医通合伙人",
+      "d": "登录或注册日医通合伙人平台"
     },
     "en": {
       "t": "Login / Register · JMedPass Partner",
       "d": "Login or register for the JMedPass partner platform"
     },
     "ja": {
-      "t": "ログイン / 登録 · サクラメディカルパートナー",
-      "d": "サクラメディカルパートナープラットフォームにログインまたは登録"
+      "t": "ログイン / 登録 · 日医通パートナー",
+      "d": "日医通パートナープラットフォームにログインまたは登録"
     },
     "ko": {
-      "t": "로그인 / 등록 · 사쿠라 메디칼 파트너",
-      "d": "사쿠라 메디칼 파트너 플랫폼 로그인 또는 등록"
+      "t": "로그인 / 등록 · JMedPass 메디칼 파트너",
+      "d": "JMedPass 메디칼 파트너 플랫폼 로그인 또는 등록"
     },
     "vi": {
-      "t": "Đăng nhập / Đăng ký · Sakura Medical Đối tác",
-      "d": "Đăng nhập hoặc đăng ký nền tảng Đối tác Sakura Medical"
+      "t": "Đăng nhập / Đăng ký · JMedPass Đối tác",
+      "d": "Đăng nhập hoặc đăng ký nền tảng Đối tác JMedPass"
     }
   }
 };

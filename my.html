@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>我的合伙人中心 · 樱医集团</title>
+  <title>我的合伙人中心 · 日医通</title>
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,7 +22,7 @@
       <a href="/" style="display:flex;align-items:center;gap:10px;color:inherit;">
         <span class="logo-icon" style="font-size:1.4rem;">⚕</span>
         <span class="my-topbar-logo-text">
-          樱医集团
+          日医通
           <em>合伙人中心</em>
         </span>
       </a>
@@ -44,7 +44,7 @@
 
       <!-- 新用户欢迎提示 -->
       <div id="newUserBanner" style="display:none;background:linear-gradient(135deg,var(--primary),var(--rose));color:white;border-radius:var(--radius);padding:24px 32px;margin-bottom:24px;">
-        <h3 style="font-family:'Noto Serif SC',serif;font-size:1.2rem;margin-bottom:8px;">🎉 恭喜您成为樱医合伙人！</h3>
+        <h3 style="font-family:'Noto Serif SC',serif;font-size:1.2rem;margin-bottom:8px;">🎉 恭喜您成为日医通合伙人！</h3>
         <p style="opacity:.9;font-size:.95rem;">您的专属推荐码已生成。现在就分享给朋友，每笔订单赚20%佣金！</p>
       </div>
 
@@ -317,9 +317,9 @@ function hydrateHeader() {
   document.getElementById('statJoinDate').textContent = fmtDate(me.createdAt);
 
   document.getElementById('copyText1').textContent =
-    `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n樱医集团直连日本正规医疗机构，并提供专业医学翻译与全流程协调支持。\n\n点击了解：${myLink}`;
+    `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n日医通直连日本正规医疗机构，并提供专业医学翻译与全流程协调支持。\n\n点击了解：${myLink}`;
   document.getElementById('copyText2').textContent =
-    `💊 我在用樱医集团精选的日本正品营养品，正规渠道直采，适合长期健康管理。\n\n购买链接：${myLink}`;
+    `💊 我在用日医通精选的日本正品营养品，正规渠道直采，适合长期健康管理。\n\n购买链接：${myLink}`;
 }
 
 function renderStats() {
@@ -491,7 +491,7 @@ function copySpeech(n) {
 }
 
 function shareWhatsApp() {
-  const text = encodeURIComponent(`我发现了一个很好的日本医疗服务平台——樱医集团，精密体检、干细胞、医美都有，并提供专业医学翻译与跨境协调支持。注册就是合伙人，推荐朋友还能赚佣金 💰\n了解一下：${myLink}`);
+  const text = encodeURIComponent(`我发现了一个很好的日本医疗服务平台——日医通，精密体检、干细胞、医美都有，并提供专业医学翻译与跨境协调支持。注册就是合伙人，推荐朋友还能赚佣金 💰\n了解一下：${myLink}`);
   window.open(`https://wa.me/?text=${text}`, '_blank');
 }
 function shareWechat() {

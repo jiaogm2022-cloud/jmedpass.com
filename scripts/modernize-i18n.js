@@ -276,8 +276,8 @@ function patchEnglishHtml(filePath, dict, pageMeta) {
   html = replacePlaceholders(html, dict);
 
   html = html
-    .replace(/樱医集团<em>JMEDPASS<\/em>/g, 'JMedPass<em>JAPAN MEDICAL CONCIERGE</em>')
-    .replace(/樱医集团 \| JMEDPASS/g, 'JMedPass | Japan Medical Concierge');
+    .replace(/日医通<em>JMEDPASS<\/em>/g, 'JMedPass<em>JAPAN MEDICAL CONCIERGE</em>')
+    .replace(/日医通 \| JMEDPASS/g, 'JMedPass | Japan Medical Concierge');
 
   if (meta) {
     html = html.replace(/(<meta name="description" content=")[^"]*(" \/>)/, `$1${meta.d}$2`);

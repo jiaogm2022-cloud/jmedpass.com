@@ -1,4 +1,4 @@
-/* ===== Sakura Medical · Retrieve Stripe Session Details ===== */
+/* ===== JMedPass · Retrieve Stripe Session Details ===== */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {

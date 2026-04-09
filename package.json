@@ -1,7 +1,7 @@
 {
   "name": "jmedpass-com",
   "version": "1.0.0",
-  "description": "Sakura Medical Group",
+  "description": "JMedPass",
   "dependencies": {
     "stripe": "^14.21.0"
   }

@@ -1,4 +1,4 @@
-/* ===== Sakura Medical · Retrieve Stripe Session Details (Vercel) ===== */
+/* ===== JMedPass · Retrieve Stripe Session Details (Vercel) ===== */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { getAuthenticatedAdmin } = require('./_lib/auth');
 
