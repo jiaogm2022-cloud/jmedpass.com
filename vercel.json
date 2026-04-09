@@ -1,5 +1,5 @@
 {
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "buildCommand": "",
   "outputDirectory": ".",
@@ -56,14 +56,13 @@
       "source": "/zaixian",
       "destination": "/online-consultation",
       "permanent": true
-    },
-    {
-      "source": "/(.*)\\.html",
-      "destination": "/$1",
-      "permanent": true
     }
   ],
   "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/en", "destination": "/en/index.html" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/((?!api/|admin/|.*\\..*).+)", "destination": "/$1.html" },
     { "source": "/.netlify/functions/create-checkout", "destination": "/api/create-checkout" },
     { "source": "/.netlify/functions/get-order", "destination": "/api/get-order" }
   ],
