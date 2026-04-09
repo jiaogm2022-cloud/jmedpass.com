@@ -4,28 +4,68 @@ const DEFAULT_ADMIN_USERNAME = 'admin';
 const DEFAULT_ADMIN_PASSWORD_HASH = 'c4c0b99854f97f16ae681cb3c396f20858c2499c7b1c8f33cdad958c57f3958d';
 const SESSION_COOKIE = 'sm_admin_session';
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12;
+const SCRYPT_PREFIX = 'scrypt';
+const SCRYPT_KEYLEN = 64;
+
+function isDevelopmentMode() {
+  return process.env.NODE_ENV === 'development' || !process.env.VERCEL;
+}
 
 function sha256Hex(input) {
   return crypto.createHash('sha256').update(String(input)).digest('hex');
 }
 
-function getAdminUsername() {
-  return process.env.ADMIN_USERNAME || DEFAULT_ADMIN_USERNAME;
+function createPasswordHash(input) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const digest = crypto.scryptSync(String(input), salt, SCRYPT_KEYLEN).toString('hex');
+  return `${SCRYPT_PREFIX}$${salt}$${digest}`;
 }
 
-function getAdminPasswordHash() {
-  return (process.env.ADMIN_PASSWORD_HASH || DEFAULT_ADMIN_PASSWORD_HASH).toLowerCase();
-}
-
-function getSessionSecret() {
-  return process.env.ADMIN_SESSION_SECRET || getAdminPasswordHash();
-}
-
-function timingSafeEqualHex(left, right) {
+function timingSafeEqualText(left, right) {
   const leftBuf = Buffer.from(String(left || ''), 'utf8');
   const rightBuf = Buffer.from(String(right || ''), 'utf8');
   if (leftBuf.length !== rightBuf.length) return false;
   return crypto.timingSafeEqual(leftBuf, rightBuf);
+}
+
+function isScryptHash(value) {
+  return typeof value === 'string' && value.startsWith(`${SCRYPT_PREFIX}$`);
+}
+
+function verifyPasswordHash(input, storedHash) {
+  const normalized = String(storedHash || '').trim().toLowerCase();
+  if (!normalized) return false;
+
+  if (isScryptHash(normalized)) {
+    const [, salt, expectedDigest] = normalized.split('$');
+    if (!salt || !expectedDigest) return false;
+    const actualDigest = crypto.scryptSync(String(input), salt, SCRYPT_KEYLEN).toString('hex');
+    return timingSafeEqualText(actualDigest, expectedDigest);
+  }
+
+  return timingSafeEqualHex(sha256Hex(input), normalized);
+}
+
+function needsPasswordRehash(storedHash) {
+  return !isScryptHash(String(storedHash || '').trim().toLowerCase());
+}
+
+function getAdminUsername() {
+  return process.env.ADMIN_USERNAME || (isDevelopmentMode() ? DEFAULT_ADMIN_USERNAME : '');
+}
+
+function getAdminPasswordHash() {
+  const value = process.env.ADMIN_PASSWORD_HASH || (isDevelopmentMode() ? DEFAULT_ADMIN_PASSWORD_HASH : '');
+  return String(value || '').toLowerCase();
+}
+
+function getSessionSecret() {
+  if (process.env.ADMIN_SESSION_SECRET) return process.env.ADMIN_SESSION_SECRET;
+  return isDevelopmentMode() ? getAdminPasswordHash() : '';
+}
+
+function timingSafeEqualHex(left, right) {
+  return timingSafeEqualText(left, right);
 }
 
 function parseCookies(req) {
@@ -113,11 +153,15 @@ async function readJsonBody(req) {
 
 module.exports = {
   clearSessionCookie,
+  createPasswordHash,
   createSessionCookie,
   getAdminPasswordHash,
   getAdminUsername,
   getAuthenticatedAdmin,
+  needsPasswordRehash,
+  parseCookies,
   readJsonBody,
   sha256Hex,
   timingSafeEqualHex,
+  verifyPasswordHash,
 };

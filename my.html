@@ -267,140 +267,74 @@
 
 <script src="partner.js"></script>
 <script>
-// ===== Auth guard =====
-const currentUserId = localStorage.getItem('sm_current_user');
-if (!currentUserId) {
-  window.location.href = '/login';
-}
-
-// ===== Data helpers =====
-function getUsers() { return JSON.parse(localStorage.getItem('sm_users') || '[]'); }
-function getOrders() { return JSON.parse(localStorage.getItem('sm_orders') || '[]'); }
-function getCommissions() { return JSON.parse(localStorage.getItem('sm_commissions') || '[]'); }
-function getWithdrawals() { return JSON.parse(localStorage.getItem('sm_withdrawals') || '[]'); }
+var me = null;
+var customers = [];
+var orders = [];
+var commissions = [];
+var withdrawals = [];
+var rules = [];
+var myLink = '';
 
 function fmtDate(iso) {
   if (!iso) return '-';
   return new Date(iso).toLocaleDateString('zh-CN', { year:'numeric', month:'2-digit', day:'2-digit' });
 }
+
 function fmtAmt(n) {
   return '$' + parseFloat(n || 0).toFixed(2);
 }
+
 function statusLabel(s) {
   const map = { settled:'已到账', pending:'待结算', cancelled:'已取消', processing:'处理中', completed:'已完成', rejected:'已驳回' };
   const cls = { settled:'status-settled', pending:'status-pending', cancelled:'status-cancelled', processing:'status-processing', completed:'status-settled', rejected:'status-cancelled' };
   return `<span class="status ${cls[s] || ''}">${map[s] || s}</span>`;
 }
+
 function maskName(name) {
   if (!name) return '**';
   return name.charAt(0) + '**';
 }
 
-// ===== Load user =====
-const users = getUsers();
-const me = users.find(u => u.id === currentUserId);
-if (!me) { localStorage.removeItem('sm_current_user'); window.location.href = '/login'; }
-
-// Topbar
-document.getElementById('topbarAvatar').textContent = (me.nickname || '?').charAt(0).toUpperCase();
-document.getElementById('topbarName').textContent = me.nickname || me.phone;
-
-// Referral code / link
-const siteBase = location.origin + '/';
-const myLink = siteBase + '?ref=' + me.referralCode;
-document.getElementById('myRefCode').textContent = me.referralCode;
-document.getElementById('myRefLink').textContent = siteBase + '?ref=' + me.referralCode;
-document.getElementById('shareRefLink').textContent = myLink;
-
-// Join date
-document.getElementById('statJoinDate').textContent = fmtDate(me.createdAt);
-
-// Share speeches
-document.getElementById('copyText1').textContent =
-  `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n樱医集团直连日本正规医疗机构，并提供专业医学翻译与全流程协调支持。\n\n点击了解：${myLink}`;
-document.getElementById('copyText2').textContent =
-  `💊 我一直在吃的日本NMN抗衰精华，正品直采，效果真的能感觉到，推荐给你试试～\n\n购买链接：${myLink}`;
-
-// ===== New user banner =====
-const params = new URLSearchParams(location.search);
-if (params.get('new') === '1') {
-  document.getElementById('newUserBanner').style.display = 'block';
+function getWithdrawableAmount() {
+  const totalSettled = commissions
+    .filter(c => c.status === 'settled')
+    .reduce((sum, c) => sum + Number(c.commissionAmt || 0), 0);
+  const frozen = withdrawals
+    .filter(w => w.status === 'completed' || w.status === 'processing' || w.status === 'pending')
+    .reduce((sum, w) => sum + Number(w.amount || 0), 0);
+  return Math.max(0, totalSettled - frozen);
 }
 
-// ===== Seed demo data for new user =====
-initDemoData();
+function hydrateHeader() {
+  document.getElementById('topbarAvatar').textContent = (me.nickname || '?').charAt(0).toUpperCase();
+  document.getElementById('topbarName').textContent = me.nickname || me.phone;
 
-function initDemoData() {
-  const existingOrders = getOrders().filter(o => o.referrerId === currentUserId);
-  if (existingOrders.length > 0) return; // already seeded
+  const siteBase = location.origin + '/';
+  myLink = siteBase + '?ref=' + me.referralCode;
+  document.getElementById('myRefCode').textContent = me.referralCode;
+  document.getElementById('myRefLink').textContent = myLink;
+  document.getElementById('shareRefLink').textContent = myLink;
+  document.getElementById('statJoinDate').textContent = fmtDate(me.createdAt);
 
-  // Add 2 demo customers referred by this user (only seed if they have no referrals yet)
-  const allUsers = getUsers();
-  if (allUsers.filter(u => u.referredBy === currentUserId).length > 0) return;
-
-  const demoCustomers = [
-    {
-      id: 'demo_cust_1_' + currentUserId.slice(-4),
-      nickname: '王' + '**',
-      phone: '+65-demo-1',
-      email: '',
-      password: btoa('demo123'),
-      referralCode: 'SAKURA-' + Math.random().toString(36).slice(2,8).toUpperCase(),
-      referredBy: currentUserId,
-      createdAt: new Date(Date.now() - 90 * 86400000).toISOString(),
-      status: 'active'
-    },
-    {
-      id: 'demo_cust_2_' + currentUserId.slice(-4),
-      nickname: '李' + '**',
-      phone: '+65-demo-2',
-      email: '',
-      password: btoa('demo123'),
-      referralCode: 'SAKURA-' + Math.random().toString(36).slice(2,8).toUpperCase(),
-      referredBy: currentUserId,
-      createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
-      status: 'active'
-    }
-  ];
-  const updatedUsers = [...allUsers, ...demoCustomers];
-  localStorage.setItem('sm_users', JSON.stringify(updatedUsers));
-
-  // Demo orders
-  const orders = getOrders();
-  const demoOrders = [
-    { id:'demo_ord_1_'+currentUserId.slice(-4), userId:demoCustomers[0].id, category:'checkup', productName:'精密体检 PET-CT套餐', amount:5000, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-85*86400000).toISOString(), completedAt: new Date(Date.now()-83*86400000).toISOString() },
-    { id:'demo_ord_2_'+currentUserId.slice(-4), userId:demoCustomers[0].id, category:'stem_cell', productName:'干细胞抗衰老疗法', amount:30000, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-60*86400000).toISOString(), completedAt: new Date(Date.now()-58*86400000).toISOString() },
-    { id:'demo_ord_3_'+currentUserId.slice(-4), userId:demoCustomers[0].id, category:'nmn', productName:'NMN抗衰精华（月订）', amount:200, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-15*86400000).toISOString(), completedAt: new Date(Date.now()-13*86400000).toISOString() },
-    { id:'demo_ord_4_'+currentUserId.slice(-4), userId:demoCustomers[1].id, category:'nmn', productName:'NMN抗衰精华（月订）', amount:200, currency:'USD', status:'completed', referrerId:currentUserId, createdAt: new Date(Date.now()-5*86400000).toISOString(), completedAt: new Date(Date.now()-3*86400000).toISOString() },
-    { id:'demo_ord_5_'+currentUserId.slice(-4), userId:demoCustomers[1].id, category:'checkup', productName:'精密体检基础套餐', amount:2000, currency:'USD', status:'pending', referrerId:currentUserId, createdAt: new Date(Date.now()-2*86400000).toISOString(), completedAt: null }
-  ];
-  localStorage.setItem('sm_orders', JSON.stringify([...orders, ...demoOrders]));
-
-  // Demo commissions
-  const comms = getCommissions();
-  const demoComms = [
-    { id:'demo_com_1_'+currentUserId.slice(-4), orderId:'demo_ord_1_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[0].id, orderAmount:5000, commissionRate:0.2, commissionAmt:1000, status:'settled', settleAt: new Date(Date.now()-76*86400000).toISOString(), settledAt: new Date(Date.now()-76*86400000).toISOString(), createdAt: new Date(Date.now()-83*86400000).toISOString() },
-    { id:'demo_com_2_'+currentUserId.slice(-4), orderId:'demo_ord_2_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[0].id, orderAmount:30000, commissionRate:0.2, commissionAmt:6000, status:'settled', settleAt: new Date(Date.now()-51*86400000).toISOString(), settledAt: new Date(Date.now()-51*86400000).toISOString(), createdAt: new Date(Date.now()-58*86400000).toISOString() },
-    { id:'demo_com_3_'+currentUserId.slice(-4), orderId:'demo_ord_3_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[0].id, orderAmount:200, commissionRate:0.2, commissionAmt:40, status:'settled', settleAt: new Date(Date.now()-6*86400000).toISOString(), settledAt: new Date(Date.now()-6*86400000).toISOString(), createdAt: new Date(Date.now()-13*86400000).toISOString() },
-    { id:'demo_com_4_'+currentUserId.slice(-4), orderId:'demo_ord_4_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[1].id, orderAmount:200, commissionRate:0.2, commissionAmt:40, status:'pending', settleAt: new Date(Date.now()+4*86400000).toISOString(), settledAt: null, createdAt: new Date(Date.now()-3*86400000).toISOString() },
-    { id:'demo_com_5_'+currentUserId.slice(-4), orderId:'demo_ord_5_'+currentUserId.slice(-4), beneficiaryId:currentUserId, customerId:demoCustomers[1].id, orderAmount:2000, commissionRate:0.2, commissionAmt:400, status:'pending', settleAt: new Date(Date.now()+4*86400000).toISOString(), settledAt: null, createdAt: new Date(Date.now()-2*86400000).toISOString() }
-  ];
-  localStorage.setItem('sm_commissions', JSON.stringify([...comms, ...demoComms]));
+  document.getElementById('copyText1').textContent =
+    `🏥 我在日本做了全身精密体检，PET-CT + 癌症早筛 + 基因检测，比国内体检细致太多了！\n樱医集团直连日本正规医疗机构，并提供专业医学翻译与全流程协调支持。\n\n点击了解：${myLink}`;
+  document.getElementById('copyText2').textContent =
+    `💊 我在用樱医集团精选的日本正品营养品，正规渠道直采，适合长期健康管理。\n\n购买链接：${myLink}`;
 }
 
-// ===== Compute stats =====
 function renderStats() {
-  const comms = getCommissions().filter(c => c.beneficiaryId === currentUserId);
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-  const totalSettled = comms.filter(c => c.status === 'settled').reduce((s,c) => s + c.commissionAmt, 0);
-  const monthSettled = comms.filter(c => c.status === 'settled' && new Date(c.settledAt) >= monthStart).reduce((s,c) => s + c.commissionAmt, 0);
-  const pending = comms.filter(c => c.status === 'pending').reduce((s,c) => s + c.commissionAmt, 0);
-
-  const withdrawals = getWithdrawals().filter(w => w.userId === currentUserId && (w.status === 'completed' || w.status === 'processing'));
-  const withdrawn = withdrawals.reduce((s,w) => s + w.amount, 0);
-  const withdrawable = Math.max(0, totalSettled - withdrawn);
+  const totalSettled = commissions
+    .filter(c => c.status === 'settled')
+    .reduce((sum, c) => sum + Number(c.commissionAmt || 0), 0);
+  const monthSettled = commissions
+    .filter(c => c.status === 'settled' && c.settledAt && new Date(c.settledAt) >= monthStart)
+    .reduce((sum, c) => sum + Number(c.commissionAmt || 0), 0);
+  const pending = commissions
+    .filter(c => c.status === 'pending')
+    .reduce((sum, c) => sum + Number(c.commissionAmt || 0), 0);
+  const withdrawable = getWithdrawableAmount();
 
   document.getElementById('statTotal').textContent = fmtAmt(totalSettled);
   document.getElementById('statMonth').textContent = fmtAmt(monthSettled);
@@ -408,30 +342,25 @@ function renderStats() {
   document.getElementById('statWithdrawable').textContent = fmtAmt(withdrawable);
   document.getElementById('wbWithdrawable').textContent = fmtAmt(withdrawable);
   document.getElementById('wbPending').textContent = fmtAmt(pending);
-
-  // Customer count
-  const myCustomers = getUsers().filter(u => u.referredBy === currentUserId);
-  document.getElementById('statCustomers').textContent = myCustomers.length;
+  document.getElementById('statCustomers').textContent = customers.length;
 
   return withdrawable;
 }
 
-// ===== Render customers =====
 function renderCustomers() {
-  const myCustomers = getUsers().filter(u => u.referredBy === currentUserId);
-  const comms = getCommissions().filter(c => c.beneficiaryId === currentUserId);
-  const orders = getOrders().filter(o => o.referrerId === currentUserId);
   const tbody = document.getElementById('customersBody');
-
-  if (myCustomers.length === 0) {
+  if (customers.length === 0) {
     tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">👥</div><p>暂无推荐客户<br /><a href="#" onclick="switchMyTab(\'share\')" style="color:var(--primary);">立即分享，开始招募</a></p></div></td></tr>';
     return;
   }
-  tbody.innerHTML = myCustomers.map(c => {
+
+  tbody.innerHTML = customers.map(c => {
     const cOrders = orders.filter(o => o.userId === c.id && o.status === 'completed');
-    const totalSpend = cOrders.reduce((s,o) => s + o.amount, 0);
-    const myComm = comms.filter(cm => cm.customerId === c.id && cm.status === 'settled').reduce((s,cm) => s + cm.commissionAmt, 0);
-    const lastOrder = cOrders.sort((a,b) => new Date(b.completedAt) - new Date(a.completedAt))[0];
+    const totalSpend = cOrders.reduce((sum, o) => sum + Number(o.totalAmount || o.amount || 0), 0);
+    const myComm = commissions
+      .filter(cm => cm.userId === c.id && cm.status === 'settled')
+      .reduce((sum, cm) => sum + Number(cm.commissionAmt || 0), 0);
+    const lastOrder = cOrders.slice().sort((a, b) => new Date(b.completedAt || 0) - new Date(a.completedAt || 0))[0];
     return `<tr>
       <td>${maskName(c.nickname)}</td>
       <td>${fmtDate(c.createdAt)}</td>
@@ -442,43 +371,43 @@ function renderCustomers() {
   }).join('');
 }
 
-// ===== Render commissions =====
 function renderCommissions() {
-  const comms = getCommissions().filter(c => c.beneficiaryId === currentUserId)
-    .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-  const allUsers = getUsers();
   const tbody = document.getElementById('commissionsBody');
-  if (comms.length === 0) {
+  if (commissions.length === 0) {
     tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">💰</div><p>暂无佣金记录</p></div></td></tr>';
     return;
   }
+
+  const customerMap = {};
+  customers.forEach(function (customer) { customerMap[customer.id] = customer; });
   const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'远程专家会诊' };
-  const orders = getOrders();
-  tbody.innerHTML = comms.map(c => {
+  const sorted = commissions.slice().sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+  tbody.innerHTML = sorted.map(c => {
     const order = orders.find(o => o.id === c.orderId) || {};
-    const customer = allUsers.find(u => u.id === c.customerId) || {};
+    const customer = customerMap[c.userId] || {};
+    const orderAmount = Number(c.orderAmount || order.totalAmount || order.amount || 0);
     return `<tr>
       <td>${fmtDate(c.createdAt)}</td>
       <td>${categoryMap[order.category] || order.category || '-'}</td>
       <td>${maskName(customer.nickname)}</td>
-      <td>${fmtAmt(c.orderAmount)}</td>
+      <td>${fmtAmt(orderAmount)}</td>
       <td class="amount">${fmtAmt(c.commissionAmt)}</td>
       <td>${statusLabel(c.status)}</td>
     </tr>`;
   }).join('');
 }
 
-// ===== Render withdrawals history =====
 function renderWithdrawals() {
-  const ws = getWithdrawals().filter(w => w.userId === currentUserId)
-    .sort((a,b) => new Date(b.requestedAt) - new Date(a.requestedAt));
   const methodMap = { bank_transfer:'银行转账', paynow:'PayNow', alipay:'支付宝', wechat_pay:'微信支付' };
   const tbody = document.getElementById('withdrawalsBody');
-  if (ws.length === 0) {
+  if (withdrawals.length === 0) {
     tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>暂无提现记录</p></div></td></tr>';
     return;
   }
-  tbody.innerHTML = ws.map(w => `<tr>
+
+  const sorted = withdrawals.slice().sort((a, b) => new Date(b.requestedAt || 0) - new Date(a.requestedAt || 0));
+  tbody.innerHTML = sorted.map(w => `<tr>
     <td>${fmtDate(w.requestedAt)}</td>
     <td class="amount">${fmtAmt(w.amount)}</td>
     <td>${methodMap[w.method] || w.method}</td>
@@ -487,8 +416,7 @@ function renderWithdrawals() {
   </tr>`).join('');
 }
 
-// ===== Withdraw =====
-function doWithdraw(e) {
+async function doWithdraw(e) {
   e.preventDefault();
   const errEl = document.getElementById('withdrawError');
   const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -501,28 +429,28 @@ function doWithdraw(e) {
   if (!method) { showErrEl(errEl, '请选择提现方式'); return; }
   if (!account) { showErrEl(errEl, '请填写收款账号信息'); return; }
 
-  const ws = getWithdrawals();
-  const newW = {
-    id: 'wd_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5),
-    userId: currentUserId,
-    amount,
-    currency: 'USD',
-    method,
-    accountInfo: account,
-    status: 'pending',
-    requestedAt: new Date().toISOString(),
-    processedAt: null,
-    adminNote: ''
-  };
-  ws.push(newW);
-  localStorage.setItem('sm_withdrawals', JSON.stringify(ws));
-
-  showToast('提现申请已提交，1-3个工作日处理', 'success');
-  document.getElementById('withdrawAmount').value = '';
-  document.getElementById('withdrawMethod').value = '';
-  document.getElementById('withdrawAccount').value = '';
-  renderStats();
-  renderWithdrawals();
+  try {
+    const response = await fetch('/api/partner-withdrawals', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount, method, account }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showErrEl(errEl, data.error || '提现申请失败，请稍后重试');
+      return;
+    }
+    withdrawals.push(data.withdrawal);
+    showToast('提现申请已提交，1-3个工作日处理', 'success');
+    document.getElementById('withdrawAmount').value = '';
+    document.getElementById('withdrawMethod').value = '';
+    document.getElementById('withdrawAccount').value = '';
+    renderStats();
+    renderWithdrawals();
+  } catch (error) {
+    showErrEl(errEl, '提现申请失败，请稍后重试');
+  }
 }
 
 function showErrEl(el, msg) {
@@ -581,15 +509,44 @@ function showToast(msg, type) {
 
 // ===== Logout =====
 document.getElementById('logoutBtn').addEventListener('click', () => {
-  localStorage.removeItem('sm_current_user');
-  window.location.href = '/login';
+  fetch('/api/partner-logout', {
+    method: 'POST',
+    credentials: 'same-origin',
+  }).finally(() => {
+    window.location.href = '/login';
+  });
 });
 
-// ===== Initialize =====
-renderStats();
-renderCustomers();
-renderCommissions();
-renderWithdrawals();
+(async function initPage() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('new') === '1') {
+    document.getElementById('newUserBanner').style.display = 'block';
+  }
+
+  try {
+    const response = await fetch('/api/partner-dashboard', { credentials: 'same-origin' });
+    const data = await response.json();
+    if (!response.ok || !data.user) {
+      window.location.href = '/login';
+      return;
+    }
+
+    me = data.user;
+    customers = Array.isArray(data.customers) ? data.customers : [];
+    orders = Array.isArray(data.orders) ? data.orders : [];
+    commissions = Array.isArray(data.commissions) ? data.commissions : [];
+    withdrawals = Array.isArray(data.withdrawals) ? data.withdrawals : [];
+    rules = Array.isArray(data.rules) ? data.rules : [];
+
+    hydrateHeader();
+    renderStats();
+    renderCustomers();
+    renderCommissions();
+    renderWithdrawals();
+  } catch (error) {
+    window.location.href = '/login';
+  }
+})();
 </script>
 </body>
 </html>

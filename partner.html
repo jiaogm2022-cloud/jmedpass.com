@@ -347,11 +347,15 @@ window.addEventListener('scroll', () => {
 });
 
 // Show my-center link if logged in
-const cu = localStorage.getItem('sm_current_user');
-if (cu) {
-  document.getElementById('navMyLink').style.display = 'inline';
-  document.getElementById('navLoginLink').style.display = 'none';
-}
+fetch('/api/partner-session', { credentials: 'same-origin' })
+  .then(function (response) { return response.json(); })
+  .then(function (data) {
+    if (data && data.authenticated) {
+      document.getElementById('navMyLink').style.display = 'inline';
+      document.getElementById('navLoginLink').style.display = 'none';
+    }
+  })
+  .catch(function () {});
 
 // FAQ accordion
 document.querySelectorAll('.faq-q').forEach(q => {

@@ -162,8 +162,7 @@
       </svg>
     </div>
     <h1>支付成功！</h1>
-    <p class="subtitle">感谢您的购买。我们已收到您的订单，<br />
-      确认邮件已发送至您的邮箱。</p>
+    <p class="subtitle" id="successSubtitle">感谢您的购买。我们正在核对您的支付状态与订单信息。</p>
 
     <div class="order-ref">
       <strong>订单编号</strong>
@@ -199,7 +198,7 @@
   var params = new URLSearchParams(window.location.search);
   var sessionId = params.get('session_id');
 
-  function showCard() {
+  function showCard(orderInfo) {
     document.getElementById('loadingOverlay').style.display = 'none';
     document.getElementById('successCard').style.display = 'block';
 
@@ -208,11 +207,40 @@
       document.getElementById('orderRef').textContent = sessionId.slice(-12).toUpperCase();
     }
 
+    document.getElementById('successSubtitle').textContent =
+      '感谢您的购买。我们已确认支付成功，订单处理进度可通过客服协助查询。';
+
     // Clear cart
     localStorage.removeItem('sm_cart');
   }
 
-  showCard();
+  if (!sessionId) {
+    document.getElementById('loadingOverlay').style.display = 'none';
+    document.getElementById('successCard').style.display = 'block';
+    document.getElementById('successSubtitle').textContent = '缺少订单编号，请联系平台客服协助核对。';
+    return;
+  }
+
+  fetch('/api/checkout-session-status?session_id=' + encodeURIComponent(sessionId), {
+    credentials: 'same-origin'
+  })
+    .then(function (response) {
+      return response.json().then(function (data) {
+        if (!response.ok) throw new Error(data.error || 'query_failed');
+        return data;
+      });
+    })
+    .then(function (data) {
+      if (data.payment_status !== 'paid') {
+        throw new Error('payment_not_confirmed');
+      }
+      showCard(data);
+    })
+    .catch(function () {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.getElementById('successCard').style.display = 'block';
+      document.getElementById('successSubtitle').textContent = '支付状态暂未确认，请保留订单编号并联系平台客服核对。';
+    });
 })();
 </script>
 </body>

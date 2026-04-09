@@ -26,14 +26,68 @@ function escHtml(str) {
 }
 
 /* ===== STORAGE HELPERS ===== */
-const DB_KEY = 'sm_inquiries';
+const adminState = {
+  loaded: false,
+  inquiries: [],
+  consultations: [],
+  users: [],
+  orders: [],
+  commissions: [],
+  withdrawals: [],
+  rules: [],
+  products: [],
+};
+
+function syncAdminState(data) {
+  if (!data) return;
+  adminState.inquiries = Array.isArray(data.inquiries) ? data.inquiries : [];
+  adminState.consultations = Array.isArray(data.consultations) ? data.consultations : [];
+  adminState.users = Array.isArray(data.users) ? data.users : [];
+  adminState.orders = Array.isArray(data.orders) ? data.orders : [];
+  adminState.commissions = Array.isArray(data.commissions) ? data.commissions : [];
+  adminState.withdrawals = Array.isArray(data.withdrawals) ? data.withdrawals : [];
+  adminState.rules = Array.isArray(data.rules) ? data.rules : [];
+  adminState.products = Array.isArray(data.products) ? data.products : [];
+  adminState.loaded = true;
+}
+
+async function persistSection(section, items) {
+  const response = await fetch('/api/admin-data', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      section,
+      action: 'replaceAll',
+      payload: { items },
+    }),
+  });
+  let payload = null;
+
+  try {
+    payload = await response.json();
+  } catch (error) {
+    payload = null;
+  }
+
+  if (!response.ok) {
+    throw new Error((payload && payload.error) || '保存失败，请稍后重试');
+  }
+
+  if (payload && payload.data) syncAdminState(payload.data);
+  return payload;
+}
 
 function loadInquiries() {
-  try { return JSON.parse(localStorage.getItem(DB_KEY)) || []; }
-  catch { return []; }
+  return adminState.inquiries.slice();
 }
 function saveInquiries(list) {
-  localStorage.setItem(DB_KEY, JSON.stringify(list));
+  adminState.inquiries = list.slice();
+  persistSection('inquiries', adminState.inquiries).catch(function () {});
+}
+
+function getOrders() {
+  return adminState.orders.slice();
 }
 
 
@@ -57,6 +111,18 @@ function showToast(msg, type = '') {
   t.textContent = msg;
   t.className = 'toast show' + (type ? ' ' + type : '');
   setTimeout(() => t.className = 'toast', 2800);
+}
+
+function setButtonBusy(button, isBusy, busyText) {
+  if (!button) return;
+  if (isBusy) {
+    if (!button.dataset.defaultText) button.dataset.defaultText = button.innerHTML;
+    button.disabled = true;
+    if (busyText) button.textContent = busyText;
+    return;
+  }
+  button.disabled = false;
+  if (button.dataset.defaultText) button.innerHTML = button.dataset.defaultText;
 }
 
 /* ===== SIDEBAR TOGGLE ===== */
@@ -171,9 +237,9 @@ function renderOverview() {
   if (!regEntries.length) rbEl.innerHTML = '<div class="no-data">暂无数据</div>';
 
   // Partner stats
-  const allUsers = JSON.parse(localStorage.getItem('sm_users') || '[]');
-  const allWds = JSON.parse(localStorage.getItem('sm_withdrawals') || '[]');
-  const allComms = JSON.parse(localStorage.getItem('sm_commissions') || '[]');
+  const allUsers = getPartnerUsers();
+  const allWds = getPartnerWithdrawals();
+  const allComms = getPartnerCommissions();
   const activePartners = allUsers.filter(u => u.status !== 'frozen').length;
   const pendingWd = allWds.filter(w => w.status === 'pending').length;
   const pendingComm = allComms.filter(c => c.status === 'pending').length;
@@ -386,13 +452,21 @@ function timeAgo(ts) {
 }
 
 /* ===== INIT ===== */
-renderOverview();
+(async function initAdminApp() {
+  try {
+    const response = await fetch('/api/admin-data', { credentials: 'same-origin' });
+    if (!response.ok) throw new Error('load_failed');
+    const data = await response.json();
+    syncAdminState(data);
+    renderOverview();
+  } catch (error) {
+    showToast('后台数据加载失败，请刷新重试', 'error');
+  }
+})();
 
 /* ====================================================================
    PRODUCTS MANAGEMENT
    ==================================================================== */
-const PROD_KEY = 'sm_products';
-
 // Default products (from wellness.html)
 const DEFAULT_PRODUCTS = [
   { id:1,  cat:'nmn',    brand:'AFC Japan',           name:'NMN 9000 Ultra 超高纯度',        spec:'60粒 · 60日量', price:1280, orig:1580, badge:'热销', emoji:'⚡', grad:'linear-gradient(135deg,#7c3aed,#4f46e5)', desc:'AFC Japan 旗舰级 NMN 产品，每粒含 NMN 150mg，纯度高达 99% 以上。采用日本独家低温萃取工艺，有效保留 NMN 活性成分，帮助激活体内 NAD+ 水平，从细胞层面对抗衰老。', highlights:['NMN 纯度 ≥99%，无杂质添加','每日摄入 300mg，临床推荐剂量','日本国内生产，厚生劳动省备案','60粒装，60天完整疗程'], images:[] },
@@ -423,13 +497,10 @@ const DEFAULT_PRODUCTS = [
 ];
 
 function loadProducts() {
-  try {
-    const stored = localStorage.getItem(PROD_KEY);
-    return stored ? JSON.parse(stored) : DEFAULT_PRODUCTS.slice();
-  } catch { return DEFAULT_PRODUCTS.slice(); }
+  return adminState.products.length ? adminState.products.slice() : DEFAULT_PRODUCTS.slice();
 }
 function saveProducts(list) {
-  localStorage.setItem(PROD_KEY, JSON.stringify(list));
+  return persistSection('products', list.slice());
 }
 
 function prodUID() {
@@ -601,7 +672,8 @@ function closeProdModal() {
   pfImages = [];
 }
 
-document.getElementById('saveProdBtn').addEventListener('click', () => {
+document.getElementById('saveProdBtn').addEventListener('click', async () => {
+  const saveBtn = document.getElementById('saveProdBtn');
   const name = document.getElementById('pf-name').value.trim();
   const brand = document.getElementById('pf-brand').value.trim();
   const price = parseFloat(document.getElementById('pf-price').value);
@@ -633,7 +705,6 @@ document.getElementById('saveProdBtn').addEventListener('click', () => {
       highlights,
       images,
     });
-    showToast('商品已更新', 'success');
   } else {
     const newProd = {
       id: prodUID(),
@@ -650,41 +721,67 @@ document.getElementById('saveProdBtn').addEventListener('click', () => {
       images,
     };
     all.push(newProd);
-    showToast('商品已添加', 'success');
   }
-  saveProducts(all);
-  closeProdModal();
-  renderProducts();
+  try {
+    setButtonBusy(saveBtn, true, '保存中…');
+    await saveProducts(all);
+    closeProdModal();
+    renderProducts();
+    showToast(editingProdId ? '商品已更新' : '商品已添加', 'success');
+  } catch (error) {
+    showToast(error.message || '商品保存失败', 'error');
+  } finally {
+    setButtonBusy(saveBtn, false);
+  }
 });
 
 document.getElementById('addProductBtn').addEventListener('click', () => openProdForm(null));
 
-document.getElementById('resetProductsBtn').addEventListener('click', () => {
+document.getElementById('resetProductsBtn').addEventListener('click', async () => {
+  const resetBtn = document.getElementById('resetProductsBtn');
   if (!confirm('确定恢复默认商品列表？当前所有改动将丢失。')) return;
-  localStorage.removeItem(PROD_KEY);
-  renderProducts();
-  showToast('已恢复默认商品', 'success');
+  try {
+    setButtonBusy(resetBtn, true, '恢复中…');
+    const response = await fetch('/api/admin-data', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ section: 'products', action: 'reset', payload: {} })
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error || '恢复默认商品失败');
+    if (payload && payload.data) {
+      syncAdminState(payload.data);
+      renderProducts();
+      showToast('已恢复默认商品', 'success');
+    }
+  } catch (error) {
+    showToast(error.message || '恢复默认商品失败', 'error');
+  } finally {
+    setButtonBusy(resetBtn, false);
+  }
 });
 
-function deleteProduct(id) {
+async function deleteProduct(id) {
   if (!confirm('确定删除此商品？')) return;
-  const all = loadProducts().filter(p => p.id !== id);
-  saveProducts(all);
-  renderProducts();
-  showToast('商品已删除');
+  try {
+    const all = loadProducts().filter(p => p.id !== id);
+    await saveProducts(all);
+    renderProducts();
+    showToast('商品已删除', 'success');
+  } catch (error) {
+    showToast(error.message || '删除商品失败', 'error');
+  }
 }
 
 /* ====================================================================
    CONSULTATIONS MANAGEMENT
    ==================================================================== */
-const CON_KEY = 'sm_consultations';
-
 function loadConsultations() {
-  try { return JSON.parse(localStorage.getItem(CON_KEY)) || []; }
-  catch { return []; }
+  return adminState.consultations.slice();
 }
 function saveConsultations(list) {
-  localStorage.setItem(CON_KEY, JSON.stringify(list));
+  return persistSection('consultations', list.slice());
 }
 
 let conPage = 1;
@@ -802,27 +899,43 @@ function closeConModal() {
   currentConId = null;
 }
 
-document.getElementById('saveConStatus').addEventListener('click', () => {
+document.getElementById('saveConStatus').addEventListener('click', async () => {
+  const saveBtn = document.getElementById('saveConStatus');
   if (!currentConId) return;
   const all = loadConsultations();
   const idx = all.findIndex(x => x.id === currentConId);
   if (idx < 0) return;
   all[idx].status = document.getElementById('conModalStatus').value;
-  saveConsultations(all);
-  closeConModal();
-  renderConsultations();
-  renderOverview();
-  showToast('状态已更新', 'success');
+  try {
+    setButtonBusy(saveBtn, true, '保存中…');
+    await saveConsultations(all);
+    closeConModal();
+    renderConsultations();
+    renderOverview();
+    showToast('状态已更新', 'success');
+  } catch (error) {
+    showToast(error.message || '状态更新失败', 'error');
+  } finally {
+    setButtonBusy(saveBtn, false);
+  }
 });
 
-document.getElementById('deleteConBtn').addEventListener('click', () => {
+document.getElementById('deleteConBtn').addEventListener('click', async () => {
+  const deleteBtn = document.getElementById('deleteConBtn');
   if (!currentConId) return;
   if (!confirm('确定删除此条问诊记录？')) return;
-  saveConsultations(loadConsultations().filter(c => c.id !== currentConId));
-  closeConModal();
-  renderConsultations();
-  renderOverview();
-  showToast('已删除');
+  try {
+    setButtonBusy(deleteBtn, true, '删除中…');
+    await saveConsultations(loadConsultations().filter(c => c.id !== currentConId));
+    closeConModal();
+    renderConsultations();
+    renderOverview();
+    showToast('已删除', 'success');
+  } catch (error) {
+    showToast(error.message || '删除失败', 'error');
+  } finally {
+    setButtonBusy(deleteBtn, false);
+  }
 });
 
 /* Update consultation badge on init */
@@ -836,28 +949,32 @@ document.getElementById('deleteConBtn').addEventListener('click', () => {
 /* ===== PARTNER SYSTEM ADMIN ===== */
 
 function getPartnerUsers() {
-  try { return JSON.parse(localStorage.getItem('sm_users') || '[]'); } catch { return []; }
+  return adminState.users.slice();
 }
 function getPartnerCommissions() {
-  try { return JSON.parse(localStorage.getItem('sm_commissions') || '[]'); } catch { return []; }
+  return adminState.commissions.slice();
 }
 function getPartnerWithdrawals() {
-  try { return JSON.parse(localStorage.getItem('sm_withdrawals') || '[]'); } catch { return []; }
+  return adminState.withdrawals.slice();
 }
 function getPartnerRules() {
-  try { return JSON.parse(localStorage.getItem('sm_commission_rules') || '[]'); } catch { return []; }
+  return adminState.rules.slice();
 }
 function savePartnerRules(rules) {
-  localStorage.setItem('sm_commission_rules', JSON.stringify(rules));
+  adminState.rules = rules.slice();
+  persistSection('rules', adminState.rules).catch(function () {});
 }
 function savePartnerWithdrawals(list) {
-  localStorage.setItem('sm_withdrawals', JSON.stringify(list));
+  adminState.withdrawals = list.slice();
+  persistSection('withdrawals', adminState.withdrawals).catch(function () {});
 }
 function savePartnerCommissions(list) {
-  localStorage.setItem('sm_commissions', JSON.stringify(list));
+  adminState.commissions = list.slice();
+  persistSection('commissions', adminState.commissions).catch(function () {});
 }
 function savePartnerUsers(list) {
-  localStorage.setItem('sm_users', JSON.stringify(list));
+  adminState.users = list.slice();
+  persistSection('users', adminState.users).catch(function () {});
 }
 
 function fmtPartnerDate(iso) {
@@ -937,14 +1054,29 @@ function filterPartnerUsers() {
   displayPartnerUsers(filtered);
 }
 
-function toggleUserStatus(userId) {
-  const users = getPartnerUsers();
-  const user = users.find(u => u.id === userId);
+async function toggleUserStatus(userId) {
+  const user = getPartnerUsers().find(u => u.id === userId);
   if (!user) return;
-  user.status = user.status === 'frozen' ? 'active' : 'frozen';
-  savePartnerUsers(users);
-  showToast(user.status === 'frozen' ? '用户已冻结' : '用户已解冻');
-  renderAdminPartnerUsers();
+  try {
+    const response = await fetch('/api/admin-data', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        section: 'users',
+        action: 'toggleStatus',
+        payload: { id: userId }
+      })
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error || '更新用户状态失败');
+    if (payload && payload.data) syncAdminState(payload.data);
+    const updatedUser = getPartnerUsers().find(u => u.id === userId) || user;
+    showToast(updatedUser.status === 'frozen' ? '用户已冻结' : '用户已解冻', 'success');
+    renderAdminPartnerUsers();
+  } catch (error) {
+    showToast(error.message || '更新用户状态失败', 'error');
+  }
 }
 
 /* --- Commissions --- */
@@ -952,7 +1084,7 @@ function renderAdminCommissions() {
   const filter = document.getElementById('commFilterStatus') ? document.getElementById('commFilterStatus').value : '';
   const allComms = getPartnerCommissions();
   const allUsers = getPartnerUsers();
-  const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
+  const orders = getOrders();
   const categoryMap = { stem_cell:'干细胞疗法', checkup:'精密体检', cosmetic:'医美整形', immunity:'免疫疗法', nmn:'NMN保健品', consult:'远程专家会诊' };
 
   const filtered = filter ? allComms.filter(c => c.status === filter) : allComms;
