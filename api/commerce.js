@@ -1,7 +1,9 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { getAuthenticatedAdmin, readJsonBody } = require('./_lib/auth');
 const { enforceRateLimit } = require('./_lib/security');
-const { loadProducts } = require('./_lib/partner-data');
+// NOTE: checkout uses the static catalog directly to avoid initializing SQLite
+// on Vercel serverless (where process.cwd() is read-only). See api/_lib/catalog.js.
+const { getDefaultProducts: loadProducts } = require('./_lib/catalog');
 
 const JPY_TO_SGD = Number(process.env.JPY_TO_SGD_RATE) || 0.00896;
 
