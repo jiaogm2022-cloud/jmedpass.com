@@ -15,7 +15,7 @@ const {
 function createReferralCode(users) {
   let code = '';
   do {
-    code = `SAKURA-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+    code = `JMEDPASS-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
   } while (users.some((user) => user.referralCode === code));
   return code;
 }

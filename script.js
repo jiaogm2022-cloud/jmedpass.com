@@ -1,4 +1,4 @@
-/* ===== SAKURA CANVAS ANIMATION ===== */
+/* ===== JMEDPASS CANVAS ANIMATION ===== */
 (function () {
   // Respect user preference for reduced motion
   var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

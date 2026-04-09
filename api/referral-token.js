@@ -1,5 +1,5 @@
 /* ===== Referral Token API =====
-   GET  /api/referral-token?ref=SAKURA-XXXX → returns a signed token
+   GET  /api/referral-token?ref=JMEDPASS-XXXX → returns a signed token
    The frontend stores this signed token instead of the raw ref code.
    On registration, the server verifies the token signature.
    ================================ */
