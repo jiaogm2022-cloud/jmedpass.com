@@ -62,9 +62,26 @@
     { "source": "/", "destination": "/index.html" },
     { "source": "/en", "destination": "/en/index.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/api/admin-login", "destination": "/api/admin?action=login" },
+    { "source": "/api/admin-logout", "destination": "/api/admin?action=logout" },
+    { "source": "/api/admin-session", "destination": "/api/admin?action=session" },
+    { "source": "/api/admin-data", "destination": "/api/admin?action=data" },
+    { "source": "/api/partner-login", "destination": "/api/partner-auth?action=login" },
+    { "source": "/api/partner-logout", "destination": "/api/partner-auth?action=logout" },
+    { "source": "/api/partner-register", "destination": "/api/partner-auth?action=register" },
+    { "source": "/api/partner-session", "destination": "/api/partner-auth?action=session" },
+    { "source": "/api/referral-token", "destination": "/api/partner-auth?action=referral-token" },
+    { "source": "/api/partner-dashboard", "destination": "/api/partner?action=dashboard" },
+    { "source": "/api/partner-withdrawals", "destination": "/api/partner?action=withdrawals" },
+    { "source": "/api/public-products", "destination": "/api/partner?action=public-products" },
+    { "source": "/api/create-checkout", "destination": "/api/commerce?action=create-checkout" },
+    { "source": "/api/checkout-session-status", "destination": "/api/commerce?action=checkout-session-status" },
+    { "source": "/api/get-order", "destination": "/api/commerce?action=get-order" },
+    { "source": "/api/inquiries", "destination": "/api/submissions?action=inquiries" },
+    { "source": "/api/consultations", "destination": "/api/submissions?action=consultations" },
     { "source": "/((?!api/|admin/|.*\\..*).+)", "destination": "/$1.html" },
-    { "source": "/.netlify/functions/create-checkout", "destination": "/api/create-checkout" },
-    { "source": "/.netlify/functions/get-order", "destination": "/api/get-order" }
+    { "source": "/.netlify/functions/create-checkout", "destination": "/api/commerce?action=create-checkout" },
+    { "source": "/.netlify/functions/get-order", "destination": "/api/commerce?action=get-order" }
   ],
   "headers": [
     {

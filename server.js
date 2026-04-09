@@ -28,6 +28,26 @@ const MIME = {
   '.woff2': 'font/woff2',
 };
 
+const API_ROUTE_MAP = {
+  'admin-login': { module: 'admin', action: 'login' },
+  'admin-logout': { module: 'admin', action: 'logout' },
+  'admin-session': { module: 'admin', action: 'session' },
+  'admin-data': { module: 'admin', action: 'data' },
+  'partner-login': { module: 'partner-auth', action: 'login' },
+  'partner-logout': { module: 'partner-auth', action: 'logout' },
+  'partner-register': { module: 'partner-auth', action: 'register' },
+  'partner-session': { module: 'partner-auth', action: 'session' },
+  'referral-token': { module: 'partner-auth', action: 'referral-token' },
+  'partner-dashboard': { module: 'partner', action: 'dashboard' },
+  'partner-withdrawals': { module: 'partner', action: 'withdrawals' },
+  'public-products': { module: 'partner', action: 'public-products' },
+  'create-checkout': { module: 'commerce', action: 'create-checkout' },
+  'checkout-session-status': { module: 'commerce', action: 'checkout-session-status' },
+  'get-order': { module: 'commerce', action: 'get-order' },
+  'inquiries': { module: 'submissions', action: 'inquiries' },
+  'consultations': { module: 'submissions', action: 'consultations' },
+};
+
 /* ════════════════════════════════════ */
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
@@ -81,7 +101,12 @@ const server = http.createServer(async (req, res) => {
 
 async function handleApiRequest(req, res, url) {
   const apiName = url.pathname.replace(/^\/api\//, '');
-  const modulePath = path.join(__dirname, 'api', `${apiName}.js`);
+  const route = API_ROUTE_MAP[apiName];
+  const resolvedApiName = route ? route.module : apiName;
+  if (route && route.action && !url.searchParams.has('action')) {
+    url.searchParams.set('action', route.action);
+  }
+  const modulePath = path.join(__dirname, 'api', `${resolvedApiName}.js`);
   if (!fs.existsSync(modulePath)) {
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'API Not Found' }));

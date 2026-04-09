@@ -1,4 +1,14 @@
-const { getAuthenticatedAdmin, readJsonBody } = require('./_lib/auth');
+const {
+  createSessionCookie,
+  clearSessionCookie,
+  getAdminPasswordHash,
+  getAdminUsername,
+  getAuthenticatedAdmin,
+  needsPasswordRehash,
+  readJsonBody,
+  verifyPasswordHash,
+} = require('./_lib/auth');
+const { enforceRateLimit, getClientIp } = require('./_lib/security');
 const {
   loadCommissions,
   loadConsultations,
@@ -18,6 +28,22 @@ const {
   saveWithdrawals,
 } = require('./_lib/partner-data');
 const { getDefaultProducts } = require('./_lib/catalog');
+
+function getAction(req) {
+  return String((req.query && req.query.action) || '').trim();
+}
+
+function getAllowedMethods(action) {
+  if (action === 'login' || action === 'logout') return 'POST, OPTIONS';
+  if (action === 'session') return 'GET, OPTIONS';
+  if (action === 'data') return 'GET, POST, OPTIONS';
+  return 'GET, POST, OPTIONS';
+}
+
+function methodNotAllowed(res, action) {
+  res.setHeader('Allow', getAllowedMethods(action));
+  return res.status(405).json({ error: 'Method Not Allowed' });
+}
 
 function ensureAdmin(req, res) {
   const admin = getAuthenticatedAdmin(req);
@@ -41,12 +67,93 @@ function responsePayload() {
   };
 }
 
-module.exports = async function handler(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
-
+async function handleLogin(req, res) {
   if (req.method === 'OPTIONS') {
-    res.setHeader('Allow', 'GET, POST, OPTIONS');
+    res.setHeader('Allow', getAllowedMethods('login'));
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') return methodNotAllowed(res, 'login');
+
+  try {
+    const clientIp = getClientIp(req);
+    if (!enforceRateLimit(req, res, {
+      scope: 'admin-login',
+      identifier: clientIp,
+      windowMs: 15 * 60 * 1000,
+      max: 5,
+      errorMessage: '登录尝试过于频繁，请 15 分钟后再试',
+    })) return;
+
+    const body = await readJsonBody(req);
+    const username = String(body.username || '').trim();
+    const password = String(body.password || '');
+
+    if (!username || !password) {
+      return res.status(400).json({ error: '请输入账号和密码' });
+    }
+
+    const expectedUsername = getAdminUsername();
+    const expectedPasswordHash = getAdminPasswordHash();
+    if (!expectedUsername || !expectedPasswordHash) {
+      return res.status(503).json({ error: '后台账号尚未配置，请先设置环境变量' });
+    }
+
+    const validUsername = username === expectedUsername;
+    const validPassword = verifyPasswordHash(password, expectedPasswordHash);
+
+    if (!validUsername || !validPassword) {
+      console.warn('[ADMIN-LOGIN] Failed login attempt from IP:', clientIp, 'username:', username);
+      return res.status(401).json({ error: '账号或密码错误，请重试' });
+    }
+
+    if (needsPasswordRehash(expectedPasswordHash) && process.env.VERCEL) {
+      return res.status(503).json({ error: '后台密码哈希过旧，请升级为安全哈希后再登录' });
+    }
+
+    console.info('[ADMIN-LOGIN] Successful login from IP:', clientIp);
+    res.setHeader('Set-Cookie', createSessionCookie(expectedUsername));
+    return res.status(200).json({ ok: true, username: expectedUsername });
+  } catch (error) {
+    return res.status(400).json({ error: '请求格式不正确' });
+  }
+}
+
+async function handleLogout(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Allow', getAllowedMethods('logout'));
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') return methodNotAllowed(res, 'logout');
+
+  res.setHeader('Set-Cookie', clearSessionCookie());
+  return res.status(200).json({ ok: true });
+}
+
+async function handleSession(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Allow', getAllowedMethods('session'));
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'GET') return methodNotAllowed(res, 'session');
+
+  const session = getAuthenticatedAdmin(req);
+  if (!session) {
+    return res.status(401).json({ authenticated: false });
+  }
+
+  return res.status(200).json({
+    authenticated: true,
+    username: session.username,
+    expiresAt: session.expiresAt,
+  });
+}
+
+async function handleData(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Allow', getAllowedMethods('data'));
     return res.status(200).end();
   }
 
@@ -56,10 +163,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json(responsePayload());
   }
 
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'GET, POST, OPTIONS');
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+  if (req.method !== 'POST') return methodNotAllowed(res, 'data');
 
   try {
     const body = await readJsonBody(req);
@@ -177,4 +281,18 @@ module.exports = async function handler(req, res) {
   } catch (error) {
     return res.status(400).json({ error: '请求格式不正确' });
   }
+}
+
+module.exports = async function handler(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store');
+
+  const action = getAction(req);
+  if (action === 'login') return handleLogin(req, res);
+  if (action === 'logout') return handleLogout(req, res);
+  if (action === 'session') return handleSession(req, res);
+  if (action === 'data') return handleData(req, res);
+
+  res.setHeader('Allow', getAllowedMethods(action));
+  return res.status(400).json({ error: 'Unsupported admin action' });
 };
