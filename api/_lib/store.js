@@ -11,7 +11,9 @@ const { DatabaseSync } = require('node:sqlite');
    ==================================== */
 const IS_PRODUCTION = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 const DB_PATH = process.env.JMEDPASS_DB_PATH
-  || path.join(process.cwd(), 'data', 'jmedpass.sqlite');
+    || (IS_PRODUCTION
+            ? path.join('/tmp', 'jmedpass.sqlite')
+            : path.join(process.cwd(), 'data', 'jmedpass.sqlite'));
 
 if (IS_PRODUCTION && !process.env.JMEDPASS_DB_PATH) {
   console.error(
