@@ -61,7 +61,7 @@
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/en", "destination": "/en/index.html" },
-    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin", "destination": "/admin/index.html" },    { "source": "/admin/dashboard", "destination": "/admin/dashboard.html" },
     { "source": "/api/admin-login", "destination": "/api/admin?action=login" },
     { "source": "/api/admin-logout", "destination": "/api/admin?action=logout" },
     { "source": "/api/admin-session", "destination": "/api/admin?action=session" },

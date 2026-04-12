@@ -51,7 +51,7 @@ function needsPasswordRehash(storedHash) {
 }
 
 function getAdminUsername() {
-  return process.env.ADMIN_USERNAME || (isDevelopmentMode() ? DEFAULT_ADMIN_USERNAME : '');
+    return (process.env.ADMIN_USERNAME || (isDevelopmentMode() ? DEFAULT_ADMIN_USERNAME : '')).trim();
 }
 
 function getAdminPasswordHash() {
