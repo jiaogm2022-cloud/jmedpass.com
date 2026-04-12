@@ -2,6 +2,9 @@
   "name": "jmedpass-com",
   "version": "1.0.0",
   "description": "JMedPass",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "dependencies": {
     "stripe": "^14.21.0"
   }

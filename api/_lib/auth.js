@@ -61,7 +61,11 @@ function getAdminPasswordHash() {
 
 function getSessionSecret() {
   if (process.env.ADMIN_SESSION_SECRET) return process.env.ADMIN_SESSION_SECRET;
-  return isDevelopmentMode() ? getAdminPasswordHash() : '';
+  if (isDevelopmentMode()) return getAdminPasswordHash();
+  throw new Error(
+    '[FATAL] ADMIN_SESSION_SECRET is not set in production. '
+    + 'Admin authentication is disabled until this is configured.'
+  );
 }
 
 function timingSafeEqualHex(left, right) {

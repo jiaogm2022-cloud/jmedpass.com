@@ -79,9 +79,7 @@
     { "source": "/api/get-order", "destination": "/api/commerce?action=get-order" },
     { "source": "/api/inquiries", "destination": "/api/submissions?action=inquiries" },
     { "source": "/api/consultations", "destination": "/api/submissions?action=consultations" },
-    { "source": "/((?!api/|admin/|.*\\..*).+)", "destination": "/$1.html" },
-    { "source": "/.netlify/functions/create-checkout", "destination": "/api/commerce?action=create-checkout" },
-    { "source": "/.netlify/functions/get-order", "destination": "/api/commerce?action=get-order" }
+    { "source": "/((?!api/|admin/|.*\\..*).+)", "destination": "/$1.html" }
   ],
   "headers": [
     {
@@ -101,11 +99,13 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self'; object-src 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://checkout.stripe.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; frame-src https://js.stripe.com; connect-src 'self' https://api.stripe.com; object-src 'none'; upgrade-insecure-requests"
         },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(self)" }
       ]
     },
     {
