@@ -1152,6 +1152,50 @@ img { max-width: 100%; display: block; }
   .service-card { grid-column: span 1; }
   .why-grid { grid-template-columns: 1fr; gap: 60px; }
   .why-right { display: flex; justify-content: center; }
+  .why-card-stack {
+    height: auto;
+    width: min(100%, 720px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .why-main-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+  .why-float-card {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-width: 0;
+    transform: none;
+    animation: none;
+    padding: 18px 16px;
+  }
+  .why-fc-1,
+  .why-fc-2,
+  .why-fc-3 {
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    animation-delay: 0s;
+  }
+  .why-fc-3 {
+    grid-column: 1 / -1;
+    max-width: 260px;
+    justify-self: center;
+  }
+  .wfc-label {
+    text-align: center;
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
 }
@@ -1181,33 +1225,24 @@ img { max-width: 100%; display: block; }
   .trust-item:last-child { border-bottom: none; }
   .stat-item { padding: 0 20px; }
   .why-card-stack {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: min(100%, 360px);
+    grid-template-columns: 1fr;
     gap: 16px;
     padding: 12px 0;
   }
   .why-main-card {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    order: 1;
-    width: min(100%, 320px);
+    grid-column: auto;
   }
   .why-float-card {
-    position: relative;
-    inset: auto;
-    transform: none;
-    animation: none;
-    order: 2;
-    min-width: 180px;
+    max-width: none;
   }
   .why-fc-3 {
-    left: auto;
-    transform: none;
+    grid-column: auto;
+    max-width: none;
   }
+  .wmc-inner { padding: 32px 24px; }
+  .wfc-num { font-size: 1.35rem; }
+  .wfc-label { font-size: .82rem; }
 }
 
 @media (max-width: 480px) {
