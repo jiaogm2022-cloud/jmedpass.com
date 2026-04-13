@@ -12,7 +12,7 @@ window.__adminSessionReady = window.__adminSessionReady || fetch('/api/admin-ses
     return data;
   })
   .catch(function () {
-    window.location.replace('/admin');
+    window.location.replace('/admin/index.html');
   });
 
 /* ===== XSS ESCAPE HELPER ===== */
@@ -148,7 +148,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
   } catch (error) {
     // Fall through to redirect even if the network request fails.
   }
-  window.location.href = '/admin';
+  window.location.href = '/admin/index.html';
 });
 
 /* ===== PAGE NAVIGATION ===== */

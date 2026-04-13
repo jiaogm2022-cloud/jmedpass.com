@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="/admin/admin.css" />
   <style>body{visibility:hidden}</style>
   <script>
     window.__adminSessionReady = fetch('/api/admin-session', { credentials: 'same-origin' })
@@ -21,7 +21,7 @@
         return data;
       })
       .catch(function () {
-        window.location.replace('/admin');
+        window.location.replace('/admin/index.html');
       });
   </script>
 </head>
@@ -725,6 +725,6 @@
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
-<script src="admin.js"></script>
+<script src="/admin/admin.js"></script>
 </body>
 </html>

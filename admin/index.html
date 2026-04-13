@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="/admin/admin.css" />
 </head>
 <body class="login-page">
 
@@ -63,7 +63,7 @@
     })
     .then(function (data) {
       if (data && data.authenticated) {
-        window.location.href = '/admin/dashboard';
+        window.location.href = '/admin/dashboard.html';
       }
     })
     .catch(function () {});
@@ -101,7 +101,7 @@
 
       btn.textContent = '登录成功，跳转中…';
       btn.disabled = true;
-      setTimeout(function () { window.location.href = '/admin/dashboard'; }, 400);
+      setTimeout(function () { window.location.href = '/admin/dashboard.html'; }, 400);
     } catch (error) {
       errEl.style.display = 'flex';
       document.getElementById('loginPass').value = '';
