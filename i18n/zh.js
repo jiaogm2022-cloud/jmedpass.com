@@ -1058,7 +1058,7 @@ window.__I18N_CHUNKS__.zh = {
   "sh.cart.savings": "比原价节省 ¥",
   "sh.cart.pay": "支持支付：",
   "sh.btn.checkout": "去支付",
-  "sh.cart.note": "🔒 通过 Stripe 安全加密支付 · 支持信用卡、支付宝、微信支付",
+  "sh.cart.note": "🔒 通过 Stripe 安全加密支付 · 支持信用卡、Apple Pay、Google Pay、GrabPay",
   "sh.cart.shipping": "📦 日本EMS国际快递",
   "sh.ship.free": "🎉 包邮",
   "sh.ship.freeNote": "EMS标准配送免运费，加急另计",

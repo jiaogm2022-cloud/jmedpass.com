@@ -1058,7 +1058,7 @@ window.__I18N_CHUNKS__.ja = {
   "sh.cart.savings": "節約 ¥",
   "sh.cart.pay": "支払い方法：",
   "sh.btn.checkout": "決済へ",
-  "sh.cart.note": "🔒 Stripe による安全な決済 · カード・Alipay・WeChat Pay 対応",
+  "sh.cart.note": "🔒 Stripe による安全な決済 · カード・Apple Pay・Google Pay・GrabPay 対応",
   "sh.cart.shipping": "📦 日本EMS国際配送",
   "sh.ship.free": "🎉 送料無料",
   "sh.ship.freeNote": "EMS標準配送無料、速達別料金",

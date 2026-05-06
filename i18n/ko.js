@@ -1060,7 +1060,7 @@ window.__I18N_CHUNKS__.ko = {
   "sh.cart.savings": "정가 대비 ¥ 절약",
   "sh.cart.pay": "결제 수단:",
   "sh.btn.checkout": "결제하기",
-  "sh.cart.note": "🔒 Stripe 안전 암호화 결제 · 신용카드, 알리페이, 위챗페이 지원",
+  "sh.cart.note": "🔒 Stripe 안전 암호화 결제 · 신용카드, Apple Pay, Google Pay, GrabPay 지원",
   "sh.cart.shipping": "📦 일본 EMS 국제배송",
   "sh.ship.free": "🎉 무료배송",
   "sh.ship.freeNote": "EMS 표준배송 무료, 급행 별도",

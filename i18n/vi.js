@@ -1060,7 +1060,7 @@ window.__I18N_CHUNKS__.vi = {
   "sh.cart.savings": "Tiết kiệm ¥",
   "sh.cart.pay": "Thanh toán qua:",
   "sh.btn.checkout": "Thanh toán",
-  "sh.cart.note": "🔒 Thanh toán bảo mật qua Stripe · Thẻ, Alipay, WeChat Pay",
+  "sh.cart.note": "🔒 Thanh toán bảo mật qua Stripe · Thẻ, Apple Pay, Google Pay, GrabPay",
   "sh.cart.shipping": "📦 Giao hàng quốc tế EMS Nhật Bản",
   "sh.ship.free": "🎉 Miễn phí vận chuyển",
   "sh.ship.freeNote": "Miễn phí EMS tiêu chuẩn, giao nhanh tính phí",

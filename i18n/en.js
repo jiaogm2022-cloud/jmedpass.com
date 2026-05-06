@@ -1058,7 +1058,7 @@ window.__I18N_CHUNKS__.en = {
   "sh.cart.savings": "You save ¥",
   "sh.cart.pay": "Pay with:",
   "sh.btn.checkout": "Checkout",
-  "sh.cart.note": "🔒 Secure payment via Stripe · Card, Alipay, WeChat Pay",
+  "sh.cart.note": "🔒 Secure payment via Stripe · Card, Apple Pay, Google Pay, GrabPay",
   "sh.cart.shipping": "📦 Japan EMS International",
   "sh.ship.free": "🎉 Free Shipping",
   "sh.ship.freeNote": "Free EMS standard delivery; express available",
