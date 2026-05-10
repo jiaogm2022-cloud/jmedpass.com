@@ -577,6 +577,165 @@ img { max-width: 100%; display: block; }
 }
 .service-link:hover { gap: 8px; }
 
+/* ===== SEARCH INTENTS ===== */
+.search-intents {
+  padding: 96px 0;
+  background: var(--white);
+}
+.intent-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+.intent-card {
+  display: flex;
+  min-height: 168px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border: 1px solid rgba(21, 25, 34, .1);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff 0%, #f8f6f3 100%);
+  color: var(--dark);
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.intent-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(155, 35, 53, .32);
+  box-shadow: 0 16px 32px rgba(21, 25, 34, .08);
+}
+.intent-card span {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(155, 35, 53, .08);
+  color: var(--primary);
+  font-size: .76rem;
+  font-weight: 600;
+}
+.intent-card strong {
+  display: block;
+  margin: 18px 0 8px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.06rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+.intent-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.7;
+}
+
+/* ===== SEO GUIDE PAGES ===== */
+.guide-page {
+  background: #fff;
+  color: var(--dark);
+}
+.guide-hero {
+  padding: 140px 24px 70px;
+  background: linear-gradient(180deg, #fff7f2 0%, #fff 100%);
+  border-bottom: 1px solid rgba(21, 25, 34, .08);
+}
+.guide-hero-inner,
+.guide-body,
+.guide-related {
+  width: min(920px, calc(100% - 48px));
+  margin: 0 auto;
+}
+.guide-eyebrow {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: .86rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.guide-hero h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+  margin: 0 0 24px;
+}
+.guide-lead {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.9;
+}
+.guide-body {
+  padding: 72px 0 48px;
+}
+.guide-body h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.8rem;
+  line-height: 1.35;
+  margin: 48px 0 18px;
+}
+.guide-body h2:first-child { margin-top: 0; }
+.guide-body h3 {
+  font-size: 1.08rem;
+  margin: 28px 0 10px;
+}
+.guide-body p,
+.guide-body li {
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.95;
+}
+.guide-body ul,
+.guide-body ol {
+  padding-left: 22px;
+  margin: 0 0 24px;
+}
+.guide-note {
+  margin: 36px 0;
+  padding: 22px 24px;
+  border-left: 4px solid var(--primary);
+  background: #fff7f2;
+  color: #5f4b45;
+  line-height: 1.85;
+}
+.guide-cta {
+  margin-top: 44px;
+  padding: 30px;
+  border-radius: 8px;
+  background: var(--dark);
+  color: #fff;
+}
+.guide-cta h2 {
+  color: #fff;
+  margin: 0 0 12px;
+}
+.guide-cta p { color: rgba(255,255,255,.72); }
+.guide-cta a {
+  display: inline-flex;
+  margin-top: 12px;
+  color: #fff;
+  font-weight: 700;
+}
+.guide-related {
+  padding: 0 0 80px;
+}
+.guide-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.guide-related a {
+  padding: 18px;
+  border: 1px solid rgba(21,25,34,.1);
+  border-radius: 8px;
+  color: var(--dark);
+  background: #fff;
+}
+.guide-related a:hover {
+  border-color: rgba(155,35,53,.32);
+  color: var(--primary);
+}
+
 /* ===== WHY US ===== */
 .why-us {
   padding: 120px 0;
@@ -1150,6 +1309,7 @@ img { max-width: 100%; display: block; }
   .hospitals-grid { grid-template-columns: repeat(2, 1fr); }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .service-card { grid-column: span 1; }
+  .intent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .why-grid { grid-template-columns: 1fr; gap: 60px; }
   .why-right { display: flex; justify-content: center; }
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -1169,6 +1329,14 @@ img { max-width: 100%; display: block; }
   .hospitals-grid { grid-template-columns: 1fr; }
   .services-grid { grid-template-columns: 1fr; }
   .service-card { grid-column: span 1; }
+  .search-intents { padding: 64px 0; }
+  .intent-grid { grid-template-columns: 1fr; }
+  .intent-card { min-height: 148px; }
+  .guide-hero { padding-top: 110px; }
+  .guide-hero-inner,
+  .guide-body,
+  .guide-related { width: min(100% - 32px, 920px); }
+  .guide-related-grid { grid-template-columns: 1fr; }
   .process-steps { grid-template-columns: 1fr 1fr; }
   .testi-grid { grid-template-columns: 1fr; }
   .testi-featured { transform: none; }

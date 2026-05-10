@@ -288,6 +288,61 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/medical-disclaimer"/>
   </url>
 
+  <!-- ===== Chinese SEO Guide Pages ===== -->
+  <url>
+    <loc>https://jmedpass.com/japan-precision-health-check-pet-ct</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/japan-precision-health-check-pet-ct"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/japan-precision-health-check-pet-ct"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/japan-stem-cell-regenerative-medicine</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/japan-stem-cell-regenerative-medicine"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/japan-stem-cell-regenerative-medicine"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/japan-cosmetic-surgery-revision</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/japan-cosmetic-surgery-revision"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/japan-cosmetic-surgery-revision"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/japan-egg-freezing</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/japan-egg-freezing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/japan-egg-freezing"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/japan-immunotherapy</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/japan-immunotherapy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/japan-immunotherapy"/>
+  </url>
+
+  <url>
+    <loc>https://jmedpass.com/book-japan-hospital-medical-translation</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://jmedpass.com/book-japan-hospital-medical-translation"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jmedpass.com/book-japan-hospital-medical-translation"/>
+  </url>
+
   <!-- ===== English Blog Articles ===== -->
   <url>
     <loc>https://jmedpass.com/en/blog/japan-stem-cell-therapy-cost-guide</loc>
