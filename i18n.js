@@ -419,8 +419,22 @@ window.applyLang = function(lang) {
   });
 };
 
+function getPathLang() {
+  var first = (window.location.pathname.split('/').filter(Boolean)[0] || '').toLowerCase();
+  return /^(en|ja|ko|vi)$/.test(first) ? first : '';
+}
+
+function getLocalizedPath(lang) {
+  var path = window.location.pathname || '/';
+  var parts = path.split('/').filter(Boolean);
+  if (/^(en|ja|ko|vi)$/.test(parts[0] || '')) parts.shift();
+  var suffix = parts.join('/');
+  if (lang === 'zh') return suffix ? '/' + suffix : '/';
+  return '/' + lang + (suffix ? '/' + suffix : '');
+}
+
 (function() {
-  var pathLang = window.location.pathname.indexOf('/en/') === 0 || window.location.pathname === '/en' ? 'en' : '';
+  var pathLang = getPathLang();
   var saved = pathLang || (function() {
     try {
       return localStorage.getItem('sm_lang');
@@ -446,6 +460,15 @@ window.applyLang = function(lang) {
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('.lang-btn');
     if (!btn) return;
-    window.applyLang(btn.getAttribute('data-lang')).catch(function() {});
+    var nextLang = btn.getAttribute('data-lang');
+    var nextPath = getLocalizedPath(nextLang);
+    if (window.location.pathname !== nextPath) {
+      try {
+        localStorage.setItem('sm_lang', nextLang);
+      } catch (error) {}
+      window.location.href = nextPath + window.location.search + window.location.hash;
+      return;
+    }
+    window.applyLang(nextLang).catch(function() {});
   });
 })();
