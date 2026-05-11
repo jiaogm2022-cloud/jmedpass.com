@@ -268,13 +268,13 @@ async function handleCheckoutSessionStatus(req, res) {
   if (!/^cs_[A-Za-z0-9_]+$/.test(sessionId)) {
     return res.status(400).json({ error: 'Invalid session_id' });
   }
-  if (!enforceRateLimit(req, res, {
+  if (!(await enforceRateLimit(req, res, {
     scope: 'checkout-session-status',
     identifier: sessionId,
     windowMs: 5 * 60 * 1000,
     max: 20,
     errorMessage: '查询过于频繁，请稍后再试',
-  })) return;
+  }))) return;
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -285,7 +285,11 @@ async function handleCheckoutSessionStatus(req, res) {
       currency: session.currency,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    if (error && (error.statusCode === 404 || error.code === 'resource_missing')) {
+      return res.status(404).json({ error: 'Checkout session not found' });
+    }
+    console.error('[CHECKOUT_STATUS] Stripe lookup failed:', error && (error.stack || error.message || error));
+    return res.status(502).json({ error: 'Unable to retrieve checkout session' });
   }
 }
 
