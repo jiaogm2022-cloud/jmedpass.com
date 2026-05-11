@@ -7,3 +7,5 @@ server.js
 .git/
 SECURITY_AUDIT.md
 scripts/
+netlify.toml
+package-lock.json
