@@ -7,14 +7,10 @@ const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 14;
 function getPartnerSessionSecret() {
   if (process.env.PARTNER_SESSION_SECRET) return process.env.PARTNER_SESSION_SECRET;
   if (process.env.ADMIN_SESSION_SECRET) return process.env.ADMIN_SESSION_SECRET;
-  if (process.env.NODE_ENV === 'development' || !process.env.VERCEL) {
-    console.warn('[WARN] Using dev fallback for PARTNER_SESSION_SECRET. Set env var before going live.');
+  if (process.env.NODE_ENV === 'development' || (!process.env.VERCEL && process.env.NODE_ENV !== 'production')) {
     return 'jmedpass-dev-partner-secret';
   }
-  throw new Error(
-    '[FATAL] PARTNER_SESSION_SECRET is not set in production. '
-    + 'Partner authentication is disabled until this is configured.'
-  );
+  return '';
 }
 
 function signPartnerSession(userId, expiresAt) {
@@ -37,7 +33,7 @@ function serializePartnerCookie(value, maxAgeMs) {
     `Max-Age=${Math.max(0, Math.floor(maxAgeMs / 1000))}`,
   ];
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== 'development' && (process.env.VERCEL || process.env.NODE_ENV === 'production')) {
     parts.push('Secure');
   }
 

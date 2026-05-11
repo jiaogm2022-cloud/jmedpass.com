@@ -1,4 +1,5 @@
 const { consumeRateLimit } = require('./store');
+const { consumeRedisRateLimit } = require('./redis-data');
 
 function normalizePhone(input) {
   const raw = String(input || '').trim();
@@ -35,7 +36,7 @@ function getClientIp(req) {
   );
 }
 
-function enforceRateLimit(req, res, options) {
+async function enforceRateLimit(req, res, options) {
   const scope = String(options.scope || 'default');
   const identifier = String(options.identifier || '').trim().toLowerCase();
   const windowMs = Number(options.windowMs) || 60000;
@@ -43,7 +44,8 @@ function enforceRateLimit(req, res, options) {
   const key = identifier
     ? `${getClientIp(req)}:${identifier}`
     : getClientIp(req);
-  const result = consumeRateLimit(scope, key, { windowMs, max });
+  const result = await consumeRedisRateLimit(scope, key, { windowMs, max })
+    || consumeRateLimit(scope, key, { windowMs, max });
 
   res.setHeader('X-RateLimit-Limit', String(max));
   res.setHeader('X-RateLimit-Remaining', String(result.remaining));

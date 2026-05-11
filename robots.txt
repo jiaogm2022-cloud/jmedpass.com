@@ -40,6 +40,48 @@ Disallow: /login/
 Disallow: /api/
 Disallow: /private/
 
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+Disallow: /private/
+
 User-agent: Slurp
 Allow: /
 Disallow: /admin/
@@ -67,6 +109,9 @@ Disallow: /private/
 
 # Sitemap location
 Sitemap: https://jmedpass.com/sitemap.xml
+
+# LLM site summary
+# https://jmedpass.com/llms.txt
 
 # Crawl delay for all bots (in seconds)
 Crawl-delay: 0.5

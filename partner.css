@@ -303,18 +303,21 @@
 /* ===== LOGIN PAGE ===== */
 .login-page {
   min-height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--gradient-2);
   padding: 40px 20px;
+  overflow-x: hidden;
 }
 .login-card {
   background: var(--white);
   border-radius: var(--radius-lg);
   padding: 48px 44px;
-  width: 100%;
-  max-width: 460px;
+  width: min(460px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  min-width: 0;
   box-shadow: var(--shadow-lg);
 }
 .login-logo {
@@ -401,6 +404,7 @@
 .auth-notice.show { display: block; }
 .auth-submit {
   width: 100%;
+  min-height: 52px;
   padding: 14px;
   background: var(--gradient);
   color: var(--white);
@@ -411,6 +415,7 @@
   border-radius: 100px;
   cursor: pointer;
   margin-top: 8px;
+  white-space: normal;
   transition: opacity .3s, transform .3s;
   box-shadow: var(--shadow-sm);
 }

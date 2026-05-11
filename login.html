@@ -96,6 +96,25 @@
       </p>
     </form>
 
+    <form class="auth-form" id="resetForm">
+      <div class="auth-field">
+        <label data-i18n="login.resetTitle">重置密码</label>
+        <input type="password" id="resetPassword" data-i18n-ph="login.pwdSetPh" placeholder="至少8位" autocomplete="new-password" />
+      </div>
+      <div class="auth-field">
+        <label data-i18n="login.confirmPwdLabel">确认密码</label>
+        <input type="password" id="resetPasswordConfirm" data-i18n-ph="login.confirmPwdPh" placeholder="再次输入密码" autocomplete="new-password" />
+      </div>
+      <p style="font-size:.82rem;color:var(--muted);margin:0 0 12px;" data-i18n="login.resetDesc">
+        请设置新的登录密码。重置链接 30 分钟内有效。
+      </p>
+      <div class="auth-error" id="resetError"></div>
+      <button type="submit" class="auth-submit" data-i18n="login.resetSubmit">确认重置密码</button>
+      <p style="font-size:.82rem;text-align:center;margin-top:12px;">
+        <a href="/login" style="color:var(--accent);text-decoration:none;" data-i18n="login.resetBack">返回登录</a>
+      </p>
+    </form>
+
     <div class="auth-back">
       <a href="/partner" data-i18n="login.back">← 返回合伙人介绍页</a>
     </div>
@@ -105,7 +124,7 @@
 
 <div class="partner-toast" id="toast"></div>
 
-<script src="i18n.js?v=5"></script>
+<script src="i18n.js?v=8"></script>
 <script src="partner.js"></script>
 <script>
 // ===== Translation helper =====
@@ -120,6 +139,7 @@ function t(key, fallback) {
 const params = new URLSearchParams(location.search);
 const refCode = params.get('ref') || localStorage.getItem('sm_pending_ref') || '';
 const tabParam = params.get('tab');
+const resetToken = params.get('reset') || '';
 
 fetch('/api/partner-session', { credentials: 'same-origin' })
   .then(function (response) { return response.json(); })
@@ -140,13 +160,18 @@ if (refCode) {
 }
 
 // Default tab
-switchTab(tabParam === 'register' ? 'register' : 'login');
+switchTab(resetToken ? 'reset' : (tabParam === 'register' ? 'register' : 'login'));
 
 function switchTab(tab) {
+  var isReset = tab === 'reset';
   document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
   document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
   document.getElementById('loginForm').classList.toggle('active', tab === 'login');
   document.getElementById('registerForm').classList.toggle('active', tab === 'register');
+  document.getElementById('resetForm').classList.toggle('active', isReset);
+  document.querySelector('.auth-tabs').style.display = isReset ? 'none' : '';
+  document.querySelector('.auth-back').style.display = isReset ? 'none' : '';
+  document.getElementById('refNotice').style.display = isReset ? 'none' : '';
 }
 
 async function hashPassword(password) {
@@ -163,6 +188,10 @@ function normalizePhoneInput(value) {
 
 function isValidPhoneInput(value) {
   return /^\+?\d{6,15}$/.test(normalizePhoneInput(value));
+}
+
+function isValidEmailInput(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
 }
 
 async function doLogin(e) {
@@ -238,11 +267,59 @@ async function doRegister(e) {
     }
 
     localStorage.removeItem('sm_pending_ref');
+    localStorage.removeItem('sm_pending_ref_token');
     localStorage.removeItem('sm_pending_ref_at');
     showToastMsg(t('login.msg.registerOk', '注册成功！欢迎成为日医通合伙人'), 'success');
     setTimeout(() => { window.location.href = '/my?new=1'; }, 1000);
   } catch (error) {
     showAuthError(errEl, '注册失败，请稍后重试');
+    submitBtn.disabled = false;
+    submitBtn.textContent = defaultLabel;
+  }
+}
+
+async function doResetPassword(e) {
+  e.preventDefault();
+  const submitBtn = document.querySelector('#resetForm .auth-submit');
+  const defaultLabel = submitBtn.textContent;
+  const password = document.getElementById('resetPassword').value;
+  const confirmPassword = document.getElementById('resetPasswordConfirm').value;
+  const errEl = document.getElementById('resetError');
+
+  if (!resetToken) {
+    showAuthError(errEl, t('login.err.resetInvalid', '重置链接无效，请重新申请'));
+    return;
+  }
+  if (password.length < 8) {
+    showAuthError(errEl, '密码至少需要8位');
+    return;
+  }
+  if (password !== confirmPassword) {
+    showAuthError(errEl, '两次输入的密码不一致');
+    return;
+  }
+
+  try {
+    submitBtn.disabled = true;
+    submitBtn.textContent = t('login.resetSending', '提交中…');
+    const response = await fetch('/api/partner-reset-password', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: resetToken, password, confirmPassword }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showAuthError(errEl, data.error || t('login.err.resetInvalid', '重置链接无效，请重新申请'));
+      submitBtn.disabled = false;
+      submitBtn.textContent = defaultLabel;
+      return;
+    }
+
+    showToastMsg(t('login.msg.resetOk', '密码已更新，正在进入个人中心…'), 'success');
+    setTimeout(() => { window.location.href = '/my'; }, 900);
+  } catch (error) {
+    showAuthError(errEl, '密码重置失败，请稍后重试');
     submitBtn.disabled = false;
     submitBtn.textContent = defaultLabel;
   }
@@ -263,14 +340,43 @@ function showToastMsg(msg, type) {
 
 document.getElementById('loginForm').addEventListener('submit', doLogin);
 document.getElementById('registerForm').addEventListener('submit', doRegister);
+document.getElementById('resetForm').addEventListener('submit', doResetPassword);
 
-// Forgot password — prompt user to contact support
-document.getElementById('forgotPasswordLink').addEventListener('click', function () {
-  var phone = document.getElementById('loginPhone').value.trim();
-  var msg = phone
-    ? '请通过 WhatsApp (+65 8942 7926) 或邮件 (admin@jmedpass.com) 联系客服，提供您的注册手机号 ' + phone + ' 进行密码重置。'
-    : '请通过 WhatsApp (+65 8942 7926) 或邮件 (admin@jmedpass.com) 联系客服，提供您的注册手机号进行密码重置。';
-  showToastMsg(msg, 'info');
+document.getElementById('forgotPasswordLink').addEventListener('click', async function () {
+  var identifier = document.getElementById('loginPhone').value.trim();
+  var errEl = document.getElementById('loginError');
+  var link = this;
+  var defaultLabel = link.textContent;
+
+  if (!isValidEmailInput(identifier)) {
+    var msg = identifier
+      ? '请输入注册邮箱接收重置链接；如果只记得手机号，请通过 WhatsApp (+65 8942 7926) 或邮件 (admin@jmedpass.com) 联系客服，并提供 ' + identifier + '。'
+      : '请输入注册邮箱接收重置链接；如果只记得手机号，请通过 WhatsApp (+65 8942 7926) 或邮件 (admin@jmedpass.com) 联系客服。';
+    showAuthError(errEl, t('login.err.resetNeedEmail', msg));
+    return;
+  }
+
+  try {
+    link.style.pointerEvents = 'none';
+    link.textContent = t('login.forgotSending', '发送中…');
+    const response = await fetch('/api/partner-forgot-password', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: identifier }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      showAuthError(errEl, data.error || '重置邮件发送失败，请稍后再试');
+      return;
+    }
+    showToastMsg(t('login.msg.resetSent', '如果该邮箱已注册，重置链接已发送，请查收邮件'), 'success');
+  } catch (error) {
+    showAuthError(errEl, '重置邮件发送失败，请稍后再试');
+  } finally {
+    link.style.pointerEvents = '';
+    link.textContent = defaultLabel;
+  }
 });
 </script>
 </body>

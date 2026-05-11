@@ -8,7 +8,11 @@ const {
   saveInquiries,
   uid,
 } = require('./_lib/partner-data');
+const { loadList, saveList } = require('./_lib/redis-data');
 const { enforceRateLimit } = require('./_lib/security');
+
+const INQUIRIES_KEY = 'jmedpass:inquiries';
+const CONSULTATIONS_KEY = 'jmedpass:consultations';
 
 function getAction(req) {
   return String((req.query && req.query.action) || '').trim();
@@ -36,13 +40,13 @@ async function handleInquiries(req, res) {
       return res.status(400).json({ error: '请输入有效的手机号或 WhatsApp 号码' });
     }
     if (services.length === 0) return res.status(400).json({ error: '请至少选择一项服务' });
-    if (!enforceRateLimit(req, res, {
+    if (!(await enforceRateLimit(req, res, {
       scope: 'inquiries',
       identifier: phone,
       windowMs: 10 * 60 * 1000,
       max: 4,
       errorMessage: '提交过于频繁，请 10 分钟后再试',
-    })) return;
+    }))) return;
 
     const record = {
       id: uid('inq'),
@@ -55,11 +59,12 @@ async function handleInquiries(req, res) {
       time: Date.now(),
     };
 
-    const all = loadInquiries();
-    saveInquiries([record].concat(all));
+    const all = await loadList(INQUIRIES_KEY, loadInquiries);
+    await saveList(INQUIRIES_KEY, [record].concat(all), saveInquiries);
 
     return res.status(201).json({ ok: true });
   } catch (error) {
+    console.error('[SUBMISSIONS] Failed to save inquiry:', error && (error.stack || error.message || error));
     return res.status(400).json({ error: '请求格式不正确' });
   }
 }
@@ -80,13 +85,13 @@ async function handleConsultations(req, res) {
     if (!isValidPhone(phone)) {
       return res.status(400).json({ error: '请输入有效的手机号或 WhatsApp 号码' });
     }
-    if (!enforceRateLimit(req, res, {
+    if (!(await enforceRateLimit(req, res, {
       scope: 'consultations',
       identifier: phone,
       windowMs: 30 * 60 * 1000,
       max: 3,
       errorMessage: '提交过于频繁，请稍后再试',
-    })) return;
+    }))) return;
 
     const record = {
       id: uid('con'),
@@ -100,11 +105,12 @@ async function handleConsultations(req, res) {
       time: Date.now(),
     };
 
-    const list = loadConsultations();
-    saveConsultations([record].concat(list));
+    const list = await loadList(CONSULTATIONS_KEY, loadConsultations);
+    await saveList(CONSULTATIONS_KEY, [record].concat(list), saveConsultations);
 
     return res.status(201).json({ ok: true, consultation: record });
   } catch (error) {
+    console.error('[SUBMISSIONS] Failed to save consultation:', error && (error.stack || error.message || error));
     return res.status(400).json({ error: '请求格式不正确' });
   }
 }

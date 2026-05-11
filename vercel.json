@@ -7,14 +7,377 @@
     {
       "source": "/(.*)",
       "has": [
-        { "type": "host", "value": "www.jmedpass.com" }
+        {
+          "type": "host",
+          "value": "www.jmedpass.com"
+        }
       ],
       "destination": "https://jmedpass.com/$1",
       "permanent": true
     },
     {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "jmedpss.com"
+        }
+      ],
+      "destination": "https://jmedpass.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.jmedpss.com"
+        }
+      ],
+      "destination": "https://jmedpass.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en"
+        }
+      ],
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ja"
+        }
+      ],
+      "destination": "/ja",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ko"
+        }
+      ],
+      "destination": "/ko",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "vi"
+        }
+      ],
+      "destination": "/vi",
+      "permanent": true
+    },
+    {
+      "source": "/enabout",
+      "destination": "/en/about",
+      "permanent": true
+    },
+    {
+      "source": "/enprivacy",
+      "destination": "/en/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/enterms",
+      "destination": "/en/terms",
+      "permanent": true
+    },
+    {
+      "source": "/enmedical-disclaimer",
+      "destination": "/en/medical-disclaimer",
+      "permanent": true
+    },
+    {
+      "source": "/enpartner",
+      "destination": "/en/partner",
+      "permanent": true
+    },
+    {
+      "source": "/encosmetic-surgery",
+      "destination": "/en/cosmetic-surgery",
+      "permanent": true
+    },
+    {
+      "source": "/enhealth-screening",
+      "destination": "/en/health-screening",
+      "permanent": true
+    },
+    {
+      "source": "/enregenerative-medicine",
+      "destination": "/en/regenerative-medicine",
+      "permanent": true
+    },
+    {
+      "source": "/enimmunotherapy",
+      "destination": "/en/immunotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/enonline-consultation",
+      "destination": "/en/online-consultation",
+      "permanent": true
+    },
+    {
+      "source": "/enovarian-rejuvenation",
+      "destination": "/en/ovarian-rejuvenation",
+      "permanent": true
+    },
+    {
+      "source": "/enstem-cell-anti-aging",
+      "destination": "/en/stem-cell-anti-aging",
+      "permanent": true
+    },
+    {
+      "source": "/enwellness",
+      "destination": "/en/wellness",
+      "permanent": true
+    },
+    {
+      "source": "/jaabout",
+      "destination": "/ja/about",
+      "permanent": true
+    },
+    {
+      "source": "/japrivacy",
+      "destination": "/ja/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/jaterms",
+      "destination": "/ja/terms",
+      "permanent": true
+    },
+    {
+      "source": "/jamedical-disclaimer",
+      "destination": "/ja/medical-disclaimer",
+      "permanent": true
+    },
+    {
+      "source": "/japartner",
+      "destination": "/ja/partner",
+      "permanent": true
+    },
+    {
+      "source": "/jacosmetic-surgery",
+      "destination": "/ja/cosmetic-surgery",
+      "permanent": true
+    },
+    {
+      "source": "/jahealth-screening",
+      "destination": "/ja/health-screening",
+      "permanent": true
+    },
+    {
+      "source": "/jaregenerative-medicine",
+      "destination": "/ja/regenerative-medicine",
+      "permanent": true
+    },
+    {
+      "source": "/jaimmunotherapy",
+      "destination": "/ja/immunotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/jaonline-consultation",
+      "destination": "/ja/online-consultation",
+      "permanent": true
+    },
+    {
+      "source": "/jaovarian-rejuvenation",
+      "destination": "/ja/ovarian-rejuvenation",
+      "permanent": true
+    },
+    {
+      "source": "/jastem-cell-anti-aging",
+      "destination": "/ja/stem-cell-anti-aging",
+      "permanent": true
+    },
+    {
+      "source": "/jawellness",
+      "destination": "/ja/wellness",
+      "permanent": true
+    },
+    {
+      "source": "/koabout",
+      "destination": "/ko/about",
+      "permanent": true
+    },
+    {
+      "source": "/koprivacy",
+      "destination": "/ko/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/koterms",
+      "destination": "/ko/terms",
+      "permanent": true
+    },
+    {
+      "source": "/komedical-disclaimer",
+      "destination": "/ko/medical-disclaimer",
+      "permanent": true
+    },
+    {
+      "source": "/kopartner",
+      "destination": "/ko/partner",
+      "permanent": true
+    },
+    {
+      "source": "/kocosmetic-surgery",
+      "destination": "/ko/cosmetic-surgery",
+      "permanent": true
+    },
+    {
+      "source": "/kohealth-screening",
+      "destination": "/ko/health-screening",
+      "permanent": true
+    },
+    {
+      "source": "/koregenerative-medicine",
+      "destination": "/ko/regenerative-medicine",
+      "permanent": true
+    },
+    {
+      "source": "/koimmunotherapy",
+      "destination": "/ko/immunotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/koonline-consultation",
+      "destination": "/ko/online-consultation",
+      "permanent": true
+    },
+    {
+      "source": "/koovarian-rejuvenation",
+      "destination": "/ko/ovarian-rejuvenation",
+      "permanent": true
+    },
+    {
+      "source": "/kostem-cell-anti-aging",
+      "destination": "/ko/stem-cell-anti-aging",
+      "permanent": true
+    },
+    {
+      "source": "/kowellness",
+      "destination": "/ko/wellness",
+      "permanent": true
+    },
+    {
+      "source": "/viabout",
+      "destination": "/vi/about",
+      "permanent": true
+    },
+    {
+      "source": "/viprivacy",
+      "destination": "/vi/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/viterms",
+      "destination": "/vi/terms",
+      "permanent": true
+    },
+    {
+      "source": "/vimedical-disclaimer",
+      "destination": "/vi/medical-disclaimer",
+      "permanent": true
+    },
+    {
+      "source": "/vipartner",
+      "destination": "/vi/partner",
+      "permanent": true
+    },
+    {
+      "source": "/vicosmetic-surgery",
+      "destination": "/vi/cosmetic-surgery",
+      "permanent": true
+    },
+    {
+      "source": "/vihealth-screening",
+      "destination": "/vi/health-screening",
+      "permanent": true
+    },
+    {
+      "source": "/viregenerative-medicine",
+      "destination": "/vi/regenerative-medicine",
+      "permanent": true
+    },
+    {
+      "source": "/viimmunotherapy",
+      "destination": "/vi/immunotherapy",
+      "permanent": true
+    },
+    {
+      "source": "/vionline-consultation",
+      "destination": "/vi/online-consultation",
+      "permanent": true
+    },
+    {
+      "source": "/viovarian-rejuvenation",
+      "destination": "/vi/ovarian-rejuvenation",
+      "permanent": true
+    },
+    {
+      "source": "/vistem-cell-anti-aging",
+      "destination": "/vi/stem-cell-anti-aging",
+      "permanent": true
+    },
+    {
+      "source": "/viwellness",
+      "destination": "/vi/wellness",
+      "permanent": true
+    },
+    {
+      "source": "/en/",
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/ja/",
+      "destination": "/ja",
+      "permanent": true
+    },
+    {
+      "source": "/ko/",
+      "destination": "/ko",
+      "permanent": true
+    },
+    {
+      "source": "/vi/",
+      "destination": "/vi",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/",
+      "destination": "/en/blog",
+      "permanent": true
+    },
+    {
       "source": "/index",
       "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/disclaimer",
+      "destination": "/medical-disclaimer",
       "permanent": true
     },
     {
@@ -59,39 +422,136 @@
     }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/en", "destination": "/en/index.html" },
-    { "source": "/admin", "destination": "/admin/index.html" },    { "source": "/admin/dashboard", "destination": "/admin/dashboard.html" },
-    { "source": "/api/admin-login", "destination": "/api/admin?action=login" },
-    { "source": "/api/admin-logout", "destination": "/api/admin?action=logout" },
-    { "source": "/api/admin-session", "destination": "/api/admin?action=session" },
-    { "source": "/api/admin-data", "destination": "/api/admin?action=data" },
-    { "source": "/api/partner-login", "destination": "/api/partner-auth?action=login" },
-    { "source": "/api/partner-logout", "destination": "/api/partner-auth?action=logout" },
-    { "source": "/api/partner-register", "destination": "/api/partner-auth?action=register" },
-    { "source": "/api/partner-session", "destination": "/api/partner-auth?action=session" },
-    { "source": "/api/referral-token", "destination": "/api/partner-auth?action=referral-token" },
-    { "source": "/api/partner-dashboard", "destination": "/api/partner?action=dashboard" },
-    { "source": "/api/partner-withdrawals", "destination": "/api/partner?action=withdrawals" },
-    { "source": "/api/public-products", "destination": "/api/partner?action=public-products" },
-    { "source": "/api/create-checkout", "destination": "/api/commerce?action=create-checkout" },
-    { "source": "/api/checkout-session-status", "destination": "/api/commerce?action=checkout-session-status" },
-    { "source": "/api/get-order", "destination": "/api/commerce?action=get-order" },
-    { "source": "/api/inquiries", "destination": "/api/submissions?action=inquiries" },
-    { "source": "/api/consultations", "destination": "/api/submissions?action=consultations" },
-    { "source": "/((?!api/|admin/|.*\\..*).+)", "destination": "/$1.html" }
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/en",
+      "destination": "/en/index.html"
+    },
+    {
+      "source": "/ja",
+      "destination": "/ja/index.html"
+    },
+    {
+      "source": "/ko",
+      "destination": "/ko/index.html"
+    },
+    {
+      "source": "/vi",
+      "destination": "/vi/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/dashboard",
+      "destination": "/admin/dashboard.html"
+    },
+    {
+      "source": "/en/blog",
+      "destination": "/en/blog/index.html"
+    },
+    {
+      "source": "/api/admin-login",
+      "destination": "/api/admin?action=login"
+    },
+    {
+      "source": "/api/admin-logout",
+      "destination": "/api/admin?action=logout"
+    },
+    {
+      "source": "/api/admin-session",
+      "destination": "/api/admin?action=session"
+    },
+    {
+      "source": "/api/admin-data",
+      "destination": "/api/admin?action=data"
+    },
+    {
+      "source": "/api/partner-login",
+      "destination": "/api/partner-auth?action=login"
+    },
+    {
+      "source": "/api/partner-logout",
+      "destination": "/api/partner-auth?action=logout"
+    },
+    {
+      "source": "/api/partner-register",
+      "destination": "/api/partner-auth?action=register"
+    },
+    {
+      "source": "/api/partner-session",
+      "destination": "/api/partner-auth?action=session"
+    },
+    {
+      "source": "/api/referral-token",
+      "destination": "/api/partner-auth?action=referral-token"
+    },
+    {
+      "source": "/api/partner-dashboard",
+      "destination": "/api/partner?action=dashboard"
+    },
+    {
+      "source": "/api/partner-withdrawals",
+      "destination": "/api/partner?action=withdrawals"
+    },
+    {
+      "source": "/api/public-products",
+      "destination": "/api/partner?action=public-products"
+    },
+    {
+      "source": "/api/create-checkout",
+      "destination": "/api/commerce?action=create-checkout"
+    },
+    {
+      "source": "/api/checkout-session-status",
+      "destination": "/api/commerce?action=checkout-session-status"
+    },
+    {
+      "source": "/api/get-order",
+      "destination": "/api/commerce?action=get-order"
+    },
+    {
+      "source": "/api/inquiries",
+      "destination": "/api/submissions?action=inquiries"
+    },
+    {
+      "source": "/api/consultations",
+      "destination": "/api/submissions?action=consultations"
+    },
+    {
+      "source": "/((?!api/|admin/|.*\\..*).+)",
+      "destination": "/$1.html"
+    },
+    {
+      "source": "/.netlify/functions/create-checkout",
+      "destination": "/api/commerce?action=create-checkout"
+    },
+    {
+      "source": "/.netlify/functions/get-order",
+      "destination": "/api/commerce?action=get-order"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)\\.html",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
       ]
     },
     {
       "source": "/i18n.js",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
@@ -99,26 +559,42 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://checkout.stripe.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; frame-src https://js.stripe.com; connect-src 'self' https://api.stripe.com; object-src 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self'; object-src 'none'; upgrade-insecure-requests"
         },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(self)" }
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     },
     {
       "source": "/(login|my|success|404)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
       ]
     },
     {
       "source": "/admin/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
-        { "key": "Cache-Control", "value": "private, no-store, max-age=0" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
       ]
     }
   ]

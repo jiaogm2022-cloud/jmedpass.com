@@ -8,7 +8,8 @@ const SCRYPT_PREFIX = 'scrypt';
 const SCRYPT_KEYLEN = 64;
 
 function isDevelopmentMode() {
-  return process.env.NODE_ENV === 'development' || !process.env.VERCEL;
+  return process.env.NODE_ENV === 'development'
+    || (!process.env.VERCEL && process.env.NODE_ENV !== 'production');
 }
 
 function sha256Hex(input) {
@@ -51,7 +52,7 @@ function needsPasswordRehash(storedHash) {
 }
 
 function getAdminUsername() {
-    return (process.env.ADMIN_USERNAME || (isDevelopmentMode() ? DEFAULT_ADMIN_USERNAME : '')).trim();
+  return process.env.ADMIN_USERNAME || (isDevelopmentMode() ? DEFAULT_ADMIN_USERNAME : '');
 }
 
 function getAdminPasswordHash() {
@@ -61,11 +62,7 @@ function getAdminPasswordHash() {
 
 function getSessionSecret() {
   if (process.env.ADMIN_SESSION_SECRET) return process.env.ADMIN_SESSION_SECRET;
-  if (isDevelopmentMode()) return getAdminPasswordHash();
-  throw new Error(
-    '[FATAL] ADMIN_SESSION_SECRET is not set in production. '
-    + 'Admin authentication is disabled until this is configured.'
-  );
+  return isDevelopmentMode() ? getAdminPasswordHash() : '';
 }
 
 function timingSafeEqualHex(left, right) {
@@ -112,7 +109,7 @@ function serializeCookie(name, value, maxAgeMs) {
     `Max-Age=${Math.max(0, Math.floor(maxAgeMs / 1000))}`,
   ];
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (!isDevelopmentMode()) {
     parts.push('Secure');
   }
 

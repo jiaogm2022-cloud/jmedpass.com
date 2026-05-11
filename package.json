@@ -5,7 +5,11 @@
   "engines": {
     "node": ">=22.0.0"
   },
+  "scripts": {
+    "submit:indexnow": "node scripts/submit-indexnow.js"
+  },
   "dependencies": {
+    "@upstash/redis": "^1.37.0",
     "stripe": "^14.21.0"
   }
 }
