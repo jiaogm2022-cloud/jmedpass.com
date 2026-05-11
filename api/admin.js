@@ -10,6 +10,7 @@ const {
 } = require('./_lib/auth');
 const { enforceRateLimit, getClientIp } = require('./_lib/security');
 const {
+  DEFAULT_RULES,
   loadCommissions,
   loadConsultations,
   loadInquiries,
@@ -28,6 +29,16 @@ const {
   saveWithdrawals,
 } = require('./_lib/partner-data');
 const { getDefaultProducts } = require('./_lib/catalog');
+const { loadList, saveList } = require('./_lib/redis-data');
+
+const INQUIRIES_KEY = 'jmedpass:inquiries';
+const CONSULTATIONS_KEY = 'jmedpass:consultations';
+const PRODUCTS_KEY = 'jmedpass:products';
+const USERS_KEY = 'jmedpass:users';
+const ORDERS_KEY = 'jmedpass:orders';
+const COMMISSIONS_KEY = 'jmedpass:commissions';
+const WITHDRAWALS_KEY = 'jmedpass:withdrawals';
+const RULES_KEY = 'jmedpass:rules';
 
 function getAction(req) {
   return String((req.query && req.query.action) || '').trim();
@@ -54,16 +65,79 @@ function ensureAdmin(req, res) {
   return admin;
 }
 
-function responsePayload() {
+async function loadAdminInquiries() {
+  return loadList(INQUIRIES_KEY, loadInquiries);
+}
+
+async function saveAdminInquiries(list) {
+  return saveList(INQUIRIES_KEY, list, saveInquiries);
+}
+
+async function loadAdminConsultations() {
+  return loadList(CONSULTATIONS_KEY, loadConsultations);
+}
+
+async function saveAdminConsultations(list) {
+  return saveList(CONSULTATIONS_KEY, list, saveConsultations);
+}
+
+async function loadAdminProducts() {
+  const products = await loadList(PRODUCTS_KEY, loadProducts);
+  return products.length ? products : getDefaultProducts();
+}
+
+async function saveAdminProducts(list) {
+  return saveList(PRODUCTS_KEY, list, saveProducts);
+}
+
+async function loadAdminUsers() {
+  return loadList(USERS_KEY, loadUsers);
+}
+
+async function saveAdminUsers(list) {
+  return saveList(USERS_KEY, list, saveUsers);
+}
+
+async function loadAdminOrders() {
+  return loadList(ORDERS_KEY, loadOrders);
+}
+
+async function loadAdminCommissions() {
+  return loadList(COMMISSIONS_KEY, loadCommissions);
+}
+
+async function saveAdminCommissions(list) {
+  return saveList(COMMISSIONS_KEY, list, saveCommissions);
+}
+
+async function loadAdminWithdrawals() {
+  return loadList(WITHDRAWALS_KEY, loadWithdrawals);
+}
+
+async function saveAdminWithdrawals(list) {
+  return saveList(WITHDRAWALS_KEY, list, saveWithdrawals);
+}
+
+async function loadAdminRules() {
+  const rules = await loadList(RULES_KEY, loadRules);
+  return rules.length ? rules : DEFAULT_RULES.slice();
+}
+
+async function saveAdminRules(list) {
+  return saveList(RULES_KEY, list, saveRules);
+}
+
+async function responsePayload() {
+  const users = await loadAdminUsers();
   return {
-    inquiries: loadInquiries(),
-    users: loadUsers().map((user) => publicUser(user, { includeContact: true, includeReferral: true })),
-    orders: loadOrders(),
-    commissions: loadCommissions(),
-    withdrawals: loadWithdrawals(),
-    rules: loadRules(),
-    consultations: loadConsultations(),
-    products: loadProducts(),
+    inquiries: await loadAdminInquiries(),
+    users: users.map((user) => publicUser(user, { includeContact: true, includeReferral: true })),
+    orders: await loadAdminOrders(),
+    commissions: await loadAdminCommissions(),
+    withdrawals: await loadAdminWithdrawals(),
+    rules: await loadAdminRules(),
+    consultations: await loadAdminConsultations(),
+    products: await loadAdminProducts(),
   };
 }
 
@@ -77,13 +151,13 @@ async function handleLogin(req, res) {
 
   try {
     const clientIp = getClientIp(req);
-    if (!enforceRateLimit(req, res, {
+    if (!(await enforceRateLimit(req, res, {
       scope: 'admin-login',
       identifier: clientIp,
       windowMs: 15 * 60 * 1000,
       max: 5,
       errorMessage: '登录尝试过于频繁，请 15 分钟后再试',
-    })) return;
+    }))) return;
 
     const body = await readJsonBody(req);
     const username = String(body.username || '').trim();
@@ -160,7 +234,7 @@ async function handleData(req, res) {
   if (!ensureAdmin(req, res)) return;
 
   if (req.method === 'GET') {
-    return res.status(200).json(responsePayload());
+    return res.status(200).json(await responsePayload());
   }
 
   if (req.method !== 'POST') return methodNotAllowed(res, 'data');
@@ -173,33 +247,33 @@ async function handleData(req, res) {
 
     if (section === 'inquiries') {
       if (action === 'replaceAll') {
-        saveInquiries(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminInquiries(Array.isArray(payload.items) ? payload.items : []);
       } else if (action === 'updateStatus') {
-        const list = loadInquiries();
+        const list = await loadAdminInquiries();
         const item = list.find((entry) => entry.id === payload.id);
         if (!item) return res.status(404).json({ error: 'Inquiry not found' });
         item.status = String(payload.status || item.status);
-        saveInquiries(list);
+        await saveAdminInquiries(list);
       } else if (action === 'delete') {
-        saveInquiries(loadInquiries().filter((entry) => entry.id !== payload.id));
+        await saveAdminInquiries((await loadAdminInquiries()).filter((entry) => entry.id !== payload.id));
       }
     } else if (section === 'users') {
       if (action === 'replaceAll') {
-        saveUsers(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminUsers(Array.isArray(payload.items) ? payload.items : []);
       } else {
-        const list = loadUsers();
+        const list = await loadAdminUsers();
         const item = list.find((entry) => entry.id === payload.id);
         if (!item) return res.status(404).json({ error: 'User not found' });
         if (action === 'toggleStatus') {
           item.status = item.status === 'frozen' ? 'active' : 'frozen';
         }
-        saveUsers(list);
+        await saveAdminUsers(list);
       }
     } else if (section === 'commissions') {
       if (action === 'replaceAll') {
-        saveCommissions(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminCommissions(Array.isArray(payload.items) ? payload.items : []);
       } else {
-        const list = loadCommissions();
+        const list = await loadAdminCommissions();
         const item = list.find((entry) => entry.id === payload.id);
         if (!item) return res.status(404).json({ error: 'Commission not found' });
         if (action === 'settle') {
@@ -208,13 +282,13 @@ async function handleData(req, res) {
         } else if (action === 'cancel') {
           item.status = 'cancelled';
         }
-        saveCommissions(list);
+        await saveAdminCommissions(list);
       }
     } else if (section === 'withdrawals') {
       if (action === 'replaceAll') {
-        saveWithdrawals(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminWithdrawals(Array.isArray(payload.items) ? payload.items : []);
       } else {
-        const list = loadWithdrawals();
+        const list = await loadAdminWithdrawals();
         const item = list.find((entry) => entry.id === payload.id);
         if (!item) return res.status(404).json({ error: 'Withdrawal not found' });
         if (action === 'updateStatus') {
@@ -225,13 +299,13 @@ async function handleData(req, res) {
           item.adminNote = String(payload.reason || '未填写原因');
           item.processedAt = new Date().toISOString();
         }
-        saveWithdrawals(list);
+        await saveAdminWithdrawals(list);
       }
     } else if (section === 'rules') {
       if (action === 'replaceAll') {
-        saveRules(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminRules(Array.isArray(payload.items) ? payload.items : []);
       } else {
-        const list = loadRules();
+        const list = await loadAdminRules();
         const item = list.find((entry) => entry.id === payload.id);
         if (!item) return res.status(404).json({ error: 'Rule not found' });
         if (action === 'update') {
@@ -240,24 +314,24 @@ async function handleData(req, res) {
           item.isActive = Boolean(payload.isActive);
           item.updatedAt = new Date().toISOString();
         }
-        saveRules(list);
+        await saveAdminRules(list);
       }
     } else if (section === 'consultations') {
       if (action === 'replaceAll') {
-        saveConsultations(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminConsultations(Array.isArray(payload.items) ? payload.items : []);
       } else if (action === 'updateStatus') {
-        const list = loadConsultations();
+        const list = await loadAdminConsultations();
         const item = list.find((entry) => entry.id === payload.id);
         if (!item) return res.status(404).json({ error: 'Consultation not found' });
         item.status = String(payload.status || item.status);
-        saveConsultations(list);
+        await saveAdminConsultations(list);
       } else if (action === 'delete') {
-        saveConsultations(loadConsultations().filter((entry) => entry.id !== payload.id));
+        await saveAdminConsultations((await loadAdminConsultations()).filter((entry) => entry.id !== payload.id));
       }
     } else if (section === 'products') {
-      const list = loadProducts();
+      const list = await loadAdminProducts();
       if (action === 'replaceAll') {
-        saveProducts(Array.isArray(payload.items) ? payload.items : []);
+        await saveAdminProducts(Array.isArray(payload.items) ? payload.items : []);
       } else if (action === 'save') {
         const product = payload.product || {};
         if (product.id) {
@@ -267,17 +341,17 @@ async function handleData(req, res) {
           product.id = Date.now();
           list.push(product);
         }
-        saveProducts(list);
+        await saveAdminProducts(list);
       } else if (action === 'delete') {
-        saveProducts(list.filter((entry) => entry.id !== payload.id));
+        await saveAdminProducts(list.filter((entry) => entry.id !== payload.id));
       } else if (action === 'reset') {
-        saveProducts(getDefaultProducts());
+        await saveAdminProducts(getDefaultProducts());
       }
     } else {
       return res.status(400).json({ error: 'Unsupported section' });
     }
 
-    return res.status(200).json({ ok: true, data: responsePayload() });
+    return res.status(200).json({ ok: true, data: await responsePayload() });
   } catch (error) {
     return res.status(400).json({ error: '请求格式不正确' });
   }

@@ -65,11 +65,11 @@ var PAGE_META = {
   "cosmetic-surgery": {
     "zh": {
       "t": "日本医美整形 | 日本医美修复·赴日整形服务 | 日医通",
-      "d": "日医通提供日本顶级医美整形与日本医美修复一站式服务，覆盖双眼皮、隆鼻、面部提升、吸脂、轮廓重塑与失败整形修复。"
+      "d": "日医通提供日本医美整形与医美修复协调服务，覆盖双眼皮、隆鼻、面部提升、吸脂、轮廓重塑与失败整形修复，具体方案需医生评估。"
     },
     "en": {
       "t": "Japan Aesthetic Surgery | Eyelid, Rhinoplasty & Facelift | JMedPass",
-      "d": "JMedPass connects international clients with Japan's certified aesthetic surgeons for eyelid surgery, rhinoplasty, facelift, liposuction, medical interpretation and premium care coordination."
+      "d": "JMedPass coordinates Japan aesthetic surgery and revision consultation for eyelid surgery, rhinoplasty, facelift and liposuction, with medical interpretation and physician assessment support."
     },
     "ja": {
       "t": "日本美容整形 | 二重まぶた・隆鼻・フェイスリフト | 日医通集団",
@@ -77,11 +77,11 @@ var PAGE_META = {
     },
     "ko": {
       "t": "일본 미용성형 | 쌍꺼풀·코성형·안면거상 | JMedPass 메디칼",
-      "d": "JMedPass 메디칼이 일본 최고 인증 성형외과 의사와 연결해 드립니다. 쌍꺼풀·코성형·안면거상·지방흡입. 첨단 최소침습 기술, 다국어 컨시어지, 투명한 가격."
+      "d": "JMedPass 메디칼은 일본 미용성형 및 재수술 상담 조율을 지원합니다. 쌍꺼풀·코성형·안면거상·지방흡입은 의사 평가 후 적합성을 확인해야 합니다."
     },
     "vi": {
       "t": "Thẩm mỹ Nhật Bản | Mắt 2 mí, Nâng mũi, Căng da mặt | JMedPass",
-      "d": "JMedPass kết nối khách hàng toàn cầu với bác sĩ phẫu thuật thẩm mỹ hàng đầu Nhật Bản — mắt 2 mí, nâng mũi, căng da mặt, hút mỡ. Kỹ thuật xâm lấn tối thiểu, đồng hành đa ngôn ngữ, báo giá minh bạch."
+      "d": "JMedPass điều phối tư vấn thẩm mỹ và sửa lại phẫu thuật tại Nhật cho mắt 2 mí, nâng mũi, căng da mặt, hút mỡ; tính phù hợp cần bác sĩ đánh giá."
     }
   },
   "health-screening": {
@@ -99,11 +99,11 @@ var PAGE_META = {
     },
     "ko": {
       "t": "일본 정밀건강검진 | PET-CT 암검진 | JMedPass 메디칼",
-      "d": "JMedPass 메디칼의 일본 정밀건강검진 — PET-CT 전신 암 검진, MRI, 심뇌혈관 검사, 유전자 검사. 5mm 조기 종양 발견 가능. 다국어 결과 설명 제공."
+      "d": "JMedPass 메디칼은 일본 정밀건강검진, PET-CT, MRI, 심뇌혈관 검사와 보고서 해석을 조율합니다. 검사 선택과 결과 해석은 의사 판단이 필요합니다."
     },
     "vi": {
       "t": "Khám sức khỏe chuyên sâu Nhật Bản | PET-CT Tầm soát ung thư | JMedPass",
-      "d": "JMedPass — Ningen Dock Nhật Bản: PET-CT toàn thân, MRI, kiểm tra tim mạch não, xét nghiệm gen. Phát hiện khối u 5mm giai đoạn sớm. Giải thích báo cáo đa ngôn ngữ."
+      "d": "JMedPass điều phối khám sức khỏe chuyên sâu Nhật Bản, PET-CT, MRI, kiểm tra tim mạch não và giải thích báo cáo. Lựa chọn xét nghiệm và diễn giải cần ý kiến bác sĩ."
     }
   },
   "regenerative-medicine": {
@@ -121,11 +121,11 @@ var PAGE_META = {
     },
     "ko": {
       "t": "일본 재생의료 | 줄기세포 항노화·난소 회춘 | JMedPass 메디칼",
-      "d": "JMedPass 메디칼의 일본 재생의료 — 줄기세포 항노화, 난소 회춘, 관절 회복, 대사질환 지원. 후생노동성 인증 기관, 다국어 풀서비스."
+      "d": "JMedPass 메디칼은 일본 재생의료 상담, 줄기세포·PRP 관련 적응성 확인과 기관 조율을 지원합니다. 치료 가능 여부와 위험은 의사 평가가 필요합니다."
     },
     "vi": {
       "t": "Y học tái sinh Nhật Bản | Tế bào gốc chống lão hóa & Trẻ hóa buồng trứng | JMedPass",
-      "d": "Y học tái sinh Nhật Bản của JMedPass — tế bào gốc chống lão hóa, trẻ hóa buồng trứng, phục hồi khớp, hỗ trợ bệnh chuyển hóa. Cơ sở được MHLW chứng nhận, phục vụ đa ngôn ngữ."
+      "d": "JMedPass hỗ trợ điều phối tư vấn y học tái sinh Nhật Bản, tế bào gốc, PRP và đánh giá tính phù hợp qua cơ sở hợp quy. Rủi ro và lợi ích cần bác sĩ xem xét."
     }
   },
   "immunotherapy": {
@@ -169,7 +169,7 @@ var PAGE_META = {
     },
     "vi": {
       "t": "Tư vấn bác sĩ Nhật trực tuyến | Tiếng Việt, Đa ngôn ngữ | JMedPass",
-      "d": "Tư vấn với bác sĩ Nhật có giấy phép bằng tiếng Việt — nội khoa, da liễu, rụng tóc AGA, quản lý cân nặng và nhiều hơn nữa. Thuốc kê đơn giao toàn cầu, không cần đến Nhật."
+      "d": "Tư vấn từ xa với bác sĩ Nhật, ý kiến y khoa thứ hai, sắp xếp hồ sơ và phiên dịch y khoa. Kê đơn và theo dõi phụ thuộc quy định địa phương và đánh giá bác sĩ."
     }
   },
   "wellness": {
@@ -197,7 +197,7 @@ var PAGE_META = {
   "stem-cell-anti-aging": {
     "zh": {
       "t": "干细胞抗衰老治疗 | 日本再生医疗 | 日医通",
-      "d": "日本干细胞抗衰老专项治疗——自体干细胞静脉回输，逆转细胞老化，改善皮肤、睡眠、精力与免疫力。厚生劳动省认可机构，每次2.5–3亿个高活性细胞。"
+      "d": "日本干细胞抗衰老相关服务说明，协助进行资料准备、适应性沟通与合规机构对接。是否适合治疗及可能效果需医生评估。"
     },
     "en": {
       "t": "Stem Cell Anti-Aging Japan | Regenerative Medicine | JMedPass",
@@ -301,7 +301,7 @@ function getChunk(lang) {
 }
 
 function getChunkUrl(lang) {
-  return '/i18n/' + lang + '.js?v=6';
+  return '/i18n/' + lang + '.js?v=8';
 }
 
 function loadLangChunk(lang) {
@@ -419,8 +419,22 @@ window.applyLang = function(lang) {
   });
 };
 
+function getPathLang() {
+  var first = (window.location.pathname.split('/').filter(Boolean)[0] || '').toLowerCase();
+  return /^(en|ja|ko|vi)$/.test(first) ? first : '';
+}
+
+function getLocalizedPath(lang) {
+  var path = window.location.pathname || '/';
+  var parts = path.split('/').filter(Boolean);
+  if (/^(en|ja|ko|vi)$/.test(parts[0] || '')) parts.shift();
+  var suffix = parts.join('/');
+  if (lang === 'zh') return suffix ? '/' + suffix : '/';
+  return '/' + lang + (suffix ? '/' + suffix : '');
+}
+
 (function() {
-  var pathLang = window.location.pathname.indexOf('/en/') === 0 || window.location.pathname === '/en' ? 'en' : '';
+  var pathLang = getPathLang();
   var saved = pathLang || (function() {
     try {
       return localStorage.getItem('sm_lang');
@@ -446,6 +460,15 @@ window.applyLang = function(lang) {
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('.lang-btn');
     if (!btn) return;
-    window.applyLang(btn.getAttribute('data-lang')).catch(function() {});
+    var nextLang = btn.getAttribute('data-lang');
+    var nextPath = getLocalizedPath(nextLang);
+    if (window.location.pathname !== nextPath) {
+      try {
+        localStorage.setItem('sm_lang', nextLang);
+      } catch (error) {}
+      window.location.href = nextPath + window.location.search + window.location.hash;
+      return;
+    }
+    window.applyLang(nextLang).catch(function() {});
   });
 })();

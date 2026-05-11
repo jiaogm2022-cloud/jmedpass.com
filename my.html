@@ -284,15 +284,21 @@ function fmtAmt(n) {
   return '$' + parseFloat(n || 0).toFixed(2);
 }
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+    return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[ch];
+  });
+}
+
 function statusLabel(s) {
   const map = { settled:'已到账', pending:'待结算', cancelled:'已取消', processing:'处理中', completed:'已完成', rejected:'已驳回' };
   const cls = { settled:'status-settled', pending:'status-pending', cancelled:'status-cancelled', processing:'status-processing', completed:'status-settled', rejected:'status-cancelled' };
-  return `<span class="status ${cls[s] || ''}">${map[s] || s}</span>`;
+  return `<span class="status ${escapeHtml(cls[s] || '')}">${escapeHtml(map[s] || s || '-')}</span>`;
 }
 
 function maskName(name) {
   if (!name) return '**';
-  return name.charAt(0) + '**';
+  return escapeHtml(name.charAt(0)) + '**';
 }
 
 function getWithdrawableAmount() {
@@ -389,7 +395,7 @@ function renderCommissions() {
     const orderAmount = Number(c.orderAmount || order.totalAmount || order.amount || 0);
     return `<tr>
       <td>${fmtDate(c.createdAt)}</td>
-      <td>${categoryMap[order.category] || order.category || '-'}</td>
+      <td>${escapeHtml(categoryMap[order.category] || order.category || '-')}</td>
       <td>${maskName(customer.nickname)}</td>
       <td>${fmtAmt(orderAmount)}</td>
       <td class="amount">${fmtAmt(c.commissionAmt)}</td>
@@ -410,8 +416,8 @@ function renderWithdrawals() {
   tbody.innerHTML = sorted.map(w => `<tr>
     <td>${fmtDate(w.requestedAt)}</td>
     <td class="amount">${fmtAmt(w.amount)}</td>
-    <td>${methodMap[w.method] || w.method}</td>
-    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;">${w.accountInfo || '-'}</td>
+    <td>${escapeHtml(methodMap[w.method] || w.method || '-')}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(w.accountInfo || '-')}</td>
     <td>${statusLabel(w.status)}</td>
   </tr>`).join('');
 }

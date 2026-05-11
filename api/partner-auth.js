@@ -19,6 +19,17 @@ const {
   uid,
   verifyPassword,
 } = require('./_lib/partner-data');
+const { loadList, saveList } = require('./_lib/redis-data');
+
+const USERS_KEY = 'jmedpass:users';
+
+async function loadPartnerUsers() {
+  return loadList(USERS_KEY, loadUsers);
+}
+
+async function savePartnerUsers(users) {
+  return saveList(USERS_KEY, users, saveUsers);
+}
 
 function getAction(req) {
   return String((req.query && req.query.action) || '').trim();
@@ -59,17 +70,17 @@ async function handleLogin(req, res) {
     if (!identifier || !password) {
       return res.status(400).json({ error: '请输入账号和密码' });
     }
-    if (!enforceRateLimit(req, res, {
+    if (!(await enforceRateLimit(req, res, {
       scope: 'partner-login',
       identifier,
       windowMs: 15 * 60 * 1000,
       max: 8,
       errorMessage: '登录尝试过于频繁，请稍后再试',
-    })) return;
+    }))) return;
 
     const phone = normalizePhone(identifier);
     const email = normalizeEmail(identifier);
-    const users = loadUsers();
+    const users = await loadPartnerUsers();
     const user = users.find((item) =>
       (item.phone === phone || (email && item.email === email)) && verifyPassword(password, item.passwordHash)
     );
@@ -79,7 +90,7 @@ async function handleLogin(req, res) {
 
     if (needsPasswordRehash(user.passwordHash)) {
       user.passwordHash = hashPassword(password);
-      saveUsers(users);
+      await savePartnerUsers(users);
     }
 
     res.setHeader('Set-Cookie', createPartnerSessionCookie(user.id));
@@ -131,15 +142,15 @@ async function handleRegister(req, res) {
     if (password.length < 8) return res.status(400).json({ error: '密码至少需要 8 位' });
     if (password !== confirmPassword) return res.status(400).json({ error: '两次输入的密码不一致' });
     if (!agreeTerms) return res.status(400).json({ error: '请先同意合伙人协议与隐私说明' });
-    if (!enforceRateLimit(req, res, {
+    if (!(await enforceRateLimit(req, res, {
       scope: 'partner-register',
       identifier: email || phone,
       windowMs: 60 * 60 * 1000,
       max: 5,
       errorMessage: '注册尝试过于频繁，请 1 小时后再试',
-    })) return;
+    }))) return;
 
-    const users = loadUsers();
+    const users = await loadPartnerUsers();
     if (users.some((user) => user.phone === phone)) {
       return res.status(409).json({ error: '该手机号已注册，请直接登录' });
     }
@@ -170,7 +181,7 @@ async function handleRegister(req, res) {
       status: 'active',
     };
 
-    saveUsers(users.concat(user));
+    await savePartnerUsers(users.concat(user));
     res.setHeader('Set-Cookie', createPartnerSessionCookie(user.id));
 
     return res.status(201).json({
@@ -195,7 +206,7 @@ async function handleSession(req, res) {
     return res.status(200).json({ authenticated: false });
   }
 
-  const user = loadUsers().find((item) => item.id === session.userId);
+  const user = (await loadPartnerUsers()).find((item) => item.id === session.userId);
   if (!user || user.status === 'frozen') {
     return res.status(200).json({ authenticated: false });
   }
@@ -220,7 +231,7 @@ async function handleReferralToken(req, res) {
     return res.status(400).json({ error: 'Missing ref parameter' });
   }
 
-  const users = loadUsers();
+  const users = await loadPartnerUsers();
   const referrer = users.find((user) => user.referralCode === ref);
   if (!referrer) {
     return res.status(404).json({ error: 'Invalid referral code' });

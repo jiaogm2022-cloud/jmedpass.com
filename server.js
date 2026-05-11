@@ -78,10 +78,17 @@ const server = http.createServer(async (req, res) => {
 
   /* ── Serve static files ── */
   let pathname = url.pathname === '/' ? '/index.html' : url.pathname;
+  if (pathname.endsWith('/')) pathname += 'index.html';
   let filePath = path.join(__dirname, pathname);
 
-  // Auto-append .html if no extension
-  if (!path.extname(filePath) && !filePath.endsWith('/')) filePath += '.html';
+  // Auto-resolve clean URLs and directory indexes.
+  if (!path.extname(filePath) && !filePath.endsWith('/')) {
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    } else {
+      filePath += '.html';
+    }
+  }
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
